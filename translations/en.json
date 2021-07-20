@@ -1,0 +1,98 @@
+{
+  "first": "First View",
+  "loadExistingWalletIntro": "Load Existing Wallet Intro",
+  "createNewWallet": "Create New Wallet",
+  "loadFromRecoveryPassphrase": "Load From Recovery Passphrase",
+  "verifyRecoveryPhrase": "Verify Recovery Phrase",
+  "createPassphrase": "Create Password",
+  "walletCreated": "Wallet Created",
+  "walletHome": "Wallet Home",
+  "address": "Address",
+  "scanWalletAddress": "Scan Wallet Address",
+  "sendForm": "Send Form",
+  "sendPreview": "Send Preview",
+  "createPin": "Create Pin",
+  "changePin": "Change Pin",
+  "pair2FaDeviceBackupCodes": "Pair 2FA Device Backup Codes",
+  "pair2FaDevice": "Pair 2FA Device",
+  "verify2FaDevice": "Verify 2FA Device",
+  "editContact": "Edit Address",
+  "contactBook": "Address Book",
+  "changePassphrase": "Change Passphrase",
+  "security": "Security",
+  "pinLogin": "PIN Login",
+  "logOut": "Log Out",
+  "logIn": "Log In",
+
+  "show": "Show",
+  "hide": "Hide",
+
+  "pktPalLogo": "PktPal Logo",
+  "pktWallet": "Pkt Wallet",
+  "next": "Next",
+
+  "newWalletIntro": "Create New Wallet",
+  "dontLoseTheseWords": "DO NOT LOSE these 16 words!",
+  "ifYouLoseTheseWords": "If you do, you will not be able to access your money",
+  "newWalletIntro1": "You are about to create a new wallet",
+  "newWalletIntro2": "Your wallet has a 16-word secret recovery phrase that can be used to restore your wallet on another device.",
+  "newWalletIntro3": "Write down this recovery phrase and store store it in a safe, secure place.",
+
+  "continueToRecoveryPhrase": "Continue to Recovery Phrase",
+  "pressAndHoldToReveal": "Press and Hold to Reveal",
+
+  "invalidRecoveryPhrase": "Invalid Recovery Phrase",
+
+  "passwordHelpText": "This will be used to encrypt your wallet",
+  "newPassphrase": "New Passphrase",
+  "verifyPassword": "Verify Passphrase",
+  "verifyPasswordHelpText": "Retype your new passphrase",
+  "passwordVerifyError": "Passwords do not match",
+  "whyPassphrase": "A passphrase is used to encrypt your wallet. If you lose this passphrase, you will not be able to access your money.",
+
+  "viewWalletBalance": "View Wallet Balance",
+  "walletCreatedIntro1": "Your wallet has been set up.",
+  "walletCreatedIntro2": "Your may now send or receive PKT ash between friends, family, or strangers.",
+
+  "loadexistingWalletIntro1": "You are about to load an existing wallet",
+  "loadexistingWalletIntro2": "You will need to enter the 16 word recovery phrase and password to open the wallet.",
+  "continueToSecretPassphrase": "Continue to Secret Passphrase",
+
+  "currentPassphrase": "Current Passphrase",
+
+  "previewSend": "Send Preview",
+  "estimatedSendingCost": "Estimated Sending Cost",
+  "estimatedTotalCost": "Estimated Total Cost",
+  "localAddressPlaceholder": "Select from address...",
+  "remoteAddressPlaceholder": "Recipient PKT address",
+  "remoteAddressHelpText": "Type PKT address, name, or email",
+  "amount": "Amount",
+  "USD": "USD",
+  "PKT": "PKT",
+  "notePlaceholder": "Note",
+  "noteHelpText": "Note will be saved securely on your device",
+
+  "localAddressSelectorPlaceholder": "Select address...",
+  "currentPin": "Current PIN",
+  "pin": "PIN",
+  "pinHelpText": "Enter 4 digits",
+  "verifyPin": "Retype PIN",
+  "pinVerifyHelpText": "Retype PIN",
+
+  "pinLoginIntro1": "Enter your PIN to login",
+  "invalidPin": "Invalid PIN",
+
+  "slideToLogout": "Slide to Log Out",
+  "logoutHeader": "Warning",
+  "logoutIntro1": "You are about to disconnect your wallet",
+  "logoutIntro2": "If you do this, you will no longer have access to your funds.",
+  "logoutIntro3": "You can restore this wallet at any time using 16 word secret recovery phrase and your password for that wallet.",
+  "logoutSuccessAlert": "You have logged out of your account",
+
+  "send": "Send",
+  "receive": "Receive",
+  "showBalance": "Show Balance",
+  "hideBalance": "Hide Balance",
+  "balanceHeader": "Your Balance"
+
+}
