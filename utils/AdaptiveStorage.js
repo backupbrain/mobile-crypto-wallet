@@ -19,6 +19,7 @@ export default class AdaptiveStorage {
     }
   }
 
+  // FIXME: SyntaxError: Unexpected token u in JSON at position 0 on line 23
   static async get (key, defaultValue) {
     const isEncrypted = await AdaptiveStorage.isEncryptionAvailable()
     if (isEncrypted) {

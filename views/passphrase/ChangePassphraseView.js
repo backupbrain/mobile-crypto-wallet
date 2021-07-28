@@ -63,7 +63,7 @@ const ChangePassphraseView = ({ navigation, route }) => {
           onPress={() => {
             saveNewPassphrase(newPassphrase)
             // TODO: create alert and reset all password inputs
-            // avigation.push('ChangePasswordView')
+            // navigation.push('ChangePasswordView')
           }}
           disabled={!isFormFilled}
         />

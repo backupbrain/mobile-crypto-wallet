@@ -1,30 +1,59 @@
-import * as React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 
 const Tabs = (props) => {
-  const tabs = props.tabs
+  const [selectedTabId, setSelectedTabId] = useState(0)
+  const [isFirstRun, setIsFirstRun] = useState(true)
+  useEffect(() => {
+    if (isFirstRun) {
+      setIsFirstRun(false)
+      if (props.initialTabId !== undefined) {
+        setSelectedTabId(props.initialTabId)
+      }
+    }
+  }, [setIsFirstRun, setSelectedTabId])
+  for (let i = 0; i < props.tabs.length; i++) {
+    const tab = props.tabs[i]
+    if (i === selectedTabId) {
+      tab.style = styles.selectedTab
+      tab.textStyle = styles.selectedTabText
+    } else {
+      tab.style = styles.tab
+      tab.textStyle = styles.tabText
+    }
+  }
+  const currentTab = () => {
+    return props.tabs[selectedTabId].card
+  }
   return (
-    <View style={styles.tabs}>
-      <TouchableOpacity style={styles.selectedTab}>
-
-        <Text style={styles.selectedTabText}>QR</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.tab}>
-        <Text>Text</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.tab}>
-        <Text>Transactions</Text>
-      </TouchableOpacity>
-      {tabs.map((tab, index) => {
-        <TouchableOpacity key={index}>
-          <Text>{ tab.name }</Text>
-        </TouchableOpacity>
-      })}
+    <View style={styles.container}>
+      <View style={styles.tabs}>
+        {props.tabs.map((tab, index) => (
+          <TouchableOpacity
+            key={`tab${index}`}
+            style={tab.style}
+            onPress={() => {
+              setSelectedTabId(index)
+              if (props.onChange) {
+                props.onChange(index)
+              }
+            }}
+          >
+            <Text style={tab.textStyle}>{tab.title}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <View style={styles.thing}>
+        {currentTab()}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  thing: {
+    width: '100%'
+  },
   tabs: {
     borderRadius: '6px',
     flexDirection: 'row',

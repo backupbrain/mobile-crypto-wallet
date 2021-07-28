@@ -16,8 +16,7 @@ const LogOutView = ({ navigation, route }) => {
     // QUEStION; clear address book?
   }
   const navigateToFirstView = () => {
-    // TODO: reset navigation history
-    navigation.push('FirstView', { showResetAlert: true })
+    navigation.push('FirstView', { reset: true })
   }
   return (
     <SafeAreaView style={styles.safeArea}>

@@ -30,7 +30,7 @@ const PktAddressInput = (props) => {
           placeholder={props.placeholder}
           value={text}
           onChangeText={(text) => setAddress(text)}
-          multiline={true}
+          multiline
           spellCheck={false}
           autoCompleteType='off'
           autoCapitalize='none'

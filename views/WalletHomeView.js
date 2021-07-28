@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ActivityButton from '../components/buttons/ActiveButton'
-import LinkButton from '../components/buttons/LinkButton'
 import WalletList from '../components/wallet/WalletList'
-import AccountBalance from '../components/wallet/AccountBalance'
 import MainAccountBalance from '../components/wallet/MainAccountBalance'
 import translate from '../translations'
-
 
 const addresses = [
   {
@@ -37,16 +34,20 @@ const WalletHomeView = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.sendReceiveButtonPanel}>
-          <ActivityButton
-            title={translate('send')}
-            onPress={() => navigation.push('SendFormView')}
-          />
-          <ActivityButton
-            title={translate('receive')}
-            onPress={() => {
-              navigation.push('Address')
-            }}
-          />
+          <View style={[styles.sendReceiveButton, styles.leftButton]}>
+            <ActivityButton
+              title={translate('send')}
+              onPress={() => navigation.push('SendFormView')}
+            />
+          </View>
+          <View style={[styles.sendReceiveButton, styles.rightButton]}>
+            <ActivityButton
+              title={translate('receive')}
+              onPress={() => {
+                navigation.push('Address')
+              }}
+            />
+          </View>
         </View>
         <View style={styles.walletListContainer}>
           <WalletList
@@ -83,7 +84,17 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: '20px',
     paddingTop: '20px',
-    paddingBottom: '4px'
+    paddingBottom: '4px',
+    flexDirection: 'row'
+  },
+  sendReceiveButton: {
+    width: '50%'
+  },
+  leftButton: {
+    marginRight: '4px'
+  },
+  rightButton: {
+    marginLeft: '4px'
   },
   walletListContainer: {
     flexGrow: 1,

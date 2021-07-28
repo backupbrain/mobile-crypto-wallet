@@ -5,10 +5,6 @@ import ActivityButton from '../../components/buttons/ActiveButton'
 import translate from '../../translations'
 
 const WalletCreatedView = ({ navigation, route }) => {
-  const navigateToWalletHomeView = () => {
-    // TODO: reset navigation history when moving to WalletHomeView
-    navigation.navigate('WalletHomeView')
-  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
@@ -18,7 +14,7 @@ const WalletCreatedView = ({ navigation, route }) => {
         </View>
         <ActivityButton
           title={translate('viewWalletBalance')}
-          onPress={() => navigateToWalletHomeView()}
+          onPress={() => navigation.navigate('WalletHomeView', { reset: true })}
         />
       </View>
     </SafeAreaView>

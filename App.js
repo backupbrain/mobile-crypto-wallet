@@ -58,9 +58,14 @@ export default function App () {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name='WalletHomeView'
-            options={{ title: translate('walletHome'), headerRight: () => <NavMenuButton /> }}
-            component={WalletHomeView}
+            name='Pair2FaDeviceView'
+            options={{ title: translate('pair2FaDevice'), headerRight: () => <NavMenuButton /> }}
+            component={Pair2FaDeviceView}
+          />
+          <Stack.Screen
+            name='Verify2FaDeviceView'
+            options={{ title: translate('verify2FaDevice'), headerRight: () => <NavMenuButton /> }}
+            component={Verify2FaDeviceView}
           />
 
           <Stack.Screen
@@ -104,6 +109,11 @@ export default function App () {
             component={WalletCreatedView}
           />
 
+          <Stack.Screen
+            name='WalletHomeView'
+            options={{ title: translate('walletHome'), headerRight: () => <NavMenuButton /> }}
+            component={WalletHomeView}
+          />
 
           <Stack.Screen
             name='AddressView'
@@ -140,16 +150,8 @@ export default function App () {
             options={{ title: translate('pair2FaDeviceBackupCode'), headerRight: () => <NavMenuButton /> }}
             component={Pair2FaDeviceBackupCodesView}
           />
-          <Stack.Screen
-            name='Pair2FaDeviceView'
-            options={{ title: translate('pair2FaDevice'), headerRight: () => <NavMenuButton /> }}
-            component={Pair2FaDeviceView}
-          />
-          <Stack.Screen
-            name='Verify2FaDeviceView'
-            options={{ title: translate('verify2FaDevice'), headerRight: () => <NavMenuButton /> }}
-            component={Verify2FaDeviceView}
-          />
+
+
           <Stack.Screen
             name='EditContactView'
             options={{ title: translate('editContact'), headerRight: () => <NavMenuButton /> }}
