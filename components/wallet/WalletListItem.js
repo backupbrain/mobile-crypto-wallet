@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
-// import TinyQrCode from '../../assets/qrcodes/TinyQrCode'
+import { View, Text, StyleSheet } from 'react-native'
+import translate from '../../translations'
 
 const truncateAddress = (address) => {
   const MAX_LENGTH = 11
@@ -35,19 +35,24 @@ const toUsd = (amount) => {
 }
 
 const WalletListItem = (props) => {
+  const showAmount = (props.showAmount && props.amount)
+  const address = '' + props.address
+  const displayedName = props.name? props.name : translate('unnamedAddress')
   return (
     <View style={styles.container}>
       <View style={styles.accountInformation}>
-        <Text style={styles.accountName}>{props.name}</Text>
-        {props.showAmount
-          ? <Text style={styles.address}>{truncateAddress(props.address)}</Text>
-          : <Text style={styles.address}>{truncateAddressLong(props.address)}</Text>}
+        <Text style={styles.accountName}>{displayedName}</Text>
+        {showAmount
+          ? <Text style={styles.address}>{truncateAddress(address)}</Text>
+          : <Text style={styles.address}>{truncateAddressLong(address)}</Text>}
       </View>
-      {props.showAmount &&
+      {showAmount &&
         <View style={styles.amountInformation}>
           <Text style={styles.amount}>{formatAmount(props.amount)} PKT</Text>
           <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} USD</Text>
         </View>}
+      {props.editable &&
+        <Text>Editable</Text>}
     </View>
   )
 }

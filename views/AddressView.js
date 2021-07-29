@@ -25,7 +25,7 @@ const AddressView = () => {
           showAmount={false}
         />
 
-        <AccountBalance amount={address.amount} isVisible={true} />
+        <AccountBalance amount={address.amount} isVisible />
         <Tabs
           tabs={[{ name: 'QR' }, { name: 'Address' }, { name: 'Transactions' }]}
           style={styles.tabHeader}

@@ -9,7 +9,12 @@ const GenericTextInput = (props) => {
         style={styles.textInput}
         placeholder={props.placeholder}
         value={text}
-        onChangeText={(text) => setText(text)}
+        onChangeText={(text) => {
+          setText(text)
+          if (props.onChangeText) {
+            props.onChangeText(text)
+          }
+        }}
       />
       {props.help && <Text style={styles.helpText}>{props.help}</Text>}
       {props.error && <Text style={styles.errorText}>{props.error}</Text>}

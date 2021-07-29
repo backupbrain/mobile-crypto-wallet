@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { StyleSheet, View, SafeAreaView, TouchableOpacity } from 'react-native'
 import SearchInput from '../../components/inputs/SearchInput'
-import LinkButton from '../../components/buttons/LinkButton'
+import ContactManager from '../../utils/ContactManager'
 import ContactList from '../../components/contacts/ContactList'
-import AppConstants from '../../utils/AppConstants'
-import AdaptiveStorage from '../../utils/AdaptiveStorage'
+import { AntDesign } from '@expo/vector-icons'
+import translate from '../../translations'
 
+const myFakeAddresses = [
+  'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
+  'pkt1yclh96uk6p4glgyaakqz40pvqy3s296ma02tulj'
+]
 const fakeAddresses = [
   {
     title: 'My Addresses',
@@ -56,47 +59,98 @@ const fakeAddresses = [
   }
 ]
 
-const ContactBookView = ({ navigation, route }) => {
+const App = ({ navigation, route }) => {
+  const contactManager = new ContactManager()
   const [addresses, setAddresses] = useState([])
-  let isInSelectorMode = false
-  if (route.params && route.params.selectorMode) {
-     isInSelectorMode = route.params.selectorMode === true
+  const [isInSelectorMode, setIsInSelectorMode] = useState(false)
+  const [areContactsLoaded, setAreContactsLoaded] = useState(false)
+  const fetchMyAddress = async () => {
+    // TODO: load this list from the pkd gRPC
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(myFakeAddresses)
+      }, 1)
+    })
   }
-  const loadAddresses = async () => {
-    // FIXME: remove fake addresses
-    return fakeAddresses
-    /*
-    const rawAddresses = AdaptiveStorage.get(AppConstants.CONTACT_LIST_KEY)
-    if (rawAddresses === unndefined || rawAddresses === null) {
-      return []
-    } else {
-      try {
-        return JSON.eval(rawAddresses)
-      } catch (e) {
-        // TODO: show error alert
-        return []
+  const buildContactList = (myAddresses, contactManager) => {
+    const formattedAddresses = []
+    const contacts = contactManager.contacts
+    const lookup = contactManager.lookup
+    const lookupByInitial = {}
+
+    const formattedMyAddresses = {
+      title: translate('myAddresses'),
+      data: []
+    }
+    for (const index in myAddresses) {
+      const address = myAddresses[index]
+      const row = lookup[address]
+      if (row !== undefined) {
+        formattedMyAddresses.data.push(contacts[row])
+      } else {
+        const fakeContact = {
+          name: '',
+          address: address,
+          isLocal: true
+        }
+        formattedMyAddresses.data.push(fakeContact)
       }
     }
-    /* */
+    formattedAddresses.push(formattedMyAddresses)
+    for (const contact in contacts) {
+      const initial = contact.name.substr(0, 1).toUpperCase()
+      if (!(initial in lookupByInitial)) {
+        lookupByInitial[initial] = []
+      }
+      if (!(contact.address in myAddresses)) {
+        lookupByInitial[initial].push(contact)
+      }
+    }
+    // loop through initials
+    for (const key in lookupByInitial) {
+      const contacts = lookupByInitial[key]
+      const contactGroup = {
+        title: key,
+        data: contacts
+      }
+      formattedAddresses.push(contactGroup)
+    }
+    setAddresses(formattedAddresses)
+    setAreContactsLoaded(true)
   }
   useEffect(() => {
-    const localLoadAddresses = async () => {
-      return loadAddresses()
+    if (route.params && route.params.selectorMode) {
+      setIsInSelectorMode(route.params.selectorMode === true)
     }
-    const addresses = localLoadAddresses()
-    setAddresses(addresses)
-  })
+    const loadContacts = async () => {
+      const myAddresses = await fetchMyAddress()
+      await contactManager.initialize()
+      buildContactList(myAddresses, contactManager)
+    }
+    if (!areContactsLoaded) {
+      loadContacts()
+    }
+  }, [route, setIsInSelectorMode, contactManager])
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
         <View style={styles.searchBar}>
           <View style={styles.searchInputContainer}>
             <SearchInput
-              placeholder='Search addresses...'
+              placeholder={translate('searchAddresses')}
             />
           </View>
           <View style={styles.addContactButtonContainer}>
-            <LinkButton title='+' />
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => {
+                console.log('CLIIICK')
+                navigation.push('EditContactView')
+              }}
+            >
+              <AntDesign name='plus' size={24} color='blue' />
+            </TouchableOpacity>
           </View>
         </View>
         <ContactList
@@ -106,7 +160,7 @@ const ContactBookView = ({ navigation, route }) => {
               // TODO: select address and return to previous screen
               console.log(`selected row: ${row}`)
             } else {
-              navigation.navigate('Address')
+              navigation.push('EditContactView', { address: row })
             }
           }}
         />
@@ -117,28 +171,27 @@ const ContactBookView = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    width: '100%'
-  },
-  screen: {
-    backgroundColor: '#fff',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: '#fff'
   },
   searchBar: {
-    flexDirection: 'row',
     width: '100%',
-    paddingHorizontal: '20px',
-    paddingVertical: '10px'
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: '16px',
+    paddingHorizontal: '20px'
   },
   searchInputContainer: {
     flexGrow: 1
   },
   addContactButtonContainer: {
-    paddingTop: '16px',
-    paddingLeft: '20px',
-    paddingBottom: '16px'
+  },
+  addButton: {
+    flexShrink: 1,
+    paddingVertical: '10px',
+    paddingRight: '20px',
+    paddingLeft: '16px'
   }
 })
 
-export default ContactBookView
+export default App
