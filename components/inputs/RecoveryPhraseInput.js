@@ -2,28 +2,17 @@ import React, { useState } from 'react'
 import { Text, TextInput, View, StyleSheet } from 'react-native'
 import translate from '../../translations'
 import bip39words from '../../utils/bip39words'
+import { useTheme } from '@react-navigation/native'
 
 const DEFAULT_MAX_WORDS = 16
 
-/*
-const getNumBip39Words = () => {
-  let longestWord = 0
-  for (const index in bip39words) {
-    const word = bip39words[index]
-    const wordLength = word.length
-    if (wordLength >= longestWord) {
-      longestWord = wordLength
-    }
-  }
-  return longestWord
-}
-/* */
-
 const RecoveryPhraseInput = (props) => {
+  const { colors, dimensions } = useTheme()
   const MAX_WORDS = props.maxWords || DEFAULT_MAX_WORDS
   const [text, setText] = useState('')
+  const [isInvalid, setIsInvalid] = useState(false)
   // const [formattedText, setFormattedText] = useState('')
-  const [wordCount, setWordCount] = useState(0)
+  const [, setWordCount] = useState(0)
   const getNumWordsRemaining = (text) => {
     // FIXME: remove empty words that cause incorrect count.
     if (text === '') {
@@ -31,6 +20,23 @@ const RecoveryPhraseInput = (props) => {
     }
     const strippedText = text.replace(/\s+/g, ' ')
     return MAX_WORDS - strippedText.trim(' ').split(' ').length
+  }
+
+  const verifyWords = (words) => {
+    let isValid = true
+    if (words.length > DEFAULT_MAX_WORDS) {
+      isValid = false
+    } else {
+      for (let i = 0; i < (words.length - 1); i++) {
+        const word = words[i]
+        if (!bip39words.includes(word)) {
+          isValid = false
+          break
+        }
+      }
+    }
+    setIsInvalid(!isValid)
+    return isValid
   }
   const setRecoveryText = (text) => {
     const words = text.replace(/\s+/g, ' ').split(' ')
@@ -41,49 +47,75 @@ const RecoveryPhraseInput = (props) => {
     const resultingText = words.join(' ')
     setText(resultingText)
     setWordCount(wordCount)
+    verifyWords(words)
     return [resultingText, wordCount]
   }
 
-  /*
-  const formatText = (text) => {
-    const words = text.replace(/\s+/g, ' ').trim(' ').split(' ')
-    // alternate: odd: spaces, even; newline
-    let output = ''
-    for (let i = 0; i < wordCount; i++) {
-      const word = words[i]
-      output += word
-      if ((i % 2) === 1) {
-        output += '\n'
-      } else {
-        output += ' '.repeat(2 + getNumBip39Words() - word.length)
-      }
+  const styles = StyleSheet.create({
+    container: {
+      width: dimensions.inputs.width,
+      marginBottom: '20px'
+    },
+    textInput: {
+      letterSpacing: '1.2',
+      fontSize: '1.50em',
+      height: '200px',
+      marginBottom: '8px',
+      lineHeight: '1.5',
+      backgroundColor: colors.inputs.backgroundColor,
+      color: colors.inputs.color,
+      paddingHorizontal: dimensions.button.paddingHorizontal,
+      paddingVertical: dimensions.button.paddingVertical,
+      borderRadius: dimensions.inputs.borderRadius,
+      borderWidth: dimensions.inputs.borderWidth
+    },
+    textInputRegular: {
+      borderColor: colors.inputs.borderColor
+    },
+    textInputError: {
+      borderColor: colors.inputs.borderErrorColor
+    },
+    helpText: {
+      color: colors.inputs.helpTextColor,
+      alignItems: 'top',
+      flexWrap: 'wrap'
+    },
+    errorText: {
+      color: colors.inputs.errorTextColor,
+      alignItems: 'top',
+      flexWrap: 'wrap'
     }
-    setFormattedText(output)
+  })
+
+  const textInputStyles = [styles.textInput]
+  if (props.error) {
+    textInputStyles.push(styles.textInputError)
+  } else {
+    textInputStyles.push(styles.textInputRegular)
   }
-  /* */
 
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.inputText}
+        style={textInputStyles}
+        placeholder={translate('recoveryPhrasePlaceholder')}
         onChangeText={t => {
           const [resultingText, numWords] = setRecoveryText(t)
           props.wordCountChanged(numWords)
           props.onChangeText(resultingText)
         }}
         value={text}
-        multiline={true}
+        multiline
         autoCapitalize='none'
-        autoFocus={true}
         clearButtonMode='while-editing'
       />
-      {!props.isInvalid &&
+      {!isInvalid &&
         <Text
-          style={styles.passwordHelpText}
+          style={styles.helpText}
         >
-          {getNumWordsRemaining(text)} words remaining
+          {translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: getNumWordsRemaining(text) })}
         </Text>}
-      {props.isInvalid &&
+      {isInvalid &&
         <Text
           style={styles.errorText}
         >
@@ -92,36 +124,5 @@ const RecoveryPhraseInput = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: '20px'
-  },
-  inputText: {
-    letterSpacing: '1.2',
-    fontSize: '1.50em',
-    backgroundColor: '#F1F2F4',
-    borderRadius: 6,
-    height: '200px',
-    marginBottom: '8px',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px',
-    lineHeight: '1.5'
-  },
-  fixedText: {
-    fontFamily: 'monospace'
-  },
-  helpText: {
-    color: '#666',
-    alignItems: 'top',
-    flexWrap: 'wrap'
-  },
-  errorText: {
-    color: '#f00',
-    alignItems: 'top',
-    flexWrap: 'wrap'
-  }
-})
 
 export default RecoveryPhraseInput

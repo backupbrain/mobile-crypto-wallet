@@ -4,15 +4,17 @@
 import React from 'react'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import HamburgerMenuButton from './HamburgerMenuButton'
+import { useTheme } from '@react-navigation/native'
 
 const NavMenuButton = (props) => {
+  const { colors } = useTheme()
   const isDrawerOpen = false // useIsDrawerOpen()
   const iconName = isDrawerOpen ? 'close' : 'menu'
   return (
     <HeaderButtons HeaderButtonComponent={HamburgerMenuButton}>
       <Item
         buttonStyle={{
-          color: 'black'
+          color: colors.screen.color
         }}
         title='Toggle Menu'
         iconName={iconName}

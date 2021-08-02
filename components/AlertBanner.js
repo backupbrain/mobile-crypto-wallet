@@ -1,25 +1,100 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react'
+import { Animated, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import Close from './images/Close'
+import { useTheme } from '@react-navigation/native'
 
-const AlertBanner = (props) => {
+const AlertBanner = (props, ref) => {
+  const { colors, dimensions } = useTheme()
+  const fadeAnim = useRef(new Animated.Value(0)).current
   const [isAltered, setIsAltered] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  let doDisplayCloseButton = true
-  if (props.disableClose) {
-    doDisplayCloseButton = false
-  }
+  const [paddingRight, setPaddingRight] = useState(dimensions.screen.paddingHorizontal)
+  const variant = props.variant || 'success'
   useEffect(() => {
+    if (props.closeable) {
+      setPaddingRight(0)
+    }
     if (props.visible) {
       if (!isAltered) {
-        setIsVisible(props.visible)
-        setIsAltered(true)
+        setIsVisible(true)
+        fadeIn()
       }
     }
+  }, [props.visible, setIsVisible, setIsAltered, isAltered, setPaddingRight])
+
+  useImperativeHandle(ref, () => ({
+    open: () => open(),
+    close: () => close()
+  }))
+  const open = () => {
+    setIsVisible(true)
+    fadeIn()
+  }
+  const close = () => {
+    fadeOut()
+  }
+
+  const fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 100
+    }).start()
+  }
+
+  const fadeOut = () => {
+    // Will change fadeAnim value to 0 in 3 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 100
+    }).start(({ finished }) => {
+      setIsVisible(false)
+    })
+  }
+
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%'
+    },
+    banner: {
+      borderRadius: dimensions.alertBanner.borderRadius,
+      width: dimensions.alertBanner.width,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      boxShadow: colors.alertBanner.boxShadow,
+      marginHorizontal: dimensions.alertBanner.marginHorizontal
+    },
+    successContainer: {
+      backgroundColor: colors.alertBanner.successBackgroundColor
+    },
+    warningContainer: {
+      backgroundColor: colors.alertBanner.warningBackgroundColor
+    },
+    dangerContainer: {
+      backgroundColor: colors.alertBanner.dangerBackgroundColor
+    },
+    infoContainer: {
+      backgroundColor: colors.alertBanner.infoBackgroundContainer
+    },
+    textStyle: {
+      flexGrow: 1,
+      color: colors.alertBanner.color,
+      textAlign: dimensions.alertBanner.textAlign,
+      paddingVertical: dimensions.screen.paddingVertical,
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingRight: paddingRight
+    },
+    closeButton: {
+      paddingVertical: dimensions.verticalSpacingBetweenItems,
+      paddingHorizontal: dimensions.horizontalSpacingBetweenItems,
+      paddingRight: dimensions.screen.paddingHorizontal
+    }
   })
+
   const getStyles = () => {
     const bannerStyle = [styles.banner]
-    switch (props.variant) {
+    switch (variant) {
       case 'success':
         bannerStyle.push(styles.successContainer)
         break
@@ -36,61 +111,31 @@ const AlertBanner = (props) => {
     return bannerStyle
   }
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, props.styles, { opacity: fadeAnim }]}>
       {isVisible &&
         <View style={getStyles()}>
           <Text style={styles.textStyle}>{props.label}</Text>
-          {doDisplayCloseButton &&
+          {props.closeable &&
             <TouchableOpacity
               onPress={() => {
                 if (props.onClose) {
                   props.onClose()
                 }
-                setIsVisible(false)
+                close()
                 console.log('Close!')
               }}
             >
               <View style={styles.closeButton}>
-                <Ionicons name='close' size={24} color='white' />
+                <Close size={16} color={colors.text} />
               </View>
             </TouchableOpacity>}
         </View>}
-    </View>
+    </Animated.View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%'
-  },
-  banner: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  successContainer: {
-    backgroundColor: '#10BC81'
-  },
-  warningContainer: {
-    backgroundColor: '#CA9016'
-  },
-  dangerContainer: {
-    backgroundColor: '#ED1A33'
-  },
-  infoContainer: {
-    // TODO: decide on a background color
-  },
-  textStyle: {
-    flexGrow: 1,
-    color: '#fff',
-    paddingVertical: '16px',
-    paddingLeft: '20px'
-  },
-  closeButton: {
-    paddingHorizontal: '10px',
-    paddingVertical: '10px'
-  }
-})
+AlertBanner.defaultProps = {
+  closeable: true
+}
 
 export default AlertBanner

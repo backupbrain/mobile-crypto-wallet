@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import LinkButton from '../buttons/LinkButton'
 import translate from '../../translations'
+import { useTheme } from '@react-navigation/native'
 
 const truncateAddress = (address) => {
   const MAX_LENGTH = 11
@@ -35,11 +37,51 @@ const toUsd = (amount) => {
 }
 
 const WalletListItem = (props) => {
+  const { colors, dimensions } = useTheme()
   const showAmount = (props.showAmount && props.amount)
   const address = '' + props.address
-  const displayedName = props.name? props.name : translate('unnamedAddress')
+  const displayedName = props.name ? props.name : translate('unnamedAddress')
+
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      width: '100%',
+      alignItems: 'center'
+    },
+    accountInformation: {
+      flexGrow: 1
+    },
+    amountInformation: {
+      textAlign: 'right'
+    },
+    accountName: {
+      color: colors.bodyText.color,
+      fontWeight: 'bold',
+      paddingBottom: dimensions.verticalSpacingBetweenItemsShort
+    },
+    address: {
+      color: colors.bodyText.color,
+      fontSize: dimensions.bodyText.fontSize,
+      fontWeight: dimensions.bodyText.fontWeight,
+      lineHeight: dimensions.bodyText.lineHeight
+    },
+    amount: {
+      color: colors.bodyText.color,
+      paddingBottom: dimensions.verticalSpacingBetweenItemsShort
+    },
+    altAmount: {
+      color: colors.bodyText.color,
+      fontSize: dimensions.bodyText.fontSize,
+      fontWeight: dimensions.bodyText.fontWeight,
+      lineHeight: dimensions.bodyText.lineHeight
+    },
+    editButton: {
+      marginLeft: dimensions.horizontalSpacingBetweenItems
+    }
+  })
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
       <View style={styles.accountInformation}>
         <Text style={styles.accountName}>{displayedName}</Text>
         {showAmount
@@ -48,11 +90,11 @@ const WalletListItem = (props) => {
       </View>
       {showAmount &&
         <View style={styles.amountInformation}>
-          <Text style={styles.amount}>{formatAmount(props.amount)} PKT</Text>
-          <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} USD</Text>
+          <Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
+          <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
         </View>}
       {props.editable &&
-        <Text>Editable</Text>}
+        <LinkButton title={translate('edit')} style={styles.editButton} />}
     </View>
   )
 }
@@ -60,34 +102,5 @@ const WalletListItem = (props) => {
 WalletListItem.defaultProps = {
   showAmount: true
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: '20px',
-    paddingVertical: '8px'
-  },
-  accountInformation: {
-    flexGrow: 1
-  },
-  amountInformation: {
-    textAlign: 'right'
-  },
-  accountName: {
-    fontWeight: 'bold',
-    paddingBottom: '3px'
-  },
-  address: {
-    color: '#8D9BA9'
-  },
-  amount: {
-    paddingBottom: '3px'
-  },
-  altAmount: {
-    color: '#8D9BA9'
-  }
-})
 
 export default WalletListItem

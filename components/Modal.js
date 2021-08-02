@@ -1,10 +1,29 @@
-import React, { useRef, useState, useImperativeHandle, forwardRef } from 'react'
+import React, { useRef, useEffect, useState, useImperativeHandle, forwardRef, useCallback } from 'react'
 import { Animated, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import Close from './images/Close'
+import { useTheme } from '@react-navigation/native'
+
+const useComponentSize = () => {
+  const [size, setSize] = useState({ width: 0, height: 0 })
+  const onLayout = useCallback(event => {
+    const { width, height } = event.nativeEvent.layout
+    setSize({ width, height })
+  }, [])
+
+  return [size, onLayout]
+}
 
 const Modal = (props, ref) => {
+  const { colors, dimensions } = useTheme()
   const fadeAnim = useRef(new Animated.Value(0)).current
   const [isVisible, setIsVisible] = useState(false)
+  const [closeButtonDimensions, onCloseButtonLayout] = useComponentSize()
+  useEffect(() => {
+    if (props.open === true) {
+      setIsVisible(true)
+      fadeIn()
+    }
+  }, [setIsVisible, props.open])
   useImperativeHandle(ref, () => ({
     open: () => open(),
     close: () => close()
@@ -34,6 +53,60 @@ const Modal = (props, ref) => {
       setIsVisible(false)
     })
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      zIndex: 1000,
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100vh'
+    },
+    background: {
+      backgroundColor: colors.modal.overlayBackgroundColor,
+      width: '100%',
+      flex: 1,
+      justifyContent: 'center',
+      paddingVertical: '16px',
+      paddingHorizontal: '20px'
+    },
+    modal: {
+      backgroundColor: colors.modal.backgroundColor,
+      borderRadius: dimensions.modal.borderRadius
+    },
+    modalTitle: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      borderBottomWidth: dimensions.modal.titleSeparatorWidth,
+      borderBottomColor: colors.modal.titleSeparatorColor
+    },
+    modalText: {
+      width: '100%',
+      textAlign: dimensions.modal.titleTextAlign,
+      marginLeft: closeButtonDimensions.width,
+      marginRight: '0',
+      color: colors.screen.color,
+      fontWeight: dimensions.modal.titleFontWeight,
+      fontSize: dimensions.modal.titleFontSize
+    },
+    closeButton: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    modalContainer: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    footerContainer: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    }
+  })
+
   return (
     <>
       {isVisible &&
@@ -44,9 +117,10 @@ const Modal = (props, ref) => {
                 <Text style={styles.modalText}>{props.title}</Text>
                 <TouchableOpacity
                   style={styles.closeButton}
+                  onLayout={onCloseButtonLayout}
                   onPress={() => close()}
                 >
-                  <Ionicons name='close' size={24} color='black' />
+                  <Close color={colors.text} size='16' />
                 </TouchableOpacity>
               </View>
               <View style={styles.modalContainer}>
@@ -61,49 +135,5 @@ const Modal = (props, ref) => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%'
-  },
-  background: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    width: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px'
-  },
-  modal: {
-    borderRadius: '6px',
-    backgroundColor: '#fff'
-  },
-  modalTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottom: '1px solid #ccc'
-  },
-  modalText: {
-    marginLeft: '16px'
-  },
-  closeButton: {
-    paddingHorizontal: '16px',
-    paddingVertical: '8px'
-  },
-  modalContainer: {
-    paddingHorizontal: '16px',
-    paddingVertical: '16px'
-  },
-  footerContainer: {
-    paddingHorizontal: '16px',
-    paddingBottom: '16px'
-  }
-})
 
 export default forwardRef(Modal)

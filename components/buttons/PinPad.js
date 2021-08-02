@@ -1,7 +1,9 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 const PinPad = (props) => {
+  const { colors } = useTheme()
   const rows = [
     [1, 2, 3],
     [4, 5, 6],
@@ -17,6 +19,29 @@ const PinPad = (props) => {
       props.onDelete()
     }
   }
+
+  const styles = StyleSheet.create({
+    container: {
+
+    },
+    row: {
+      flexDirection: 'row'
+    },
+    buttonContainer: {
+      width: '33%',
+      alignItems: 'center'
+    },
+    button: {
+      borderRadius: '50%'
+    },
+    buttonText: {
+      fontSize: '120%',
+      padding: '20px',
+      marginTop: '16px',
+      color: colors.screen.color
+    }
+  })
+
   return (
     <View style={styles.container}>
       {rows.map((row, rowIndex) => (
@@ -37,7 +62,7 @@ const PinPad = (props) => {
       ))}
       <View style={styles.row}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} disabled={true}>
+          <TouchableOpacity style={styles.button} disabled>
             <Text style={styles.buttonText}>&nbsp;</Text>
           </TouchableOpacity>
         </View>
@@ -65,26 +90,5 @@ const PinPad = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-
-  },
-  row: {
-    flexDirection: 'row'
-  },
-  buttonContainer: {
-    width: '33%',
-    alignItems: 'center'
-  },
-  button: {
-    borderRadius: '50%'
-  },
-  buttonText: {
-    fontSize: '120%',
-    padding: '20px',
-    marginTop: '16px'
-  }
-})
 
 export default PinPad

@@ -55,7 +55,7 @@ const SendFormView = ({ navigation, route }) => {
         <RemoteAddressWidget
           placeholder={translate('remoteAddressPlaceholder')}
           help={translate('remoteAddressHelpText')}
-          onQrCodePress={() => {
+          onQrCodeIconPress={() => {
             navigation.push('QrCodeScannerView')
           }}
           onPersonIconPress={() => {

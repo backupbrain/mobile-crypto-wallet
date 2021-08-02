@@ -41,7 +41,9 @@
   "continueToRecoveryPhrase": "Continue to Recovery Phrase",
   "pressAndHoldToReveal": "Press and Hold to Reveal",
 
+  "recoveryPhraseNumWordsRemaining": "{numWordsRemaining} words remaining",
   "invalidRecoveryPhrase": "Invalid Recovery Phrase",
+  "recoveryPhrasePlaceholder": "Enter wallet recovery phrase",
 
   "passwordHelpText": "This will be used to encrypt your wallet",
   "newPassphrase": "New Passphrase",
@@ -111,6 +113,13 @@
   "pktAddress": "PKT Address",
   "addressName": "Name",
   "myAddresses": "My Addresses",
-  "unnamedAddress": "(No name)"
+  "createAddress": "Create Address",
+  "unnamedAddress": "(No name)",
+  "edit": "Edit",
+  "saveAddress": "Save Address",
+  "deleteAddress": "Delete Address",
+
+  "invalidAmount": "Invalid amount",
+  "insufficientFunds": "Insufficient funds"
 
 }

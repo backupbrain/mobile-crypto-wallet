@@ -30,7 +30,7 @@ const NewWalletView = ({ navigation, route }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
         <View style={styles.textBlock}>
-          <RecoveryWordGrid words={recoveryPhrase} isVisible={isVisible} />
+          <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
         </View>
         <View style={styles.textBlock}>
           <DefaultTextLeft>{translate('dontLoseTheseWords')}</DefaultTextLeft>

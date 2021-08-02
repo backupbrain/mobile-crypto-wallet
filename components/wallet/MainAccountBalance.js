@@ -5,6 +5,7 @@ import AccountBalance from './AccountBalance'
 import translate from '../../translations'
 import AdaptiveStorage from '../../utils/AdaptiveStorage'
 import AppConstants from '../../utils/AppConstants'
+import { useTheme } from '@react-navigation/native'
 
 const sumBalances = (addresses) => {
   let sum = 0.0
@@ -15,6 +16,7 @@ const sumBalances = (addresses) => {
 }
 
 const MainAccountBalance = (props) => {
+  const { colors, dimensions } = useTheme()
   const [isBalanceVisible, setIsBalanceVisibleVar] = useState(true)
   const [isVisibilityChanged, setIsVisibilityChanged] = useState(true)
   const [isFirstRead, setIsFirstRead] = useState(true)
@@ -41,8 +43,27 @@ const MainAccountBalance = (props) => {
     }
     setBalanceVisibilityFromStorage()
   })
+
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%'
+    },
+    balanceHeader: {
+      flexDirection: 'row',
+      width: '100',
+      justifyContent: 'between',
+      alignItems: 'flex-end',
+      paddingBottom: dimensions.verticalSpacingBetweenItems
+    },
+    balanceHeaderTitle: {
+      flexGrow: 1,
+      fontWeight: dimensions.accountBalance.fontWeight,
+      color: colors.text
+    }
+  })
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
       <View style={styles.balanceHeader}>
         <Text style={styles.balanceHeaderTitle}>{translate('balanceHeader')}</Text>
         {isBalanceVisible ? (
@@ -66,20 +87,5 @@ const MainAccountBalance = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%'
-  },
-  balanceHeader: {
-    flexDirection: 'row',
-    width: '100',
-    justifyContent: 'between'
-  },
-  balanceHeaderTitle: {
-    flexGrow: 1,
-    fontWeight: 'bold'
-  }
-})
 
 export default MainAccountBalance

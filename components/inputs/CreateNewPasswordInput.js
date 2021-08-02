@@ -1,9 +1,11 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react'
-import { Text } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import PasswordInput from './PasswordInput'
 import translate from '../../translations'
+import { useTheme } from '@react-navigation/native'
 
 const CreateNewPasswordInput = (props, ref) => {
+  const { dimensions } = useTheme()
   const password1Ref = useRef()
   const password2Ref = useRef()
   const [newPassword, setNewPassword] = useState('')
@@ -30,12 +32,20 @@ const CreateNewPasswordInput = (props, ref) => {
       password2Ref.current.clear()
     }
   }))
+
+  const styles = StyleSheet.create({
+    passwordVerifyStyle: {
+      marginTop: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <>
+    <View style={props.style}>
       <Text>{_doPasswordsMatch}</Text>
       <PasswordInput
         ref={password1Ref}
         maxLength={props.maxLength}
+        label={props.passwordLabel}
         placeholder={props.passwordPlaceholder}
         onChangeText={(text) => {
           setNewPassword(text)
@@ -47,8 +57,10 @@ const CreateNewPasswordInput = (props, ref) => {
         help={props.passwordHelp}
       />
       <PasswordInput
+        style={styles.passwordVerifyStyle}
         ref={password2Ref}
         maxLength={props.maxLength}
+        label={props.passwordVerifyLabel}
         placeholder={props.passwordVerifyPlaceholder}
         onChangeText={(text) => {
           setVerificationPassword(text)
@@ -60,7 +72,7 @@ const CreateNewPasswordInput = (props, ref) => {
         help={passwordVerifyHelpText}
         error={_doPasswordsMatch === false ? translate('passwordVerifyError') : null}
       />
-    </>
+    </View>
   )
 }
 

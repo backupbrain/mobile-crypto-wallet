@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-// import TinyQrCode from '../../assets/qrcodes/TinyQrCode.js'
+import { useTheme } from '@react-navigation/native'
+import translate from '../../translations'
 
 const formatAmount = (amount) => {
   const floatAmount = parseFloat(amount)
@@ -15,36 +16,38 @@ const toUsd = (amount) => {
 }
 
 const WalletListItem = (props) => {
+  const { colors, dimensions } = useTheme()
   let isVisible = true
   if (props.visible !== undefined) {
     isVisible = props.visible
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%',
+      alignItems: 'center',
+      textAlign: 'right'
+    },
+    amount: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems,
+      fontSize: dimensions.accountBalance.fontSize,
+      fontWeight: dimensions.accountBalance.fontWeight,
+      textTranform: dimensions.accountBalance.textTranform,
+      color: colors.text
+    },
+    altAmount: {
+      color: colors.disabledText,
+      width: '100%'
+    }
+  })
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
       {isVisible
-        ? <><Text style={styles.amount}>{formatAmount(props.amount)} PKT</Text><Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} USD</Text></>
-        : <><Text style={styles.amount}>--- PKT</Text><Text style={styles.altAmount}>--- USD</Text></>}
+        ? <><Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text><Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text></>
+        : <><Text style={styles.amount}>--- {translate('pkt')}</Text><Text style={styles.altAmount}>--- {translate('usd')}</Text></>}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    alignItems: 'center',
-    paddingVertical: '8px',
-    textAlign: 'right'
-  },
-  amount: {
-    paddingBottom: '3px',
-    fontWeight: 'bold',
-    fontSize: '1.2em',
-    width: '100%'
-  },
-  altAmount: {
-    color: '#8D9BA9',
-    width: '100%'
-  }
-})
 
 export default WalletListItem

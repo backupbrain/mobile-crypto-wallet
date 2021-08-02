@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react'
 import { Animated, StyleSheet, View, Text } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
+import { useTheme } from '@react-navigation/native'
 
 const useComponentSize = () => {
   const [size, setSize] = useState({ width: 0, height: 0 })
@@ -13,6 +14,7 @@ const useComponentSize = () => {
 }
 
 const SlideToConfirmInput = (props) => {
+  const { colors, dimensions } = useTheme()
   const isDisabled = props.disabled || false
   const [initialPosition, setInitialPosition] = useState(0)
   const [xValue, setXValue] = useState(0)
@@ -28,6 +30,62 @@ const SlideToConfirmInput = (props) => {
   const resetSlider = (props) => {
     setXValue(0)
   }
+
+  const styles = StyleSheet.create({
+    trough: {
+      width: dimensions.button.width,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      flexDirection: 'row',
+      borderRadius: dimensions.button.borderRadius
+    },
+    troughEnabled: {
+      borderColor: colors.slider.borderColor,
+      borderWidth: dimensions.button.borderWidth
+    },
+    troughDisabled: {
+      borderColor: colors.disabledButton.borderColor,
+      borderWidth: dimensions.button.borderWidth
+    },
+    troughText: {
+      width: '100%',
+      textAlign: 'center',
+      paddingLeft: sliderDimensions.width,
+      paddingVertical: dimensions.button.paddingVertical
+    },
+    troughEnabledText: {
+      color: colors.primaryButton.color
+    },
+    troughDisabledText: {
+      color: colors.disabledButton.color
+    },
+    slider: {
+      textAlign: dimensions.button.textAlign,
+      paddingHorizontal: dimensions.button.paddingHorizontal,
+      paddingVertical: dimensions.button.paddingVertical,
+      width: dimensions.button.width,
+      borderRadius: dimensions.button.borderRadius,
+      borderWidth: dimensions.button.borderWidth,
+      borderColor: colors.primaryButton.borderColor
+    },
+    sliderEnabled: {
+      backgroundColor: colors.primaryButton.backgroundColor
+    },
+    sliderDisabled: {
+      borderWidth: dimensions.button.borderWidth,
+      borderColor: colors.disabledButton.borderColor
+    },
+    sliderText: {
+      textTransform: dimensions.button.textTransform,
+      fontWeight: dimensions.button.fontWeight
+    },
+    sliderEnabledText: {
+      color: colors.primaryButton.color
+    },
+    sliderDisabledText: {
+      color: colors.disabledButton.color
+    }
+  })
 
   const troughStyle = [styles.trough]
   const troughTextSyle = [styles.troughText]
@@ -47,7 +105,7 @@ const SlideToConfirmInput = (props) => {
 
   return (
     <View
-      style={troughStyle}
+      style={[troughStyle, props.style]}
       ref={containerRef}
       onLayout={onContainerLayout}
     >
@@ -115,55 +173,5 @@ const SlideToConfirmInput = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  trough: {
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderRadius: 6
-  },
-  troughEnabled: {
-    border: '1px solid #D4D9DE'
-  },
-  troughDisabled: {
-    border: '1px solid #ccc'
-  },
-  troughText: {
-    width: '100%',
-    textAlign: 'center',
-    paddingLeft: '20px',
-    paddingVertical: '16px'
-  },
-  troughEnabledText: {
-    color: '#000'
-  },
-  troughDisabledText: {
-    color: '#ccc'
-  },
-  slider: {
-    paddingVertical: '16px',
-    paddingHorizontal: '20px',
-    borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  sliderEnabled: {
-    backgroundColor: '#4174DE'
-  },
-  sliderDisabled: {
-    borderLeft: '1px solid #ccc'
-  },
-  sliderText: {
-    fontWeight: 'bold'
-  },
-  sliderEnabledText: {
-    color: '#fff'
-  },
-  sliderDisabledText: {
-    color: '#ccc'
-  }
-})
 
 export default SlideToConfirmInput
