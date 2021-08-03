@@ -2,8 +2,8 @@ import React from 'react'
 
 function AnodeTextLogo (props) {
   const size = props.size || 100
-  const primaryColor = props.color || '#000'
-  const secondaryColor = props.color || '#fff'
+  const primaryColor = props.primaryColor || '#000'
+  const secondaryColor = props.secondaryColor || '#fff'
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

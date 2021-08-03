@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react'
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 import { Animated, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Close from './images/Close'
 import { useTheme } from '@react-navigation/native'
@@ -138,4 +138,4 @@ AlertBanner.defaultProps = {
   closeable: true
 }
 
-export default AlertBanner
+export default forwardRef(AlertBanner)

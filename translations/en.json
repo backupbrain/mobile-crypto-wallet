@@ -118,6 +118,8 @@
   "edit": "Edit",
   "saveAddress": "Save Address",
   "deleteAddress": "Delete Address",
+  "noAddresses": "No addresses",
+  "editNewAddress": "Edit new address",
 
   "invalidAmount": "Invalid amount",
   "insufficientFunds": "Insufficient funds"

@@ -4,14 +4,8 @@ import { useTheme } from '@react-navigation/native'
 
 const BodyText = (props) => {
   const { colors, dimensions } = useTheme()
-  const textAlign = props.textAlign || dimensions.bodyText.textAlign
 
   const styles = StyleSheet.create({
-    container: {
-      width: dimensions.bodyText.width,
-      paddingVertical: dimensions.bodyText.betweenParagraphPadding,
-      textAlign: textAlign
-    },
     text: {
       color: colors.bodyText.color,
       fontSize: dimensions.bodyText.fontSize,
@@ -21,9 +15,7 @@ const BodyText = (props) => {
   })
 
   return (
-    <View style={[styles.container, props.style]}>
-      <Text style={styles.text}>{props.children}</Text>
-    </View>
+    <Text style={[styles.text, props.style]}>{props.children}</Text>
   )
 }
 

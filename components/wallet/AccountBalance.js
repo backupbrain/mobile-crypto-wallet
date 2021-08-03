@@ -29,6 +29,7 @@ const WalletListItem = (props) => {
       textAlign: 'right'
     },
     amount: {
+      width: '100%',
       paddingBottom: dimensions.verticalSpacingBetweenItems,
       fontSize: dimensions.accountBalance.fontSize,
       fontWeight: dimensions.accountBalance.fontWeight,

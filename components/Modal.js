@@ -126,9 +126,10 @@ const Modal = (props, ref) => {
               <View style={styles.modalContainer}>
                 {props.content}
               </View>
-              <View style={styles.footerContainer}>
-                {props.footer}
-              </View>
+              {props.footer &&
+                <View style={styles.footerContainer}>
+                  {props.footer}
+                </View>}
             </Animated.View>
           </Animated.View>
         </View>}

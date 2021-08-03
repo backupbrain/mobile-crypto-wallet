@@ -33,6 +33,7 @@ const ListSectionHeader = (props) => {
           <LinkButton
             style={styles.sectionHeaderLink}
             title={props.linkText}
+            onPress={props.onLinkPress}
           />
         </View>}
     </View>

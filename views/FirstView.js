@@ -1,18 +1,48 @@
 import * as React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import Screen from '../components/Screen'
 import ActiveButton from '../components/buttons/ActiveButton'
 import AlertBanner from '../components/AlertBanner'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import PktPalLogo from '../components/images/PktPalLogo'
+import AnodeTextLogo from '../components/images/AnodeTextLogo'
+import HeaderText from '../components/text/HeaderText'
 import translate from '../translations'
+import { useTheme } from '@react-navigation/native'
 
 const FirstView = ({ navigation, route }) => {
+  const { colors, dimensions } = useTheme()
   let isResetAlertVisible = false
   if (route.params && route.params.showResetAlert) {
     isResetAlertVisible = route.params.showResetAlert
   }
+
+  const styles = StyleSheet.create({
+    screen: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: '20px',
+      flexGrow: 1
+    },
+    pktPalLogo: {
+      width: '100%',
+      paddingBottom: dimensions.paddingVertical,
+      marginBottom: dimensions.paddingVertical,
+      alignItems: 'center'
+    },
+    pktPalText: {
+      paddingBottom: dimensions.paddingVertical,
+      marginBottom: dimensions.paddingVertical,
+      color: colors.text
+    },
+    firstButton: {
+    },
+    secondButton: {
+      marginTop: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <AlertBanner
         variant='success'
         label={translate('logoutSuccessAlert')}
@@ -20,45 +50,25 @@ const FirstView = ({ navigation, route }) => {
       />
       <View style={styles.screen}>
         <View style={styles.pktPalLogo}>
-          <PktPalLogo />
+          <AnodeTextLogo
+            primaryColor={colors.logo.primaryColor}
+            secondaryColor={colors.logo.secondaryColor}
+          />
         </View>
-        <Text style={styles.pktPalText}>{translate('pktWallet')}</Text>
+        <HeaderText style={styles.pktPalText}>{translate('pktWallet')}</HeaderText>
         <ActiveButton
           title={translate('createNewWallet')}
           onPress={() => navigation.push('CreateNewWalletIntroView')}
+          style={styles.firstButton}
         />
         <ActiveButton
           title={translate('loadFromRecoveryPassphrase')}
           onPress={() => navigation.push('LoadExistingWalletIntroView')}
+          style={styles.secondButton}
         />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: '20px',
-    flexGrow: 1
-  },
-  pktPalLogo: {
-    width: '100%',
-    marginBottom: '25px',
-    alignItems: 'center'
-  },
-  pktPalText: {
-    marginBottom: '30px',
-    fontSize: '1.6em',
-    fontWeight: 'bold'
-  }
-})
 
 export default FirstView

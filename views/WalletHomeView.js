@@ -1,38 +1,88 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../components/Screen'
 import ActivityButton from '../components/buttons/ActiveButton'
 import WalletList from '../components/wallet/WalletList'
 import MainAccountBalance from '../components/wallet/MainAccountBalance'
+import Chart from '../components/Chart'
 import translate from '../translations'
-
-const addresses = [
-  {
-    name: 'Account 1',
-    amount: 123456.00134,
-    address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-  },
-  {
-    name: 'Account 2',
-    amount: 56.00134,
-    address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-  },
-  {
-    name: 'Account 3',
-    amount: 0.0000134,
-    address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-  }
-]
+import PktManager from '../utils/PktManager'
+import ContactManager from '../utils/ContactManager'
+import { useTheme } from '@react-navigation/native'
 
 const WalletHomeView = ({ navigation, route }) => {
+  const { colors, dimensions } = useTheme()
+  const [addresses, setAddresses] = useState([])
+  const pktManager = useRef(new PktManager())
+  const contactBook = useRef(new ContactManager())
+
+  const fetchMyAddresses = async () => {
+    const addresses = pktManager.current.myAddresses
+    // get contacts
+    const contacts = await contactBook.current.getAll()
+    // merge contacts
+    const contactLookup = {}
+    if (contacts !== undefined) {
+      for (let i = 0; i < contacts.length; i++) {
+        contactLookup[contacts.address] = contacts[i]
+      }
+    }
+    for (let i = 0; i < addresses.length; i++) {
+      const address = addresses[i]
+      if (address.address in contactLookup) {
+        address.name = contactLookup[address.address]
+      } else {
+        address.name = translate('unnamedAddress')
+      }
+    }
+    setAddresses(addresses)
+  }
+
+  useEffect(() => {
+    fetchMyAddresses()
+  })
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingHorizontal
+    },
+    accountBalanceContainer: {
+    },
+    sendReceiveButtonPanel: {
+      mdth: '100%',
+      paddingVertical: dimensions.screen.paddingVertical,
+      flexDirection: 'row'
+    },
+    sendReceiveButton: {
+      width: '50%'
+    },
+    leftButton: {
+      marginRight: '4px'
+    },
+    rightButton: {
+      marginLeft: '4px'
+    },
+    walletListContainer: {
+      width: '100%'
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.accountBalanceContainer}>
           <MainAccountBalance
             addresses={addresses}
           />
         </View>
+        <Chart
+          fillColor={colors.primaryButton.backgroundColor}
+          legendColor={colors.text}
+          lineColor={colors.text}
+          data={[1500, 1000, 3000, 2000, 2500]}
+          style={styles.chart}
+        />
         <View style={styles.sendReceiveButtonPanel}>
           <View style={[styles.sendReceiveButton, styles.leftButton]}>
             <ActivityButton
@@ -60,46 +110,8 @@ const WalletHomeView = ({ navigation, route }) => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
-  },
-  accountBalanceContainer: {
-    width: '100%',
-    paddingHorizontal: '20px',
-    paddingTop: '16px'
-  },
-  sendReceiveButtonPanel: {
-    width: '100%',
-    paddingHorizontal: '20px',
-    paddingTop: '20px',
-    paddingBottom: '4px',
-    flexDirection: 'row'
-  },
-  sendReceiveButton: {
-    width: '50%'
-  },
-  leftButton: {
-    marginRight: '4px'
-  },
-  rightButton: {
-    marginLeft: '4px'
-  },
-  walletListContainer: {
-    flexGrow: 1,
-    width: '100%'
-  }
-})
 
 export default WalletHomeView
