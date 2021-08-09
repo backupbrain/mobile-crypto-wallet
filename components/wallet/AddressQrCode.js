@@ -12,18 +12,18 @@ const AddressQrCode = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      width: '100%',
       alignItems: 'center'
     },
     card: {
-      border: '1px solid #ccc',
-      paddingVertical: dimensions.paddingHorizontal,
       alignItems: 'center',
-      width: '200px',
-      backgroundColor: '#fff'
+      paddingVertical: dimensions.paddingHorizontal,
+      paddingHorizontal: dimensions.paddingHorizontal,
+      width: dimensions.addressCard.width,
+      backgroundColor: colors.addressCard.backgroundColor,
+      borderRadius: dimensions.addressCard.borderRadius
     },
     activityIndicatorCard: {
-      height: '200px',
+      height: dimensions.addressCard.width,
       justifyContent: 'center'
     }
   })

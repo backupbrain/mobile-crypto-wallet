@@ -19,7 +19,7 @@ const AndroidTheme = {
       borderLeftWidth: '0px',
       borderRightWidth: '0px',
       borderBottomWidth: '1px',
-      borderRadius: '0px',
+      borderRadius: '0px'
     },
     listSectionHeader: {
       paddingVertical: '16px',
@@ -28,7 +28,7 @@ const AndroidTheme = {
       textTransform: 'none'
     },
     tabs: {
-      tabMarginHorizontal: '20px',
+      tabMarginHorizontal: '20px'
     },
     modal: {
       borderRadius: '30px',
@@ -45,7 +45,7 @@ const AndroidTheme = {
       fontWeight: 'normal',
       lineHeight: '1.3',
       textAlign: 'center',
-      width: '100%',
+      width: '100%'
     },
     headerText: {
       fontSize: '1.5em',
@@ -60,7 +60,7 @@ const AndroidTheme = {
       width: '100%',
       textTransform: 'none',
       fontWeight: 'normal',
-      borderWidth: '1px',
+      borderWidth: '1px'
     },
     link: {
       fontWeight: 'normal',
@@ -70,7 +70,7 @@ const AndroidTheme = {
     },
     screen: {
       paddingHorizontal: '20px',
-      paddingVertical: '16px',
+      paddingVertical: '16px'
     },
     inputs: {
       borderWidth: '1px',
@@ -91,12 +91,28 @@ const AndroidTheme = {
       fontWeight: 'bold',
       textTranform: 'none'
     },
+    addressCard: {
+      fontFamily: 'monospace',
+      lineHeight: '1.6',
+      fontSize: '1.2em',
+      textAlign: 'left',
+      borderRadius: '3px',
+      width: '200px'
+    },
+    transactionCard: {
+      fontFamily: 'monospace',
+      lineHeight: '1.6',
+      fontSize: '1.2em',
+      textAlign: 'left',
+      borderRadius: '3px',
+      width: '200px'
+    },
     paddingHorizontal: '20px',
     paddingVertical: '16px',
     horizontalSpacingBetweenItems: '10px',
     verticalSpacingBetweenItems: '8px',
     horizontalSpacingBetweenItemsShort: '5px',
-    verticalSpacingBetweenItemsShort: '4px',
+    verticalSpacingBetweenItemsShort: '4px'
   }
 }
 
@@ -127,7 +143,7 @@ export const AnodeLightTheme = {
     modal: {
       overlayBackgroundColor: 'rgba(0, 0, 0, 0.2)',
       backgroundColor: '#F1F2F6',
-      titleSeparatorColor: '#A9A9A9',
+      titleSeparatorColor: '#A9A9A9'
     },
     bodyText: {
       color: '#1F1F1F'
@@ -156,32 +172,42 @@ export const AnodeLightTheme = {
     primaryButton: {
       backgroundColor: '#2978A8',
       color: '#E5EFF4',
-      borderColor: '#2978A8',
+      borderColor: '#2978A8'
     },
     unselectedButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     disabledButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     dangerButton: {
       backgroundColor: '#C15B5C',
       color: '#2B398F',
-      borderColor: '#C15B5C',
+      borderColor: '#C15B5C'
     },
     link: {
-      color: '#2B398F',
+      color: '#2B398F'
     },
     slider: {
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     logo: {
       primaryColor: '#2B398F',
       secondaryColor: '#4AA6C4'
+    },
+    addressCard: {
+      backgroundColor: '#fff'
+    },
+    transactionCard: {
+      backgroundColor: '#fff'
+    },
+    transactionListItem: {
+      confirmedIconColor: '#126B19',
+      unconfirmedIconColor: '#F6C79F'
     },
     background: '#F1F2F6',
     border: '#F1F2F6',
@@ -216,7 +242,7 @@ export const AnodeDarkTheme = {
     modal: {
       overlayBackgroundColor: 'rgba(0, 0, 0, 0.6)',
       backgroundColor: '#0B2432',
-      titleSeparatorColor: '#A9A9A9',
+      titleSeparatorColor: '#A9A9A9'
     },
     bodyText: {
       color: '#fff'
@@ -245,37 +271,47 @@ export const AnodeDarkTheme = {
     primaryButton: {
       backgroundColor: '#2E4292',
       color: '#D4D7E9',
-      borderColor: '#2E4292',
+      borderColor: '#2E4292'
     },
     unselectedButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     disabledButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     dangerButton: {
       backgroundColor: '#A50000',
       color: '#fff',
-      borderColor: '#A50000',
+      borderColor: '#A50000'
     },
     link: {
       color: '#2773A1'
     },
     slider: {
-      borderColor: '#A9A9A9',
+      borderColor: '#A9A9A9'
     },
     logo: {
       primaryColor: '#A1C5D0',
       secondaryColor: '#A1C5D0'
     },
+    addressCard: {
+      backgroundColor: '#fff'
+    },
+    transactionCard: {
+      backgroundColor: '#fff'
+    },
+    transactionListItem: {
+      confirmedIconColor: '#0C2F2C',
+      unconfirmedIconColor: '#FF8319'
+    },
     background: '#0B2432',
     border: '#0B2432',
     text: '#fff',
-    disabledText: '#A9A9A9',
+    disabledText: '#A9A9A9'
   },
   dimensions: AndroidTheme.dimensions
 }

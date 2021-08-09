@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import ActiveButton from '../../components/buttons/ActiveButton'
 import PasswordInput from '../../components/inputs/PasswordInput'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
 import translate from '../../translations'
 import AppConstants from '../../utils/AppConstants'
 import PinManager from '../../utils/PinManager'
+import { useTheme } from '@react-navigation/native'
 
 const ChangePinView = ({ navigation, route }) => {
-  const pinManager = PinManager()
+  const { dimensions } = useTheme()
+  const pinManager = useRef(new PinManager())
   const currentPinRef = useRef()
   const newPinRef = useRef()
   const [storedPin, setStoredPin] = useState('')
@@ -49,8 +51,25 @@ const ChangePinView = ({ navigation, route }) => {
     }
     loadStoredPin()
   }, [])
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    container: {
+      marginBottom: dimensions.screen.paddingVertical
+    },
+    developer: {
+      border: '1px solid #f00',
+      marginBottom: dimensions.screen.paddingVertical,
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.container}>
           <PasswordInput
@@ -80,42 +99,18 @@ const ChangePinView = ({ navigation, route }) => {
             onPasswordsMatch={(doPasswordsMatch, password) => {}}
           />
           {AppConstants.DEVELOPER_MODE && <Text style={styles.developer}>Current PIN: {storedPin}</Text>}
-          <ActiveButton
-            title={translate('changePin')}
-            disabled={!isFormFilled}
-            onPress={() => {
-              changePin()
-              // TODO: set alert notifying user that pin has been changed
-            }}
-          />
         </View>
+        <ActiveButton
+          title={translate('changePin')}
+          disabled={!isFormFilled}
+          onPress={() => {
+            changePin()
+            // TODO: set alert notifying user that pin has been changed
+          }}
+        />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'flex-start'
-  },
-  container: {
-    width: '100%',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  developer: {
-    width: '100%',
-    border: '1px solid #f00',
-    marginBottom: '20px',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px'
-  }
-})
 
 export default ChangePinView

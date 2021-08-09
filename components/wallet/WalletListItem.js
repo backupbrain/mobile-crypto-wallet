@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import LinkButton from '../buttons/LinkButton'
+import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 
@@ -55,25 +56,16 @@ const WalletListItem = (props) => {
       textAlign: 'right'
     },
     accountName: {
-      color: colors.bodyText.color,
       fontWeight: 'bold',
       paddingBottom: dimensions.verticalSpacingBetweenItemsShort
     },
     address: {
-      color: colors.bodyText.color,
-      fontSize: dimensions.bodyText.fontSize,
-      fontWeight: dimensions.bodyText.fontWeight,
-      lineHeight: dimensions.bodyText.lineHeight
     },
     amount: {
-      color: colors.bodyText.color,
       paddingBottom: dimensions.verticalSpacingBetweenItemsShort
     },
     altAmount: {
-      color: colors.bodyText.color,
-      fontSize: dimensions.bodyText.fontSize,
-      fontWeight: dimensions.bodyText.fontWeight,
-      lineHeight: dimensions.bodyText.lineHeight
+      color: colors.disabledText
     },
     editButton: {
       marginLeft: dimensions.horizontalSpacingBetweenItems
@@ -83,15 +75,15 @@ const WalletListItem = (props) => {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.accountInformation}>
-        <Text style={styles.accountName}>{displayedName}</Text>
+        <BodyText style={styles.accountName}>{displayedName}</BodyText>
         {showAmount
-          ? <Text style={styles.address}>{truncateAddress(address)}</Text>
-          : <Text style={styles.address}>{truncateAddressLong(address)}</Text>}
+          ? <BodyText style={styles.address}>{truncateAddress(address)}</BodyText>
+          : <BodyText style={styles.address}>{truncateAddressLong(address)}</BodyText>}
       </View>
       {showAmount &&
         <View style={styles.amountInformation}>
-          <Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
-          <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
+          <BodyText style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</BodyText>
+          <BodyText style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</BodyText>
         </View>}
       {props.editable &&
         <LinkButton title={translate('edit')} style={styles.editButton} />}

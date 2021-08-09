@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import ActiveButton from '../../components/buttons/ActiveButton'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
 import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
+import { useTheme } from '@react-navigation/native'
 
 const CreatePinView = ({ navigation, route }) => {
-  const pinManager = PinManager()
+  const { dimensions } = useTheme()
+  const pinManager = useRef(new PinManager())
   const [pin1, setPin1] = useState('')
   const [pin2, setPin2] = useState('')
   const [isFormFilled, setisFormFilled] = useState(false)
@@ -22,10 +24,21 @@ const CreatePinView = ({ navigation, route }) => {
   const savePin = () => {
     pinManager.set(pin1)
   }
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    inputContainer: {
+      marginBottom: dimensions.screen.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
-        <View style={styles.container}>
+        <View style={styles.inputContainer}>
           <CreateNewPasswordInput
             maxLength={4}
             passwordPlaceholder={translate('pin')}
@@ -42,36 +55,18 @@ const CreatePinView = ({ navigation, route }) => {
             }}
             onPasswordsMatch={(doPasswordsMatch, password) => {}}
           />
-          <ActiveButton
-            title={translate('createPin')}
-            disabled={!isFormFilled}
-            onPress={() => {
-              savePin()
-              navigation.push('WalletHomeView')
-            }}
-          />
         </View>
+        <ActiveButton
+          title={translate('createPin')}
+          disabled={!isFormFilled}
+          onPress={() => {
+            savePin()
+            navigation.push('WalletHomeView')
+          }}
+        />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  container: {
-    width: '100%',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  }
-})
 
 export default CreatePinView

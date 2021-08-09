@@ -18,6 +18,7 @@ export default class PktManager {
         address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
       }
     ]
+    this.addressLookup = {}
   }
 
   async createWallet () {
@@ -37,7 +38,7 @@ export default class PktManager {
       amount: 0,
       address: 'pkth96uk1qz02tuakmaycllj9640pvqy3s26p4glgya'
     }
-    this.myaddresses.push(address)
+    this.myAddresses.push(address)
     return new Promise((resolve, reject) => {
       resolve(address)
     })
@@ -45,12 +46,27 @@ export default class PktManager {
 
   async getAddresses () {
     const myAddresses = this.myAddresses
+    const addressLookup = {}
+    for (let i = 0; i < myAddresses.length; i++) {
+      const address = myAddresses[i]
+      this.addressLookup[address.address] = address
+    }
     return new Promise(resolve => {
       resolve(myAddresses)
     }, 10)
+    // return myAddresses
   }
 
-  async getUsignedBalance () {
+  async getAddressInfo (address) {
+    await this.getAddresses()
+    return this.addressLookup[address]
+  }
+
+  async getConfirmedBalance () {
+
+  }
+
+  async getUnconfirmedBalance () {
 
   }
 
@@ -71,10 +87,19 @@ export default class PktManager {
     })
   }
 
-  async getTransactions () {
+  async getTransactions (filterAddress, numTransactions, offset) {
+    if (filterAddress === undefined) {
+      filterAddress = '*'
+    }
+    if (numTransactions === undefined) {
+      numTransactions = 10
+    }
+    if (offset === undefined) {
+      offset = 0
+    }
     const transactions = [
       {
-        address: 'mi25UrzHnvn3bpEfFCNqJhPWJn5b77a5NE',
+        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
         category: 'receive',
         amount: 0.01000000,
         label: '',
@@ -84,14 +109,14 @@ export default class PktManager {
         blockheight: 1772396,
         blockindex: 73,
         blocktime: 1592600085,
-        txid: '8e2ab10cabe9ec04ed438086a80b1ac72558cc05bb206e48fc9a18b01b9282e9',
+        txid: '69be85fa295f48223aca54354510d8607b62906c4fcb2ac742b218c90d57cf2f',
         walletconflicts: [],
         time: 1592599884,
         timereceived: 1592599884,
         'bip125-replaceable': 'no'
       },
       {
-        address: 'mi25UrzHnvn3bpEfFCNqJhPWJn5b77a5NE',
+        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
         category: 'receive',
         amount: 0.00010000,
         label: '',
@@ -101,7 +126,7 @@ export default class PktManager {
         blockheight: 1772396,
         blockindex: 72,
         blocktime: 1592600085,
-        txid: 'ca4898d8f950df03d6bfaa00578bd0305d041d24788b630d0c4a32debcac9f36',
+        txid: '1e35cf4bfc8a54fab721dc8bfec6fb0cb9baea94466b134aa9a57fa304ba1d05',
         walletconflicts: [],
         time: 1592599938,
         timereceived: 1592599938,
@@ -122,14 +147,12 @@ export default class PktManager {
       const x = Bs58Check.decode(addr)
       return config.bs58Prefixes.indexOf(x[0]) > -1
     } catch (e) {
-      console.log('')
+      try {
+        const x = Bech32.decode(addr)
+        return x.prefix === config.bech32Prefix
+      } catch (e) {
+        return false
+      }
     }
-    try {
-      const x = Bech32.decode(addr)
-      return x.prefix === config.bech32Prefix
-    } catch (e) {
-      console.log('')
-    }
-    return false
   }
 }

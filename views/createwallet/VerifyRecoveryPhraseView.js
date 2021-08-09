@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import ActivityButton from '../../components/buttons/ActiveButton'
 import RecoveryPhraseInput from '../../components/inputs/RecoveryPhraseInput'
+import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
 const MAX_WORDS = 16
@@ -12,6 +13,7 @@ const previewRecoveryText = (words) => {
 }
 
 const VerifyRecoveryPhraseView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
   const [, _setWordCount] = useState(0)
   const [text, setText] = useState('')
   const [isFormFilled, setIsFormFilled] = useState(false)
@@ -55,8 +57,22 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     }
   }
 
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    inputContainer: {
+      marginBottom: dimensions.screen.paddingVertical
+    },
+    debugText: {
+      color: '#f00',
+      marginBottom: dimensions.screen.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.inputContainer}>
           <RecoveryPhraseInput
@@ -79,31 +95,8 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
         {route.params &&
           <Text style={styles.debugText}>{previewRecoveryText(route.params.recoveryPhrase)}</Text>}
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  inputContainer: {
-    marginBottom: '20px',
-    width: '100%'
-  },
-  debugText: {
-    color: '#f00',
-    paddingTop: '20px'
-  }
-})
 
 export default VerifyRecoveryPhraseView

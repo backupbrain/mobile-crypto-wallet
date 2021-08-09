@@ -1,49 +1,41 @@
-import * as React from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import ActivityButton from '../../components/buttons/ActiveButton'
-import DefaultTextLeft from '../../components/text/DefaultTextLeft'
+import BodyText from '../../components/text/BodyText'
 import translate from '../../translations'
+import { useTheme } from '@react-navigation/native'
 
-const WalletCreatedView = ({ navigation, route }) => {
+const LoadExistingWalletIntroView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    paragraph: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems
+    },
+    textBlock: {
+      paddingBottom: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.textBlock}>
-          <DefaultTextLeft>{translate('loadexistingWalletIntro1')}</DefaultTextLeft>
-          <DefaultTextLeft>{translate('loadexistingWalletIntro2')}</DefaultTextLeft>
+          <BodyText style={styles.paragraph}>{translate('loadExistingWalletIntro1')}</BodyText>
+          <BodyText>{translate('loadExistingWalletIntro2')}</BodyText>
         </View>
         <ActivityButton
           title={translate('continueToSecretPassphrase')}
           onPress={() => navigation.push('VerifyRecoveryPhraseView')}
         />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  header: {
-    fontSize: '2em',
-    fontWeight: 'bold',
-    paddingBottom: '12px'
-  },
-  textBlock: {
-    paddingBottom: '12px',
-    width: '100%'
-  }
-})
-
-export default WalletCreatedView
+export default LoadExistingWalletIntroView

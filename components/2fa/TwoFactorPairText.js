@@ -13,6 +13,37 @@ const TwoFactorPairText = (props) => {
   }
   console.log('props')
   console.log(props)
+
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%',
+      alignItems: 'center'
+    },
+    card: {
+      border: '1px solid #ccc',
+      padding: '20px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '6px',
+      width: '200px',
+      height: '200px'
+    },
+    activityIndicatorCard: {
+      height: '200px',
+      justifyContent: 'center'
+    },
+    qrCode: {
+      width: 200,
+      height: 200
+    },
+    codeText: {
+      width: '100%',
+      fontSize: '160%',
+      fontFamily: 'monospace',
+      lineHeight: '130%'
+    }
+  })
+
   return (
     <View
       style={styles.container}
@@ -27,35 +58,5 @@ const TwoFactorPairText = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    alignItems: 'center'
-  },
-  card: {
-    border: '1px solid #ccc',
-    padding: '20px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '6px',
-    width: '200px',
-    height: '200px'
-  },
-  activityIndicatorCard: {
-    height: '200px',
-    justifyContent: 'center'
-  },
-  qrCode: {
-    width: 200,
-    height: 200
-  },
-  codeText: {
-    width: '100%',
-    fontSize: '160%',
-    fontFamily: 'monospace',
-    lineHeight: '130%'
-  }
-})
 
 export default TwoFactorPairText

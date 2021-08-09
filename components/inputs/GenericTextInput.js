@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, TextInput, View, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
@@ -6,6 +6,12 @@ const GenericTextInput = (props) => {
   const { colors, dimensions } = useTheme()
   const [text, setText] = useState('')
   const placeholder = props.placeholder || props.label
+
+  useEffect(() => {
+    if (props.initialValue) {
+      setText(props.initialValue)
+    }
+  }, [props.initialValue, setText])
 
   const styles = StyleSheet.create({
     container: {

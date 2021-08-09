@@ -56,8 +56,8 @@
   "walletCreatedIntro1": "Your wallet has been set up.",
   "walletCreatedIntro2": "Your may now send or receive PKT ash between friends, family, or strangers.",
 
-  "loadexistingWalletIntro1": "You are about to load an existing wallet",
-  "loadexistingWalletIntro2": "You will need to enter the 16 word recovery phrase and password to open the wallet.",
+  "loadExistingWalletIntro1": "You are about to load an existing wallet",
+  "loadExistingWalletIntro2": "You will need to enter the 16 word recovery phrase and password to open the wallet.",
   "continueToSecretPassphrase": "Continue to Secret Passphrase",
 
   "currentPassphrase": "Current Passphrase",
@@ -122,6 +122,46 @@
   "editNewAddress": "Edit new address",
 
   "invalidAmount": "Invalid amount",
-  "insufficientFunds": "Insufficient funds"
+  "insufficientFunds": "Insufficient funds",
+
+  "qr": "QR",
+  "transactions": "Transactions",
+  "whatIsAddressCode1": "This code is your account number",
+  "whatIsAddressCode2": "Share it with people to receive payments",
+  "copyAddress": "Copy address to clipboard",
+  "shareAddress": "Share address",
+  "sendPkt": "Send PKT",
+
+  "noTransactions": "No transactions",
+  "loadMore": "Load more...",
+  "justNow": "just now",
+  "minutesAgo": "{num} minutesAgo ago",
+  "hoursAgo": "{num} hours ago",
+  "daysAgo": "{num} days ago",
+  "weeksAgo": "{num} weeks ago",
+
+  "amountSent": "Amount sent:",
+  "amountReceived": "Amount received:",
+  "date": "Date:",
+  "from": "From:",
+  "to": "To:",
+  "confirmed": "Confirmed",
+  "unconfirmed": "Unconfirmed",
+  "status": "Status",
+  "note": "Note",
+  "noNote": "(None)",
+  "transactionType": "Transaction type:",
+  "receiveTransactionType": "Receive",
+  "spendTransactionType": "Send",
+  "miningIncomeTransactionType": "Mining Income",
+  "unknownTransactionType": "Unknown",
+  "transactionId": "Text ID",
+  "whatIsTransactionId1": "This code is a payment confirmation",
+  "whatIsTransactionId2": "Share it anyone who needs proof of payment",
+  "editNote": "Edit note",
+  "saveNote": "Save note",
+  "shareTransactionId": "Share transaction ID",
+  "copyTransactionId": "Copy transaction ID"
+
 
 }

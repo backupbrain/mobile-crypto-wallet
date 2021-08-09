@@ -1,16 +1,30 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { StyleSheet, View } from 'react-native'
+import Screen from '../../components/Screen'
+import BodyText from '../../components/text/BodyText'
 import OtpInput from '../../components/inputs/OtpInput'
 import ActiveButton from '../../components/buttons/ActiveButton'
 import translate from '../../translations'
+import { useTheme } from '@react-navigation/native'
 
 const Verify2FaDeviceView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
   const [isPinValid, setIsPinValid] = useState(false)
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    otpInput: {
+      paddingVertical: dimensions.screen.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
-        <Text style={styles.text}>{translate('verify2faIntro')}</Text>
+        <BodyText style={styles.text}>{translate('verify2faIntro')}</BodyText>
         <View style={styles.otpInput}>
           <OtpInput
             error={translate('invalidPin')}
@@ -29,34 +43,8 @@ const Verify2FaDeviceView = ({ navigation, route }) => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  container: {
-    width: '100%',
-    paddingHorizontal: '20px',
-    paddingVertical: '16px'
-  },
-  screen: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minHeight: '100%'
-  },
-  text: {
-    paddingHorizontal: '20px',
-    paddingVertical: '16px'
-  },
-  otpInput: {
-    paddingHorizontal: '20px',
-    paddingVertical: '16px'
-  }
-})
 
 export default Verify2FaDeviceView

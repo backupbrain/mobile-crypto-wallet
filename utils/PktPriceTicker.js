@@ -12,6 +12,7 @@ export default class PktPriceTicker {
   url () { return 'https://pktticker.tonygaitatzis.com' }
 
   constructor () {
+    console.log('new PktPriceTicker()')
     this.apiKey = apiKey
     this.priceHistory = {}
     this.spotPrice = {}

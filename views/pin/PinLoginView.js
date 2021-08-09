@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { useState, useRef, useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
+import Screen from '../../components/Screen'
+import HeaderText from '../../components/text/HeaderText'
+import BodyText from '../../components/text/BodyText'
 import DotDashPinInput from '../../components/inputs/DotDashPinInput'
 import PinPad from '../../components/buttons/PinPad'
 import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
+import { useTheme } from '@react-navigation/native'
 
-const CreatePinView = ({ navigation, route }) => {
-  const pinManager = new PinManager()
+const PinLoginView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
+  const pinManager = useRef(new PinManager())
   const [activeView, setActiveView] = useState('WalletHomeView')
   const [pin, setPin] = useState('')
   const [isPinValid, setIsPinValid] = useState(null)
@@ -40,14 +44,41 @@ const CreatePinView = ({ navigation, route }) => {
   useEffect(() => {
     // TODO: route to last-used page
     setActiveView('WalletHomeView')
+  }, [setActiveView])
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical,
+      flex: 1,
+      border: '1px solid #fff'
+    },
+    container: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical,
+      flex: 1
+    },
+    header: {
+      paddingBottom: dimensions.paddingVertical
+    },
+    text: {
+      paddingBottom: dimensions.paddingVertical
+    },
+    flexibleTop: {
+      flexGrow: 1
+    },
+    bottomAlign: {
+      justifyContent: 'flex-end'
+    }
   })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.container}>
           <View style={styles.flexibleTop}>
-            <Text style={styles.header}>{translate('pinLogin')}</Text>
-            <Text style={styles.text}>{translate('pinLoginIntro1')}</Text>
+            <HeaderText style={styles.header}>{translate('pinLogin')}</HeaderText>
+            <BodyText style={styles.text}>{translate('pinLoginIntro1')}</BodyText>
           </View>
           <View style={styles.bottomAlign}>
             <DotDashPinInput pin={pin} error={isPinValid === false} />
@@ -62,43 +93,8 @@ const CreatePinView = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  container: {
-    width: '100%',
-    flex: 1,
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  header: {
-    fontSize: '2em',
-    fontWeight: 'bold',
-    paddingBottom: '20px',
-    textAlign: 'left'
-  },
-  text: {
-    textAlign: 'left',
-    paddingBottom: '20px'
-  },
-  flexibleTop: {
-    flexGrow: 1
-  },
-  bottomAlign: {
-    justifyContent: 'flex-end'
-  }
-})
-
-export default CreatePinView
+export default PinLoginView

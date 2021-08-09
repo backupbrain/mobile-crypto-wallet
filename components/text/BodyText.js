@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
 const BodyText = (props) => {

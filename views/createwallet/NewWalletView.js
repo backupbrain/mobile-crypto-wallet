@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import RecoveryWordGrid from '../../components/inputs/RecoveryWordGrid'
 import ActiveButton from '../../components/buttons/ActiveButton'
-import DefaultTextLeft from '../../components/text/DefaultTextLeft'
+import BodyText from '../../components/text/BodyText'
 import translate from '../../translations'
+import { useTheme } from '@react-navigation/native'
 import bip39words from '../../utils/bip39words'
 
 const NewWalletView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [isRecoveryPhraseSet, setIsRecoveryPhraseSet] = useState(false)
   const [recoveryPhrase, setRecoveryPhrase] = useState([])
@@ -26,53 +28,49 @@ const NewWalletView = ({ navigation, route }) => {
       setIsRecoveryPhraseSet(true)
     }
   })
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    recoveryWordGrid: {
+      paddingBottom: dimensions.paddingVertical
+    },
+    paragraph: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems
+    },
+    textBlock: {
+      paddingBottom: dimensions.paddingVertical
+    },
+    firstButton: {
+      marginBottom: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.textBlock}>
-          <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
+          <BodyText style={styles.paragraph}>{translate('dontLoseTheseWords')}</BodyText>
+          <BodyText>{translate('ifYouLoseTheseWords')}</BodyText>
         </View>
-        <View style={styles.textBlock}>
-          <DefaultTextLeft>{translate('dontLoseTheseWords')}</DefaultTextLeft>
-          <DefaultTextLeft>{translate('ifYouLoseTheseWords')}</DefaultTextLeft>
+        <View style={styles.recoveryWordGrid}>
+          <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
         </View>
         <ActiveButton
           title={translate('pressAndHoldToReveal')}
           onPressIn={() => { setIsVisible(true) }}
           onPressOut={() => { setIsVisible(false) }}
+          style={styles.firstButton}
         />
         <ActiveButton
           title={translate('next')}
           onPress={() => { navigation.push('VerifyRecoveryPhraseView', { recoveryPhrase }) }}
         />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  textBlock: {
-    paddingBottom: '12px',
-    width: '100%'
-  },
-  button: {
-    backgroundColor: '#00f',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px',
-    marginBottom: '10px'
-  }
-})
 
 export default NewWalletView

@@ -31,7 +31,7 @@ const PktAddressInput = (props) => {
     setText(newLineText)
     let isValid = false
     let isInvaild = false
-    if (rawText.length == addressLength) {
+    if (rawText.length === addressLength) {
       isValid = pktManager.isValidAddress(rawText)
       isInvaild = !isValid
       setIsValid(isValid)

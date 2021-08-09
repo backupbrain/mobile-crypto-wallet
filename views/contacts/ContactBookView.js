@@ -10,6 +10,7 @@ const myFakeAddresses = [
   'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
   'pkt1yclh96uk6p4glgyaakqz40pvqy3s296ma02tulj'
 ]
+/*
 const fakeAddresses = [
   {
     title: 'My Addresses',
@@ -58,6 +59,7 @@ const fakeAddresses = [
     ]
   }
 ]
+/* */
 
 const App = ({ navigation, route }) => {
   const contactManager = new ContactManager()

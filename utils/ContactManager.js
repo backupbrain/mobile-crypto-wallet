@@ -12,6 +12,7 @@ export default class PktAddressContactManager {
   constructor () {
     this.contacts = []
     this.lookup = {}
+    this.isLoaded = false
   }
 
   async initialize () {
@@ -19,7 +20,11 @@ export default class PktAddressContactManager {
   }
 
   async getAll () {
-    const contacts = await AdaptiveStorage.get(AppConstants.CONTACT_LIST_KEY)
+    let contacts = await AdaptiveStorage.get(AppConstants.CONTACT_LIST_KEY)
+    if (contacts === 'undefined' || contacts === null) {
+      contacts = []
+    }
+    this.isLoaded = true
     this.setAll(contacts)
   }
 
@@ -27,13 +32,25 @@ export default class PktAddressContactManager {
     await AdaptiveStorage.set(AppConstants.CONTACT_LIST_KEY, this.contacts)
   }
 
-  async get (address) {
+  async getByAddress (address) {
     if (this.contacts.length === 0) {
       await this.getAll()
     }
     const row = this.lookup[address]
     if (row !== undefined) {
       return this.contacts[row]
+    }
+  }
+
+  async getByName (name) {
+    if (this.contacts.length === 0) {
+      await this.getAll()
+    }
+    for (let i = 0; i < this.contacts.length; i++) {
+      const contact = this.contacts[i]
+      if (contact.name === name) {
+        return contact
+      }
     }
   }
 

@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '../../components/Screen'
 import PasswordInput from '../../components/inputs/PasswordInput'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
 import ActivityButton from '../../components/buttons/ActiveButton'
-import DefaultTextLeft from '../../components/text/DefaultTextLeft'
+import BodyText from '../../components/text/BodyText'
 import translate from '../../translations'
 import AdaptiveStorage from '../../utils/AdaptiveStorage'
 import PassphraseManager from '../../utils/PassphraseManager'
 import AppConstants from '../../utils/AppConstants'
+import { useTheme } from '@react-navigation/native'
 
 const ChangePassphraseView = ({ navigation, route }) => {
-  const passphraseManager = new PassphraseManager()
+  const { dimensions } = useTheme()
+  const passphraseManager = useRef(new PassphraseManager())
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassphrase, setnewPassphrase] = useState('')
   const [_doPassphrasesMatch, setdoPassphrasesMatch] = useState(null)
@@ -29,13 +31,27 @@ const ChangePassphraseView = ({ navigation, route }) => {
     }
   }
   const saveNewPassphrase = (passphrase) => {
-    passphraseManager.set(passphrase)
+    passphraseManager.current.set(passphrase)
   }
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    createPassphraseBlock: {
+      paddingVertical: dimensions.paddingVertical
+    },
+    textContainer: {
+      paddingBottom: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.textContainer}>
-          <DefaultTextLeft>{translate('whyPassphrase')}</DefaultTextLeft>
+          <BodyText>{translate('whyPassphrase')}</BodyText>
         </View>
         <PasswordInput
           placeholder={translate('currentPassphrase')}
@@ -57,6 +73,7 @@ const ChangePassphraseView = ({ navigation, route }) => {
             setdoPassphrasesMatch(doPassphrasesMatch)
             verifyFormFilled(currentPassword, newPassphrase, doPassphrasesMatch)
           }}
+          style={styles.createPassphraseBlock}
         />
         <ActivityButton
           title={translate('changePassphrase')}
@@ -68,27 +85,8 @@ const ChangePassphraseView = ({ navigation, route }) => {
           disabled={!isFormFilled}
         />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  textContainer: {
-    paddingBottom: '12px',
-    width: '100%'
-  }
-})
 
 export default ChangePassphraseView

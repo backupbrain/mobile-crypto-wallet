@@ -62,7 +62,7 @@ const Modal = (props, ref) => {
       top: 0,
       left: 0,
       width: '100%',
-      height: '100vh'
+      height: '100%'
     },
     background: {
       backgroundColor: colors.modal.overlayBackgroundColor,
@@ -110,9 +110,9 @@ const Modal = (props, ref) => {
   return (
     <>
       {isVisible &&
-        <View style={styles.container}>
-          <Animated.View style={[styles.background, { opacity: fadeAnim }]}>
-            <Animated.View style={[styles.modal, { opacity: fadeAnim }]}>
+        <View style={[styles.container, props.style]}>
+          <Animated.View style={[styles.background, props.backgroundStyle, { opacity: fadeAnim }]}>
+            <Animated.View style={[styles.modal, props.modalStyle, { opacity: fadeAnim }]}>
               <View style={styles.modalTitle}>
                 <Text style={styles.modalText}>{props.title}</Text>
                 <TouchableOpacity

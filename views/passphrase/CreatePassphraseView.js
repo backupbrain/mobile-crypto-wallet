@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { useState, useRef } from 'react'
+import { View, StyleSheet } from 'react-native'
+import Screen from '../../components/Screen'
+import BodyText from '../../components/text/BodyText'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
 import ActivityButton from '../../components/buttons/ActiveButton'
 import translate from '../../translations'
 import PassphraseManager from '../../utils/PassphraseManager'
+import { useTheme } from '@react-navigation/native'
 
 const CreatePassphraseView = ({ navigation, route }) => {
-  const passphraseManager = new PassphraseManager()
+  const { dimensions } = useTheme()
+  const passphraseManager = useRef(new PassphraseManager())
   const [passphrase, setPassphrase] = useState('')
   const [isFormFilled, setIsFormFilled] = useState(false)
   const verifyFormFilled = (password, doPassphrasesMatch) => {
@@ -20,10 +23,21 @@ const CreatePassphraseView = ({ navigation, route }) => {
   const savePassphrase = (passphrase) => {
     passphraseManager.set(passphrase)
   }
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    inputContainer: {
+      paddingVertical: dimensions.paddingVertical
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
-        <Text style={styles.text}>{translate('whyPassphrase')}</Text>
+        <BodyText>{translate('whyPassphrase')}</BodyText>
         <View style={styles.inputContainer}>
           <CreateNewPasswordInput
             passwordPlaceholder={translate('newPassphrase')}
@@ -48,30 +62,8 @@ const CreatePassphraseView = ({ navigation, route }) => {
           disabled={!isFormFilled}
         />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  inputContainer: {
-    marginBottom: '8px',
-    width: '100%'
-  },
-  text: {
-    textAlign: 'left',
-    paddingBottom: '20px'
-  }
-})
 
 export default CreatePassphraseView

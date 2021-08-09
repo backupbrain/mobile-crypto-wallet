@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Platform, StyleSheet, View, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { useEffect, useState, useRef } from 'react'
+import { Platform, StyleSheet, View } from 'react-native'
+import Screen from '../../components/Screen'
+import BodyText from '../../components/text/BodyText'
 import Tabs from '../../components/buttons/Tabs'
 import AddressQrCode from '../../components/wallet/AddressQrCode'
 import ActiveButton from '../../components/buttons/ActiveButton'
@@ -8,26 +9,52 @@ import LinkButton from '../../components/buttons/LinkButton'
 import TwoFactorPairText from '../../components/2fa/TwoFactorPairText'
 import translate from '../../translations'
 import TwoFactorAuth from '../../utils/TwoFactorAuth'
-import shareMessage from '../../utils/ShareMessage'
+import SharingManager from '../../utils/SharingManager'
 import ClipboardManager from '../../utils/ClipboardManager'
+import { useTheme } from '@react-navigation/native'
 
 const Pair2FaDeviceView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
   const [is2FaReady, setIs2FaReady] = useState(false)
   const [pairingCode, setPairingCode] = useState('')
   const [pairingSecret, setPairingSecret] = useState('')
-  const twoFactorAuth = new TwoFactorAuth(translate('pktWallet'), translate('pktWallet'))
+  const twoFactorAuth = useRef(new TwoFactorAuth(translate('pktWallet'), translate('pktWallet')))
   const isPlatformMobile = (Platform.OS === 'ios' || Platform.OS === 'android')
   useEffect(() => {
-    twoFactorAuth.initialize().then(() => {
+    twoFactorAuth.current.initialize().then(() => {
       setPairingCode(twoFactorAuth.otpauth)
       setPairingSecret(twoFactorAuth.secret)
       setIs2FaReady(true)
     })
   })
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    container: {
+    },
+    text: {
+      paddingBottom: dimensions.paddingVertical
+    },
+    otpInput: {
+      paddingHorizontal: dimensions.paddingHorizontal,
+      paddingVertical: dimensions.paddingVertical
+    },
+    linkButtons: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems,
+      paddingTop: dimensions.paddingVertical
+    },
+    linkButton: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems
+    }
+  })
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
-        <Text style={styles.text}>{translate('pair2faDeviceIntro')}</Text>
+        <BodyText style={styles.text}>{translate('pair2faDeviceIntro')}</BodyText>
         <View style={styles.otpInput}>
           <Tabs
             tabs={[
@@ -44,7 +71,7 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
                           onPress={() => { ClipboardManager.set(pairingSecret) }}
                         />
                       </View>
-                      {isPlatformMobile && <View style={styles.linkButton}><LinkButton title={translate('sharePairingCode')} onPress={() => shareMessage(twoFactorAuth.pairingCode)} /></View>}
+                      {isPlatformMobile && <View style={styles.linkButton}><LinkButton title={translate('sharePairingCode')} onPress={() => SharingManager.share(twoFactorAuth.pairingCode)} /></View>}
                     </View>
                   </>
                 )
@@ -61,7 +88,7 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
                           onPress={() => { ClipboardManager.set(pairingSecret) }}
                         />
                       </View>
-                      {isPlatformMobile && <View style={styles.linkButton}><LinkButton title={translate('sharePairingCode')} onPress={() => shareMessage(twoFactorAuth.pairingCode)} /></View>}
+                      {isPlatformMobile && <View style={styles.linkButton}><LinkButton title={translate('sharePairingCode')} onPress={() => SharingManager.share(twoFactorAuth.pairingCode)} /></View>}
                     </View>
                   </>
                 )
@@ -79,41 +106,8 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minHeight: '100%'
-  },
-  container: {
-    width: '100%',
-    paddingHorizontal: '20px'
-  },
-  text: {
-    paddingHorizontal: '20px',
-    paddingVertical: '16px'
-  },
-  otpInput: {
-    paddingHorizontal: '20px',
-    paddingVertical: '16px'
-  },
-  linkButtons: {
-    paddingTop: '16px',
-    paddingBottom: '12px'
-  },
-  linkButton: {
-    paddingBottom: '8px'
-  }
-})
 
 export default Pair2FaDeviceView

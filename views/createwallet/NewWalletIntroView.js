@@ -1,22 +1,38 @@
-import * as React from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ActivityButton from '../../components/buttons/ActiveButton'
-import DefaultTextLeft from '../../components/text/DefaultTextLeft'
+import BodyText from '../../components/text/BodyText'
+import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
 const WalletCreatedView = ({ navigation, route }) => {
+  const { dimensions } = useTheme()
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingVertical
+    },
+    paragraph: {
+      paddingBottom: dimensions.verticalSpacingBetweenItems
+    },
+    textBlock: {
+      paddingBottom: dimensions.paddingVertical
+    }
+  })
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
         <View style={styles.textBlock}>
-          <DefaultTextLeft>{translate('newWalletIntro1')}</DefaultTextLeft>
-          <DefaultTextLeft>{translate('newWalletIntro2')}</DefaultTextLeft>
-          <DefaultTextLeft>{translate('newWalletIntro3')}</DefaultTextLeft>
+          <BodyText style={styles.paragraph}>{translate('newWalletIntro1')}</BodyText>
+          <BodyText style={styles.paragraph}>{translate('newWalletIntro2')}</BodyText>
+          <BodyText>{translate('newWalletIntro3')}</BodyText>
         </View>
         <View style={styles.textBlock}>
-          <DefaultTextLeft>{translate('dontLoseTheseWords')}</DefaultTextLeft>
-          <DefaultTextLeft>{translate('ifYouLoseTheseWords')}</DefaultTextLeft>
+          <BodyText style={styles.paragraph}>{translate('dontLoseTheseWords')}</BodyText>
+          <BodyText>{translate('ifYouLoseTheseWords')}</BodyText>
         </View>
         <ActivityButton
           title={translate('continueToRecoveryPhrase')}
@@ -26,27 +42,5 @@ const WalletCreatedView = ({ navigation, route }) => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1
-  },
-  screen: {
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'flex-start',
-    paddingHorizontal: '20px',
-    paddingVertical: '20px'
-  },
-  header: {
-    fontSize: '2em',
-    fontWeight: 'bold',
-    paddingBottom: '12px'
-  },
-  textBlock: {
-    paddingBottom: '12px'
-  }
-})
 
 export default WalletCreatedView

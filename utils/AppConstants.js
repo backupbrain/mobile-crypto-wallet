@@ -11,6 +11,7 @@ const AppConstants = {
   AUTH_PAIRING_CODE: 'authPairingCode',
   LOGIN_PIN_KEY: 'loginPin',
   PKT_USD_SPOT_PRICE_KEY: 'pktUsdSpotPrice',
+  TRANSACTION_NOTES_KEY: 'transactionNotes',
   PKT_ADDRESS_PREFIX: 'pkt',
   PKT_ADDRESS_LENGTH: 43,
   DEFAULT_CURRENCY_CODE: 'USD',
