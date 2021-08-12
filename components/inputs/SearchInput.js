@@ -50,9 +50,12 @@ const SearchInput = (props) => {
     },
     closeButton: {
       height: '100%',
+      minHeight: '100%',
       justifyContent: 'center',
+      alignItems: 'center',
       paddingRight: dimensions.inputs.paddingHorizontal,
-      paddingLeft: dimensions.button.paddingHorizontal
+      paddingLeft: dimensions.button.paddingHorizontal,
+      paddingVertical: dimensions.inputs.paddingVertical
     },
     helpText: {
       color: '#666',

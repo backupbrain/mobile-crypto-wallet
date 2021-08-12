@@ -11,7 +11,12 @@ import { NavigationContainer } from '@react-navigation/native'
 import { AnodeDarkTheme, AnodeLightTheme } from './themes/AnodeThemes'
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
+import PktPriceTicker from './utils/PktPriceTicker'
+
 export default function App () {
+  const [pktPriceTimeout, setPktPriceTimeout] = useState(null)
+  const pktPriceTicker = useRef(new PktPriceTicker())
+
   const scheme = useColorScheme()
   const [, forceUpdate] = useReducer(x => x + 1, 0)
   const appState = useRef(AppState.currentState)
@@ -32,6 +37,20 @@ export default function App () {
   }
 
   useEffect(() => {
+    const setupPktPriceTimout = async () => {
+      const pktPriceTimeout = setTimeout(() => {
+        const updatePktPriceAsync = async () => {
+          await pktPriceTicker.current.fetchSpotPrice(pktPriceTicker.current.getUserFiatCurrency())
+        }
+        updatePktPriceAsync()
+      }, PktPriceTicker.UPDATE_FREQUENCY_S * 1000)
+      setPktPriceTimeout(pktPriceTimeout)
+      await pktPriceTicker.current.fetchSpotPrice(pktPriceTicker.current.getUserFiatCurrency())
+    }
+    if (!pktPriceTimeout) {
+      setupPktPriceTimout()
+    }
+
     // Update the document title using the browser API
     RNLocalize.addEventListener('change', handleLocalizationChange)
 
@@ -40,7 +59,7 @@ export default function App () {
     return () => {
       AppState.removeEventListener('change', onAppStateChange)
     }
-  }, [])
+  }, [pktPriceTicker, setPktPriceTimeout])
 
   return (
     <AppearanceProvider>

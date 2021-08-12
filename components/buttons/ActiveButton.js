@@ -6,8 +6,6 @@ const ActiveButton = (props) => {
   const { colors, dimensions } = useTheme()
   const isDisabled = props.disabled
 
-  console.log(colors.disabledButton.backgroundColor)
-
   const styles = StyleSheet.create({
     container: {
       width: '100%'
@@ -30,7 +28,7 @@ const ActiveButton = (props) => {
       borderColor: colors.primaryButton.borderColor
     },
     dangerButton: {
-      backgroundColor: colors.danger
+      backgroundColor: colors.dangerButton.backgroundColor
     },
     buttonText: {
       textTransform: dimensions.button.textTransform,

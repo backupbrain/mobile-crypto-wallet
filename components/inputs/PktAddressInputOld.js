@@ -44,7 +44,7 @@ const PktAddressInput = (props) => {
       props.onInvalid(address, isInvalidAddress)
     }
     if (props.onChangeText) {
-      props.onChangeText(address, isValidAddress)
+      props.onChangeText(address)
     }
   }
 

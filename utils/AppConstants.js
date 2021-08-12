@@ -1,8 +1,8 @@
-import 'dotenv/config'
+// import 'dotenv/config'
 
 const AppConstants = {
   DEVELOPER_MODE: process.env.DEVELOPER_MODE,
-  PKT_TICKER_API_KEY: process.env.PKT_TICKER_API_KEY,
+  PKT_TICKER_API_KEY: '',
   PIN_LENGTH: 4, // NOTE; this does not yet alter the length of the PIN login
   INLINE_ICON_HEIGHT: 24,
   PASSPHRASE_KEY: 'passphrase',

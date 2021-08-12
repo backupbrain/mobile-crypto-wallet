@@ -12,11 +12,7 @@ export default class SharingManager {
 
   static async share (message) {
     if (this.hasSharing()) {
-      try {
-        await Share.share({ message: message })
-      } catch (error) {
-        console.log('error sharing message')
-      }
+      await Share.share({ message: message })
     }
   }
 }

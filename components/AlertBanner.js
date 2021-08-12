@@ -11,7 +11,7 @@ const AlertBanner = (props, ref) => {
   const [paddingRight, setPaddingRight] = useState(dimensions.screen.paddingHorizontal)
   const variant = props.variant || 'success'
   useEffect(() => {
-    if (props.closeable) {
+    if (!props.noclose) {
       setPaddingRight(0)
     }
     if (props.visible) {
@@ -115,14 +115,13 @@ const AlertBanner = (props, ref) => {
       {isVisible &&
         <View style={getStyles()}>
           <Text style={styles.textStyle}>{props.label}</Text>
-          {props.closeable &&
+          {props.noclose &&
             <TouchableOpacity
               onPress={() => {
                 if (props.onClose) {
                   props.onClose()
                 }
                 close()
-                console.log('Close!')
               }}
             >
               <View style={styles.closeButton}>
@@ -132,10 +131,6 @@ const AlertBanner = (props, ref) => {
         </View>}
     </Animated.View>
   )
-}
-
-AlertBanner.defaultProps = {
-  closeable: true
 }
 
 export default forwardRef(AlertBanner)

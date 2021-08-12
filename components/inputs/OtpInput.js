@@ -1,4 +1,4 @@
-import React, { useState, useMemo, createRef } from 'react'
+import React, { useState, useMemo, createRef, useRef } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import TwoFactorAuth from '../../utils/TwoFactorAuth'
 import translate from '../../translations'
@@ -10,9 +10,9 @@ const OtpInput = (props) => {
   const pinInputRefs = useMemo(() => Array(numChars).fill(0).map(i => createRef()), [])
   const [pin, setPin] = useState('')
   const [pinError, setPinError] = useState(false)
-  const twoFactorAuth = new TwoFactorAuth(translate('pktWallet'), translate('pktWallet'))
+  const twoFactorAuth = useRef(new TwoFactorAuth(translate('pktWallet'), translate('pktWallet')))
   const validatePin = (pin) => {
-    const isPinValid = twoFactorAuth.isPinValid(pin)
+    const isPinValid = twoFactorAuth.current.isPinValid(pin)
     setPinError(isPinValid)
     if (isPinValid && props.onValidPin) {
       props.onValidPin(pin)

@@ -1,6 +1,7 @@
 // TODO: implement actual gRPC calls
-import Bs58Check from 'bs58check'
-import Bech32 from 'bech32'
+// import Bs58Check from 'bs58check'
+// import Bech32 from 'bech32'
+import AppConstants from '../utils/AppConstants'
 
 export default class PktManager {
   constructor () {
@@ -49,8 +50,9 @@ export default class PktManager {
     const addressLookup = {}
     for (let i = 0; i < myAddresses.length; i++) {
       const address = myAddresses[i]
-      this.addressLookup[address.address] = address
+      addressLookup[address.address] = address
     }
+    this.addressLookup = addressLookup
     return new Promise(resolve => {
       resolve(myAddresses)
     }, 10)
@@ -60,6 +62,23 @@ export default class PktManager {
   async getAddressInfo (address) {
     await this.getAddresses()
     return this.addressLookup[address]
+  }
+
+  async isAmountLessThanWalletBalance (amount, address) {
+    const addressInfo = this.getAddressInfo(address)
+    if (addressInfo !== undefined && addressInfo !== null) {
+      return (amount <= addressInfo.amount)
+    } else {
+      return false
+    }
+  }
+
+  async estimateNetworkFee (numAddresses) {
+    // TODO: create a transaction but don't sign it.
+    // from there, get an estimate of the network fee.
+    // Note: network fee depends on which coins are spent
+    // so it's impossible to know what the actual network fee inspect
+    // until after the spend happens
   }
 
   async getConfirmedBalance () {
@@ -138,6 +157,9 @@ export default class PktManager {
     })
   }
 
+  /*
+  // FIXME: this is the "official" checking method, but returns false alwayys
+  // it appears to fail both the Bs58Check.decode(addr) and Bech32.decode(addr)
   static isValidAddress (addr) {
     const config = {
       bs58Prefixes: [0x75, 0x38, 0xa3, 0x22],
@@ -154,5 +176,19 @@ export default class PktManager {
         return false
       }
     }
+  }
+  /* */
+
+  static isValidAddress (address) {
+    let isValidPktAddress = true
+    if (address.length !== AppConstants.PKT_ADDRESS_LENGTH) {
+      isValidPktAddress = false
+    } else {
+      const pktPrefix = AppConstants.PKT_ADDRESS_PREFIX
+      if (address.substr(0, pktPrefix.length) !== pktPrefix) {
+        isValidPktAddress = false
+      }
+    }
+    return isValidPktAddress
   }
 }

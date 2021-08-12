@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
 import VerticalSwapIcon from '../images/VerticalSwapIcon'
 import PktPriceTicker from '../../utils/PktPriceTicker'
@@ -6,15 +6,16 @@ import AppConstants from '../../utils/AppConstants'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
-const pktPriceTicker = new PktPriceTicker()
-
 const AmountInputWithExchangeRate = (props) => {
+  // TODO: build "send max" feature,
+  // which sends the total address.amount minus PKT transation fee
   const { colors, dimensions } = useTheme()
   const [amount, _setAmount] = useState('')
   const [convertedAmount, setConvertedAmount] = useState('')
   const [invalidAmount, setInvalidAmount] = useState(false)
   const [exceedsMax, setExceedsMax] = useState(false)
   const [isConverted, setIsConverted] = useState(false)
+  const pktPriceTicker = useRef(new PktPriceTicker())
 
   const setAmount = (amount) => {
     let isInvalid = false
@@ -26,8 +27,8 @@ const AmountInputWithExchangeRate = (props) => {
     } else if (floatAmount <= 0) {
       isInvalid = true
     } else {
-      convertedAmount = pktPriceTicker.convertCurrency(isConverted, floatAmount)
-      const convertedMaxAmount = pktPriceTicker.convertCurrency(isConverted, props.maxAmount)
+      convertedAmount = pktPriceTicker.current.convertCurrency(isConverted, floatAmount)
+      const convertedMaxAmount = pktPriceTicker.current.convertCurrency(isConverted, props.maxAmount)
       if (convertedAmount > convertedMaxAmount) {
         exceedsMax = true
       }
@@ -74,6 +75,9 @@ const AmountInputWithExchangeRate = (props) => {
       paddingRight: dimensions.inputs.paddingHorizontal,
       paddingLeft: dimensions.horizontalSpacingBetweenItemsShort,
       color: colors.inputs.color
+    },
+    inputCurrencyDisabled: {
+      color: colors.disabledText
     },
     conversion: {
       width: '100%',
@@ -131,6 +135,14 @@ const AmountInputWithExchangeRate = (props) => {
     textInputStyles.push(styles.textInputRegular)
   }
 
+  const getInputCurrencyStyle = () => {
+    const inputCurrencyStyles = [styles.inputCurrency]
+    if (props.disabled) {
+      inputCurrencyStyles.push(styles.inputCurrencyDisabled)
+    }
+    return inputCurrencyStyles
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
@@ -143,23 +155,25 @@ const AmountInputWithExchangeRate = (props) => {
               placeholder={props.placeholder}
               onChangeText={amount => setAmount(amount)}
               value={amount}
+              disabled={props.disabled}
             />
-            <Text style={styles.inputCurrency}>
-              {pktPriceTicker.primaryCurrencyCode(isConverted, props.fiat.code)}
+            <Text style={getInputCurrencyStyle()}>
+              {pktPriceTicker.current.primaryCurrencyCode(isConverted, props.fiat.code)}
             </Text>
           </View>
           <View style={styles.conversion}>
             {(!invalidAmount && !exceedsMax) &&
               <>
-                <Text style={styles.convertedAmount}>{convertedAmount}</Text>{' '}
+                <Text style={styles.convertedAmount}>{convertedAmount}</Text>
+                <Text>{' '}</Text>
                 <Text style={styles.convertedCurrency}>
-                  {pktPriceTicker.alternateCurrencyCode(isConverted, props.fiat.code)}
+                  {pktPriceTicker.current.alternateCurrencyCode(isConverted, props.fiat.code)}
                 </Text>
               </>}
             {(invalidAmount && !exceedsMax) &&
               <Text style={[styles.errorText, styles.supportingText]}>{translate('invalidAmount')}</Text>}
             {exceedsMax &&
-              <Text style={[styles.errorText, styles.supportingText]}>{translate('insufficientFunds')}(</Text>}
+              <Text style={[styles.errorText, styles.supportingText]}>{translate('insufficientFunds')}</Text>}
           </View>
         </View>
         <View>

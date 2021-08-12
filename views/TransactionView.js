@@ -451,7 +451,6 @@ const TransactionView = ({ navigation, route }) => {
           <ActiveButton
             title={translate('saveNote')}
             onPress={() => {
-              console.log('close')
               transactionNoteManager.current.set(
                 transaction.txid,
                 newNote

@@ -16,8 +16,6 @@ export default class ClipboardManager {
   }
 
   static async set (data) {
-    console.log(this.isWeb())
-    console.log(`ClipboardManager.set('${data}')`)
     if (this.isWeb()) {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(data)
@@ -40,7 +38,6 @@ export default class ClipboardManager {
 
   static async get () {
     let data = null
-    console.log(`${data} = ClipboardManager.get()`)
     if (this.isWeb()) {
       data = await navigator.clipboard.readText()
     } else {

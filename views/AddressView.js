@@ -322,7 +322,6 @@ const AddressView = ({ navigation, route }) => {
                   contactLookup={contactLookup}
                   pktPriceTicker={pktPriceTicker}
                   onListItemPress={(transaction) => {
-                    console.log('onlistitemclick')
                     navigation.push('TransactionView', { transaction: transaction })
                   }}
                 />

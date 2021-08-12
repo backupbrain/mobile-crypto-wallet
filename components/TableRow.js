@@ -1,5 +1,6 @@
-import * as React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import BodyText from './text/BodyText'
 import { useTheme } from '@react-navigation/native'
 
 const TableRow = (props) => {
@@ -21,12 +22,12 @@ const TableRow = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
+      <BodyText style={styles.label}>
         {props.label}
-      </Text>
-      <Text style={styles.value}>
+      </BodyText>
+      <BodyText style={styles.value}>
         {props.value}
-      </Text>
+      </BodyText>
     </View>
   )
 }

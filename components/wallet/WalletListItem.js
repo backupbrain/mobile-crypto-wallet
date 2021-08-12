@@ -2,6 +2,8 @@ import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import LinkButton from '../buttons/LinkButton'
 import BodyText from '../text/BodyText'
+import PersonIcon from '../images/PersonIcon'
+import QrCodeIcon from '../images/QrCodeIcon'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 
@@ -40,6 +42,7 @@ const toUsd = (amount) => {
 const WalletListItem = (props) => {
   const { colors, dimensions } = useTheme()
   const showAmount = (props.showAmount && props.amount)
+  const isLocalAddress = (props.amount || props.local)
   const address = '' + props.address
   const displayedName = props.name ? props.name : translate('unnamedAddress')
 
@@ -48,6 +51,9 @@ const WalletListItem = (props) => {
       flexDirection: 'row',
       width: '100%',
       alignItems: 'center'
+    },
+    icon: {
+      paddingRight: dimensions.horizontalSpacingBetweenItems
     },
     accountInformation: {
       flexGrow: 1
@@ -74,6 +80,9 @@ const WalletListItem = (props) => {
 
   return (
     <View style={[styles.container, props.style]}>
+      <View style={styles.icon}>
+        {isLocalAddress ? <QrCodeIcon color={colors.text} /> : <PersonIcon color={colors.text} />}
+      </View>
       <View style={styles.accountInformation}>
         <BodyText style={styles.accountName}>{displayedName}</BodyText>
         {showAmount

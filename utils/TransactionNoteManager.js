@@ -8,12 +8,10 @@ export default class TransactionNoteManager {
   }
 
   async getAll () {
-    console.log('.getAll()')
     let notes = await AdaptiveStorage.get(AppConstants.TRANSACTION_NOTES_KEY)
-    if (notes === 'undefined') {
+    if (notes === undefined) {
       notes = {}
     }
-    console.log(notes)
     this.notes = notes
     this.isLoaded = true
     return notes
@@ -27,7 +25,6 @@ export default class TransactionNoteManager {
   }
 
   async set (transactionId, text) {
-    console.log('.set()')
     if (!this.isLoaded) {
       await this.getAll()
     }
@@ -43,7 +40,6 @@ export default class TransactionNoteManager {
   }
 
   async save () {
-    console.log('.save()')
     if (!this.isLoaded) {
       await this.getAll()
     }

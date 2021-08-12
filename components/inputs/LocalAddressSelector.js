@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 
@@ -9,12 +10,11 @@ const LocalAddressSelector = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      width: '100%',
-      paddingBottom: '16px'
+      width: '100%'
     },
     label: {
       width: '100%',
-      paddingBottom: '10px'
+      paddingVertical: dimensions.verticalSpacingBetweenItems
     },
     textInput: {
       width: '100%',
@@ -65,12 +65,12 @@ const LocalAddressSelector = (props) => {
 
   return (
     <View style={styles.container}>
-      {props.label && <Text style={styles.label}>{props.label}</Text>}
+      {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <View style={textInputStyles}>
-        <Text style={styles.input}>{placeholder}</Text>
+        <BodyText style={styles.input}>{placeholder}</BodyText>
       </View>
-      {(props.help && !props.error) && <Text style={[styles.helpText, styles.supportingText]}>{props.help}</Text>}
-      {props.error && <Text style={[styles.errorText, styles.supportingText]}>{props.error}</Text>}
+      {(props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>}
+      {props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
     </View>
   )
 }

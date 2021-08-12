@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Text, TextInput, View, StyleSheet } from 'react-native'
+import { TextInput, View, StyleSheet } from 'react-native'
+import BodyText from '../text/BodyText'
 import { useTheme } from '@react-navigation/native'
 
 const GenericTextInput = (props) => {
@@ -66,7 +67,7 @@ const GenericTextInput = (props) => {
 
   return (
     <View style={[styles.container, props.style]}>
-      {props.label && <Text style={styles.label}>{props.label}</Text>}
+      {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <TextInput
         style={textInputStyles}
         placeholder={placeholder}
@@ -78,8 +79,8 @@ const GenericTextInput = (props) => {
           }
         }}
       />
-      {(props.help && !props.error) && <Text style={[styles.helpText, styles.supportingText]}>{props.help}</Text>}
-      {props.error && <Text style={[styles.errorText, styles.supportingText]}>{props.error}</Text>}
+      {(props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>}
+      {props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
     </View>
   )
 }

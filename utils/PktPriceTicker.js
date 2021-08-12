@@ -1,36 +1,53 @@
 /**
  * Get the PKT price from a PKT price ticker
  */
-import 'dotenv/config'
+// import 'dotenv/config'
 import { getCurrentLocale } from '../translations'
 import AppConstants from '../utils/AppConstants'
 import AdaptiveStorage from '../utils/AdaptiveStorage'
 
-const apiKey = process.env.PKT_TICKER_API_KEY
+const apiKey = AppConstants.PKT_TICKER_API_KEY
 
 export default class PktPriceTicker {
-  url () { return 'https://pktticker.tonygaitatzis.com' }
+  static get DEBUG () { return true }
+
+  // update frequency is 4 times per day
+  static get UPDATE_FREQUENCY_S () {
+    return (6 * 60 * 60)
+  }
+
+  // don't let someone retrieve a new price more than once per hour
+  static get MAX_UPDATE_TIMEOUT_S () {
+    return (1 * 60 * 60)
+  }
+
+  static get url () {
+    return 'https://pktticker.tonygaitatzis.com'
+  }
 
   constructor () {
-    console.log('new PktPriceTicker()')
     this.apiKey = apiKey
     this.priceHistory = {}
     this.spotPrice = {}
+    this.lastSpotPriceFetchTime = {}
     const supportedCurrencies = AppConstants.SUPPORTED_CURRENCIES
     for (const row in supportedCurrencies) {
       const currency = supportedCurrencies[row]
-      console.log(currency)
-      this.spotPrice[currency] = 0.02
+      this.spotPrice[currency] = AppConstants.DEFAULT_PKT_FIAT_VALUE
       const spotPriceStorageKey = `pkt${currency}${AppConstants.PKT_SPOT_PRICE_KEY_SUFFIX}`
-      const priceHistoryStorageKey = `pkt${currency}${AppConstants.PKT_PRICE_HISTORY_KEY_SUFFIX}`
-      console.log(spotPriceStorageKey)
+      // const priceHistoryStorageKey = `pkt${currency}${AppConstants.PKT_PRICE_HISTORY_KEY_SUFFIX}`
+      const spotPriceTimesmatpStorageKey = `pkt${currency}${AppConstants.PKT_SPOT_PRICE_TIMESTAMP_KEY_SUFFIX}`
 
       this.getDataFromStorage(spotPriceStorageKey, `${AppConstants.DEFAULT_PKT_FIAT_VALUE}`)
         .then(response => {
-          console.log('spotPrice')
-          console.log(response)
+          this.spotPrice[currency] = response
         })
 
+      // set the last retrieved time
+      this.getDataFromStorage(spotPriceTimesmatpStorageKey, 0)
+        .then(response => {
+          this.lastSpotPriceFetchTime[currency] = response
+        })
       /*
       this.spotPrice[currency] = this.getDataFromStorage(spotPriceStorageKey, `${AppConstants.DEFAULT_PKT_FIAT_VALUE}`)
       this.priceHistory[currency] = this.getDataFromStorage(priceHistoryStorageKey, '[]')
@@ -44,13 +61,26 @@ export default class PktPriceTicker {
 
   async getDataFromStorage (key, defaultValue) {
     const stringData = await AdaptiveStorage.get(key, defaultValue)
-    console.log('stringData')
-    console.log(stringData)
     return JSON.parse(stringData)
   }
 
   saveDataToStorage (key, data) {
     AdaptiveStorage.set(key, JSON.stringify(data))
+  }
+
+  isEligibleToFetchRemote (otherCurrency) {
+    const currentTimestamp = Math.floor(Date.now() / 1000)
+    // if the last fetch time is expired
+    if (currentTimestamp - this.lastSpotPriceFetchTime[otherCurrency] > PktPriceTicker.MAX_UPDATE_TIMEOUT_S) {
+      return true
+    } else {
+      // if there is no value for this currency yet
+      if (this.spotPrice[otherCurrency] === null || this.spotPrice[otherCurrency] === undefined) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 
   getHeaders () {
@@ -62,29 +92,43 @@ export default class PktPriceTicker {
   }
 
   async fetchSpotPrice (otherCurrency) {
-    otherCurrency = otherCurrency.toUpperCase()
-    const endpoint = `${this.url}/api/1.0/spot/PKT/${otherCurrency}`
-    const headers = this.getHeaders()
-    const response = await fetch(endpoint, { headers: headers })
-    const data = await response.json()
-    // TODO: extract data from response
-    const spotPrice = parseFloat(data.amount)
-    this.spotPrice[otherCurrency] = spotPrice
-    this.saveDataToStorage(`pkt${otherCurrency}${AppConstants.PKT_SPOT_PRICE_KEY_SUFFIX}`, spotPrice)
-    return response
+    let spotPrice = AppConstants.DEFAULT_PKT_FIAT_VALUE
+    if (this.isEligibleToFetchRemote(otherCurrency)) {
+      otherCurrency = otherCurrency.toUpperCase()
+      const endpoint = `${PktPriceTicker.url}/api/1.0/spot/PKT/${otherCurrency}`
+      // const headers = this.getHeaders()
+      const response = await window.fetch(endpoint) // , { headers: headers })
+      const data = await response.json()
+      spotPrice = parseFloat(data.price)
+      this.spotPrice[otherCurrency] = spotPrice
+      this.saveDataToStorage(`pkt${otherCurrency}${AppConstants.PKT_SPOT_PRICE_KEY_SUFFIX}`, spotPrice)
+    } else {
+      const spotPriceStorageKey = `pkt${otherCurrency}${AppConstants.PKT_SPOT_PRICE_KEY_SUFFIX}`
+      const response = await this.getDataFromStorage(spotPriceStorageKey, `${AppConstants.DEFAULT_PKT_FIAT_VALUE}`)
+      this.spotPrice[otherCurrency] = response
+      spotPrice = response
+    }
+    return spotPrice
   }
 
   async fetchSpotHisory (otherCurrency) {
-    otherCurrency = otherCurrency.toUpperCase()
-    const endpoint = `${this.url}/api/1.0/history/spot/PKT/${otherCurrency}`
-    const headers = this.getHeaders()
-    const response = await fetch(endpoint, { headers: headers })
-    const data = await response.json()
-    // TODO: extract data from response
-    const history = data
-    this.priceHistory[otherCurrency] = history
-    this.saveDataToStorage(`pkt${otherCurrency}${AppConstants.PKT_PRICE_HISTORY_KEY_SUFFIX}`, history)
-    return response
+    let priceHistory = []
+    if (this.isEligibleToFetchRemote(otherCurrency)) {
+      otherCurrency = otherCurrency.toUpperCase()
+      const endpoint = `${PktPriceTicker.url}/api/1.0/history/spot/PKT/${otherCurrency}`
+      // const headers = this.getHeaders()
+      const response = await window.fetch(endpoint) // , { headers: headers })
+      const data = await response.json()
+      priceHistory = data
+      this.priceHistory[otherCurrency] = priceHistory
+      this.saveDataToStorage(`pkt${otherCurrency}${AppConstants.PKT_PRICE_HISTORY_KEY_SUFFIX}`, priceHistory)
+    } else {
+      const priceHistoryStorageKey = `pkt${otherCurrency}${AppConstants.PKT_PRICE_HISTORY_KEY_SUFFIX}`
+      const response = await this.getDataFromStorage(priceHistoryStorageKey, [])
+      this.priceHistory[otherCurrency] = response
+      priceHistory = response
+    }
+    return priceHistory
   }
 
   getCurrentSpotPrice (otherCurrency) {
@@ -140,17 +184,15 @@ export default class PktPriceTicker {
       return alternateCurrencyCode
     }
   }
-}
 
-export const isValidPktAddress = (address) => {
-  let isValidPktAddress = true
-  if (address.length <= AppConstants.PKT_ADDRESS_LENGTH) {
-    isValidPktAddress = false
-  } else {
-    const pktPrefix = AppConstants.PKT_ADDRESS_PREFIX
-    if (address.substr(0, pktPrefix.length) !== pktPrefix) {
-      isValidPktAddress = false
+  log (message) {
+    const className = this.constructor.name
+    let strMessage = message
+    if (typeof message !== 'string') {
+      strMessage = JSON.stringify(message)
+    }
+    if (PktPriceTicker.DEBUG) {
+      console.log(`[${className}] ${strMessage}`)
     }
   }
-  return isValidPktAddress
 }

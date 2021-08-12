@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import BodyText from '../text/BodyText'
 import ClipboardManager from '../../utils/ClipboardManager'
 import PasteIcon from '../images/PasteIcon'
 import PersonIcon from '../images/PersonIcon'
 import ScanQrCodeIcon from '../images/ScanQrCodeIcon'
+import PktManager from '../../utils/PktManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
-const RemoteAddressWidget = (props) => {
+const RemoteAddressWidget = (props, ref) => {
+  // TODO: lookup address by ContactManager name or by federated address
   const { colors, dimensions } = useTheme()
   const [address, _setAddress] = useState('')
+  const [displayAddress, setDisplayAddress] = useState('')
+  const [inputWidth, setInputWidth] = useState(10)
+  const [isInputWidthSet, setIsInputWidthSet] = useState(false)
   const [isInvalid, setIsInvalid] = useState(false)
+  const [, setIsValid] = useState(false)
+
+  useImperativeHandle(ref, () => ({
+    setAddress: (address) => setAddress(address)
+  }))
 
   const pasteAddressFromClipboard = async () => {
     const clipboardContent = await ClipboardManager.get()
@@ -20,14 +31,27 @@ const RemoteAddressWidget = (props) => {
   }
 
   const setAddress = (address) => {
-    // TODO: validate address
-    let isInvalid = false
-    setIsInvalid(isInvalid)
     _setAddress(address)
+    setDisplayAddress(address)
+    const isValidAddress = PktManager.isValidAddress(address)
+    const isInvalidAddress = !isValidAddress
+    setIsValid(isValidAddress)
+    setIsInvalid(isInvalidAddress)
+    if (props.onValid) {
+      props.onValid(address, isValidAddress)
+    }
+    if (props.onInvalid) {
+      props.onInvalid(address, isInvalidAddress)
+    }
+    if (props.onChangeText) {
+      props.onChangeText(address)
+    }
   }
 
   useEffect(() => {
-    setAddress(props.address)
+    if (props.address) {
+      setAddress(props.address)
+    }
   }, [setAddress, props.address])
 
   const styles = StyleSheet.create({
@@ -36,7 +60,6 @@ const RemoteAddressWidget = (props) => {
     },
     textInput: {
       flexDirection: 'row',
-      width: '100%',
       backgroundColor: colors.inputs.backgroundColor,
       borderRadius: dimensions.inputs.borderRadius,
       borderTopWidth: dimensions.inputs.borderTopWidth,
@@ -56,11 +79,24 @@ const RemoteAddressWidget = (props) => {
       borderRightColor: colors.inputs.borderRightErrorColor,
       borderBottomColor: colors.inputs.borderBottomErrorColor
     },
+    inputContainer: {
+      flexGrow: 1
+    },
     input: {
-      color: colors.inputs.color,
       paddingHorizontal: dimensions.inputs.paddingHorizontal,
       paddingVertical: dimensions.inputs.paddingVertical,
-      flexGrow: 1
+      width: inputWidth,
+      overflow: 'hidden',
+      overflowWrap: 'normal',
+      wordBreak: 'none',
+      whiteSpace: 'normal'
+    },
+    inputText: {
+      color: colors.inputs.color
+    },
+    inputPlaceholder: {
+      color: colors.inputs.placeholderTextColor,
+      overflow: 'hidden'
     },
     buttons: {
       justifyContent: 'flex-end',
@@ -110,12 +146,38 @@ const RemoteAddressWidget = (props) => {
     <View style={[styles.container, props.style]}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
       <View style={textInputStyles}>
+        {/*
         <TextInput
           style={styles.input}
           placeholder={props.placeholder}
           value={address}
-          onFocus={props.onPress}
+          onChangeText={(text) => {
+            setAddress(text)
+          }}
+          onFocus={() => {
+            // FIXME: prevent this from firing on paste, etc
+            if (props.onPress) {
+              props.onPress()
+            }
+          }}
         />
+        */}
+        <TouchableOpacity
+          style={styles.inputContainer}
+          onPress={props.onPress}
+          onLayout={(event) => {
+            if (!isInputWidthSet) {
+              const { width } = event.nativeEvent.layout
+              setInputWidth(width)
+              setIsInputWidthSet(true)
+              setDisplayAddress(address)
+            }
+          }}
+        >
+          {(address && isInputWidthSet)
+            ? <BodyText style={[styles.input, styles.inputText]}>{displayAddress}</BodyText>
+            : <BodyText style={[styles.input, styles.inputPlaceholder]}>{props.placeholder}</BodyText>}
+        </TouchableOpacity>
         <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.buttonFirst}
@@ -157,4 +219,4 @@ const RemoteAddressWidget = (props) => {
   )
 }
 
-export default RemoteAddressWidget
+export default forwardRef(RemoteAddressWidget)

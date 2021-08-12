@@ -24,8 +24,6 @@ export default class AdaptiveStorage {
     const isEncrypted = await AdaptiveStorage.isEncryptionAvailable()
     if (isEncrypted) {
       const value = await SecureStore.getItemAsync(key)
-      console.log('asyncStorage')
-      console.log(value)
       if (value === undefined) {
         return defaultValue
       }

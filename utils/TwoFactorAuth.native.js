@@ -38,7 +38,6 @@ export default class TwoFactorAuth {
   async getPairingCode () {
     const secret = await AdaptiveStorage.get(AppConstants.AUTH_PAIRING_CODE)
     this.secret = secret
-    console.log(this.secret)
     return secret
   }
 
@@ -58,7 +57,6 @@ export default class TwoFactorAuth {
   }
 
   startTokenGenerator () {
-    console.log(this.secret)
     this.otpauth = authenticator.keyuri(this.user, this.service, this.secret)
   }
 

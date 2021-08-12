@@ -1,5 +1,6 @@
 import React from 'react'
-import { SectionList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { SectionList, StyleSheet, View, TouchableOpacity } from 'react-native'
+import BodyText from '../text/BodyText'
 import WalletListItem from './WalletListItem.js'
 import ListSectionHeader from '../lists/ListSectionHeader'
 import translate from '../../translations'
@@ -60,7 +61,7 @@ const WalletList = (props) => {
         keyExtractor={(item, index) => index}
       />
       {!addresses.length &&
-        <Text style={styles.noAddresses}>{translate('noAddresses')}</Text>}
+        <BodyText style={styles.noAddresses}>{translate('noAddresses')}</BodyText>}
     </View>
   )
 }

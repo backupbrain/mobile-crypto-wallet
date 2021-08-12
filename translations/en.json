@@ -68,9 +68,9 @@
   "localAddressPlaceholder": "Select from address...",
   "remoteAddressPlaceholder": "Recipient PKT address",
   "remoteAddressHelpText": "Type PKT address, name, or email",
-  "amount": "Amount",
-  "USD": "USD",
-  "PKT": "PKT",
+  "amount": "Amount:",
+  "pkt": "USD",
+  "usd": "PKT",
   "notePlaceholder": "Note",
   "noteHelpText": "Note will be saved securely on your device",
 
@@ -161,7 +161,14 @@
   "editNote": "Edit note",
   "saveNote": "Save note",
   "shareTransactionId": "Share transaction ID",
-  "copyTransactionId": "Copy transaction ID"
+  "copyTransactionId": "Copy transaction ID",
 
+  "youWillSend": "You are about to send:",
+  "slideToConfirm": "Slide to Confirm",
+  "2faCode": "2FA Code",
+  "2faCodeHelpText": "Enter your one-time-password",
+
+  "recipientAddress": "Recipient Address",
+  "useAddress": "Use Address"
 
 }

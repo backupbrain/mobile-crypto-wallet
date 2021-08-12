@@ -179,13 +179,14 @@ const ContactsViewSet = () => {
 const DrawerNavigator = () => {
   return (
     <MainNavigator.Navigator>
+      <MainNavigator.Screen name='ContactsViewSet' component={ContactsViewSet} />
       <MainNavigator.Screen name='FirstViewSet' component={FirstViewSet} />
       <MainNavigator.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
       <MainNavigator.Screen name='SendCryptoViewSet' component={SendCryptoViewSet} />
       <MainNavigator.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
       <MainNavigator.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <MainNavigator.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
-      <MainNavigator.Screen name='ContactsViewSet' component={ContactsViewSet} />
+
       <Stack.Screen
         name='SecurityView'
         options={{ title: translate('security'), headerShown: false }}

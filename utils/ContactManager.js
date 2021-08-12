@@ -8,7 +8,9 @@ export class Contact {
   }
 }
 
-export default class PktAddressContactManager {
+export default class ContactManager {
+  static get DEBUG () { return false }
+
   constructor () {
     this.contacts = []
     this.lookup = {}
@@ -16,23 +18,27 @@ export default class PktAddressContactManager {
   }
 
   async initialize () {
+    this.log('.initialize()')
     this.getAll()
   }
 
   async getAll () {
+    this.log('.getAll()')
     let contacts = await AdaptiveStorage.get(AppConstants.CONTACT_LIST_KEY)
-    if (contacts === 'undefined' || contacts === null) {
+    if (contacts === undefined || contacts === null) {
       contacts = []
     }
-    this.isLoaded = true
     this.setAll(contacts)
+    this.isLoaded = true
   }
 
   async save () {
+    this.log('.save()')
     await AdaptiveStorage.set(AppConstants.CONTACT_LIST_KEY, this.contacts)
   }
 
   async getByAddress (address) {
+    this.log('.getByAddress()')
     if (this.contacts.length === 0) {
       await this.getAll()
     }
@@ -43,6 +49,7 @@ export default class PktAddressContactManager {
   }
 
   async getByName (name) {
+    this.log('.getByName()')
     if (this.contacts.length === 0) {
       await this.getAll()
     }
@@ -55,6 +62,7 @@ export default class PktAddressContactManager {
   }
 
   async set (contact) {
+    this.log(`.set(${contact.name}, ${contact.address})`)
     // check if there is an existing contact with this address
     const row = this.lookup[contact.address]
     if (row !== undefined) {
@@ -63,29 +71,70 @@ export default class PktAddressContactManager {
       this.contacts.push(contact)
       this.lookup[contact.address] = this.contacts.length - 1
     }
-    await this.save()
+    // await this.save()
   }
 
+  async add (name, address) {
+    const contact = new Contact(name, address)
+    return this.set(contact)
+  }
+
+  async removeByRow (row) {
+    this.log(`.removeByRow(${row})`)
+    this.contacts.splice(row, 1)
+    this.setAll(this.contacts)
+  }
+
+  /*
+  async updateRow (row, name, address) {
+    await this.removeByRow(row)
+    const contact = new Contact(name, address)
+    await this.set(contact)
+  }
+
+  async updateAddress (oldAddress, name, newAddress) {
+    this.log(`.updateAddress(${oldAddress}, ${name}, ${newAddress})`)
+    // await this.remove(oldAddress)
+    // const contact = new Contact(name, newAddress)
+    // await this.set(contact)
+  }
+  /* */
+
   async setAll (contacts) {
-    this.contacts.splice(0, this.contacts.length - 1)
+    this.log('.setAll()')
+    this.contacts = []
+    const lookup = {}
     for (let row = 0; row < contacts.length; row++) {
       const contact = contacts[row]
       this.contacts.push(contact)
-      this.lookup[contact.address] = row
+      lookup[contact.address] = row
     }
+    this.lookup = lookup
     await this.save()
     return contacts
   }
 
   async clearAll () {
+    this.log('.clearAll()')
     this.setAll([])
   }
 
   async remove (address) {
+    this.log(`.remove(${address})`)
     const row = this.lookup[address]
     if (row !== undefined) {
-      this.contacts.splice(row, 1)
+      await this.removeByRow(row)
     }
-    await this.save()
+  }
+
+  log (message) {
+    const className = this.constructor.name
+    let strMessage = message
+    if (typeof message !== 'string') {
+      strMessage = JSON.stringify(message)
+    }
+    if (ContactManager.DEBUG) {
+      console.log(`[${className}] ${strMessage}`)
+    }
   }
 }

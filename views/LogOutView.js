@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../components/Screen'
 import PinManager from '../utils/PinManager'
@@ -11,12 +11,12 @@ import { useTheme } from '@react-navigation/native'
 
 const LogOutView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
-  const pinManager = new PinManager()
-  const passphraseManager = new PassphraseManager()
+  const pinManager = useRef(new PinManager())
+  const passphraseManager = useRef(new PassphraseManager())
   const logout = () => {
     // TOdO: unlink wallet from pktd
-    pinManager.clear()
-    passphraseManager.clear()
+    pinManager.current.clear()
+    passphraseManager.current.clear()
     // QUEStION; clear address book?
   }
   const navigateToFirstView = () => {

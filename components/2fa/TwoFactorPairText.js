@@ -11,8 +11,6 @@ const TwoFactorPairText = (props) => {
     // const newLineText = paddedText.replace(/(.{12})/g, '$1\n')
     return paddedText
   }
-  console.log('props')
-  console.log(props)
 
   const styles = StyleSheet.create({
     container: {

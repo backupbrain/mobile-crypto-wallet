@@ -1,82 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import SearchInput from '../../components/inputs/SearchInput'
 import ContactManager from '../../utils/ContactManager'
+import PktManager from '../../utils/PktManager'
 import ContactList from '../../components/contacts/ContactList'
-import { AntDesign } from '@expo/vector-icons'
+import Screen from '../../components/Screen'
+import PlusIcon from '../../components/images/PlusIcon'
+import BodyText from '../../components/text/BodyText'
+import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
-const myFakeAddresses = [
-  'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
-  'pkt1yclh96uk6p4glgyaakqz40pvqy3s296ma02tulj'
-]
-/*
-const fakeAddresses = [
-  {
-    title: 'My Addresses',
-    data: [
-      {
-        name: 'Account 1',
-        amount: 123456.00134,
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      },
-      {
-        name: 'Account 2',
-        amount: 56.00134,
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      },
-      {
-        name: 'Account 3',
-        amount: 0.0000134,
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      }
-    ]
-  },
-  {
-    title: 'A',
-    data: [
-      {
-        name: 'Adonis',
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      }
-    ]
-  },
-  {
-    title: 'J',
-    data: [
-      {
-        name: 'Josh',
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      },
-      {
-        name: 'Jesse',
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      },
-      {
-        name: 'James',
-        address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
-      }
-    ]
-  }
-]
-/* */
-
-const App = ({ navigation, route }) => {
-  const contactManager = new ContactManager()
+const ContactBookView = ({ navigation, route }) => {
+  const { colors, dimensions } = useTheme()
+  const contactManager = useRef(new ContactManager())
+  const pktManager = useRef(new PktManager())
   const [addresses, setAddresses] = useState([])
+  const [searchFilter, setSearchFilter] = useState('')
   const [isInSelectorMode, setIsInSelectorMode] = useState(false)
-  const [areContactsLoaded, setAreContactsLoaded] = useState(false)
-  const fetchMyAddress = async () => {
+  const [, setAreContactsLoaded] = useState(false)
+  const [noSearchResults, setNoSearchResults] = useState(false)
+  /* const fetchMyAddress = async () => {
     // TODO: load this list from the pkd gRPC
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(myFakeAddresses)
       }, 1)
     })
-  }
-  const buildContactList = (myAddresses, contactManager) => {
+  } */
+  const buildContactList = async (myAddresses, contactManager) => {
+    // force reload of contacts, which otherwise will pull previous list
+    await contactManager.getAll()
+    const contacts = [...contactManager.contacts]
     const formattedAddresses = []
-    const contacts = contactManager.contacts
     const lookup = contactManager.lookup
     const lookupByInitial = {}
 
@@ -84,22 +43,25 @@ const App = ({ navigation, route }) => {
       title: translate('myAddresses'),
       data: []
     }
-    for (const index in myAddresses) {
-      const address = myAddresses[index]
-      const row = lookup[address]
-      if (row !== undefined) {
-        formattedMyAddresses.data.push(contacts[row])
-      } else {
-        const fakeContact = {
-          name: '',
-          address: address,
-          isLocal: true
-        }
-        formattedMyAddresses.data.push(fakeContact)
+    for (const row in myAddresses) {
+      const myAddress = myAddresses[row]
+      const myContact = await contactManager.getByAddress(myAddress.address)
+      const mergedAddress = {
+        address: myAddress.address,
+        amount: myAddress.amount,
+        isLocal: true,
+        name: null
       }
+      if (myContact) {
+        mergedAddress.name = myContact.name
+        delete lookup[myAddress.address]
+      }
+      formattedMyAddresses.data.push(mergedAddress)
     }
     formattedAddresses.push(formattedMyAddresses)
-    for (const contact in contacts) {
+    for (const lookupAddress in lookup) {
+      const row = lookup[lookupAddress]
+      const contact = contacts[row]
       const initial = contact.name.substr(0, 1).toUpperCase()
       if (!(initial in lookupByInitial)) {
         lookupByInitial[initial] = []
@@ -120,80 +82,140 @@ const App = ({ navigation, route }) => {
     setAddresses(formattedAddresses)
     setAreContactsLoaded(true)
   }
+
+  const styles = StyleSheet.create({
+    screen: {
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
+      paddingVertical: dimensions.screen.paddingHorizontal
+    },
+    searchBar: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingBottom: dimensions.paddingVertical
+    },
+    searchInputContainer: {
+      flex: 1
+    },
+    searchInput: {
+    },
+    addContactButtonContainer: {},
+    addButton: {
+      flexShrink: 1,
+      paddingVertical: '10px',
+      paddingLeft: dimensions.button.paddingHorizontal
+    },
+    noResult: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    contactListContainer: {
+    }
+  })
+
   useEffect(() => {
     if (route.params && route.params.selectorMode) {
       setIsInSelectorMode(route.params.selectorMode === true)
     }
     const loadContacts = async () => {
-      const myAddresses = await fetchMyAddress()
-      await contactManager.initialize()
-      buildContactList(myAddresses, contactManager)
+      await contactManager.current.initialize()
+      const myAddresses = await pktManager.current.getAddresses()
+      // REMOVE: DUMMY DATA ------------
+      /* if (contactManager.current.contacts.length === 0) {
+        await contactManager.current.clearAll()
+        await contactManager.current.set(
+          new Contact('John', 'pktdkgutlaktigstoskthsfgtpourhgtksdfhgtksfa')
+        )
+        await contactManager.current.set(
+          new Contact('Natasha', 'pktikgutlaktigstoskhfgfgtpouogitksdfhgortb')
+        )
+      } */
+      // --------------------------------
+      buildContactList(myAddresses, contactManager.current)
     }
-    if (!areContactsLoaded) {
-      loadContacts()
+    loadContacts()
+  }, [route, setIsInSelectorMode, contactManager, navigation])
+
+  const filter = (addresses) => {
+    if (!searchFilter) return addresses
+    const filtered = []
+    for (const index in addresses) {
+      const data = addresses[index].data.filter(
+        (data) =>
+          data.name.startsWith(searchFilter) ||
+          data.address.startsWith(searchFilter)
+      )
+      if (data.length !== 0) {
+        filtered.push({
+          ...addresses[index],
+          data
+        })
+      }
     }
-  }, [route, setIsInSelectorMode, contactManager])
+
+    if (filtered.length === 0) setNoSearchResults(true)
+    return filtered
+  }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <View style={styles.screen}>
         <View style={styles.searchBar}>
           <View style={styles.searchInputContainer}>
             <SearchInput
               placeholder={translate('searchAddresses')}
+              style={styles.searchInput}
+              onChangeText={(text) => {
+                setSearchFilter(text)
+                setNoSearchResults(false)
+              }}
             />
           </View>
           <View style={styles.addContactButtonContainer}>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => {
-                console.log('CLIIICK')
                 navigation.push('EditContactView')
               }}
             >
-              <AntDesign name='plus' size={24} color='blue' />
+              <PlusIcon fill={colors.link.color} size={28} />
             </TouchableOpacity>
           </View>
         </View>
-        <ContactList
-          addresses={addresses}
-          onListItemPress={(row) => {
-            if (isInSelectorMode) {
-              // TODO: select address and return to previous screen
-              console.log(`selected row: ${row}`)
-            } else {
-              navigation.push('EditContactView', { address: row })
-            }
-          }}
-        />
+        <View style={styles.contactListContainer}>
+          {noSearchResults ? (
+            <View style={styles.noResult}>
+              <BodyText>No results</BodyText>
+            </View>
+          ) : (
+
+            <ContactList
+              addresses={filter(addresses)}
+              onListItemPress={(address) => {
+                if (isInSelectorMode) {
+                  // TODO: select address and return to previous screen
+                  // I think by setting a key in localStorage,
+                  // then navigation.goBack()
+                  console.log(`selected row: ${address}`)
+                } else {
+                  console.log(address)
+                  navigation.push(
+                    'EditContactView', {
+                      address: address.address,
+                      name: address.name,
+                      isLocal: address.isLocal
+                    }
+                  )
+                }
+              }}
+              navigation={navigation}
+            />
+          )}
+        </View>
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-  searchBar: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px'
-  },
-  searchInputContainer: {
-    flexGrow: 1
-  },
-  addContactButtonContainer: {
-  },
-  addButton: {
-    flexShrink: 1,
-    paddingVertical: '10px',
-    paddingRight: '20px',
-    paddingLeft: '16px'
-  }
-})
-
-export default App
+export default ContactBookView
