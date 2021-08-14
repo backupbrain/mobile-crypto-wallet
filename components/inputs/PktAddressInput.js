@@ -174,13 +174,13 @@ const PktAddressInput = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.buttonMiddle]}
-            onPress={() => { /* TODO: Open address book */ }}
+            onPress={props.onPersonIconPress}
           >
             <PersonIcon color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.buttonLast]}
-            onPress={() => { /* TODO: Open Qr Code Scanner */ }}
+            onPress={props.onQrCodeIconPress}
           >
             <ScanQrCodeIcon color={colors.text} />
           </TouchableOpacity>

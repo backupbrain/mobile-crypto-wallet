@@ -17,19 +17,29 @@ const AmountInputWithExchangeRate = (props) => {
   const [isConverted, setIsConverted] = useState(false)
   const pktPriceTicker = useRef(new PktPriceTicker())
 
+  const isNumeric = (input) => {
+    return (input - 0) == input && ('' + input).trim().length > 0
+  }
+
   const setAmount = (amount) => {
     let isInvalid = false
     let exceedsMax = false
     let convertedAmount = ''
     const floatAmount = parseFloat(amount)
-    if (isNaN(floatAmount)) {
+    console.log(floatAmount)
+    if (!isNumeric(amount)) {
       isInvalid = true
     } else if (floatAmount <= 0) {
       isInvalid = true
     } else {
+      // check if the amount in PKT exceeds maxAmount
       convertedAmount = pktPriceTicker.current.convertCurrency(isConverted, floatAmount)
-      const convertedMaxAmount = pktPriceTicker.current.convertCurrency(isConverted, props.maxAmount)
-      if (convertedAmount > convertedMaxAmount) {
+      let pktAmount = amount
+      if (isConverted) {
+        pktAmount = convertedAmount
+      }
+      const maxAmount = parseFloat(props.maxAmount)
+      if (pktAmount > maxAmount) {
         exceedsMax = true
       }
     }
@@ -37,6 +47,9 @@ const AmountInputWithExchangeRate = (props) => {
     setExceedsMax(exceedsMax)
     setConvertedAmount(convertedAmount)
     _setAmount(amount)
+    if (props.onChangePktAmount) {
+      props.onChangePktAmount(amount, !isInvalid)
+    }
   }
 
   const styles = StyleSheet.create({
@@ -156,6 +169,7 @@ const AmountInputWithExchangeRate = (props) => {
               onChangeText={amount => setAmount(amount)}
               value={amount}
               disabled={props.disabled}
+              keyboardType='decimal-pad'
             />
             <Text style={getInputCurrencyStyle()}>
               {pktPriceTicker.current.primaryCurrencyCode(isConverted, props.fiat.code)}

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react'
 import { Animated, StyleSheet, View, Text } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
+import LeftChevronIcon from '../images/LeftChevronIcon'
 import { useTheme } from '@react-navigation/native'
 
 const useComponentSize = () => {
@@ -103,6 +103,14 @@ const SlideToConfirmInput = (props) => {
     sliderTextStyle.push(styles.sliderEnabledText)
   }
 
+  const getButtonIconColor = () => {
+    let color = colors.primaryButton.color
+    if (isDisabled) {
+      color = colors.disabledButton.color
+    }
+    return color
+  }
+
   return (
     <View
       style={[troughStyle, props.style]}
@@ -160,14 +168,7 @@ const SlideToConfirmInput = (props) => {
             sliderStyle
           ]}
         >
-          <Entypo
-            name='chevron-small-left'
-            size={24}
-            color='white'
-            style={[
-              sliderTextStyle
-            ]}
-          />
+          <LeftChevronIcon color={getButtonIconColor()} />
         </Animated.View>
       </View>
     </View>

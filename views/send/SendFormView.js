@@ -6,6 +6,8 @@ import LocalAddressSelector from '../../components/inputs/LocalAddressSelector'
 import RemoteAddressWidget from '../../components/inputs/RemoteAddressWidget'
 import AmountInputWithExchangeRate from '../../components/inputs/AmountInputWithExchangeRate'
 import GenericTextInput from '../../components/inputs/GenericTextInput'
+import BodyText from '../../components/text/BodyText'
+import WalletListItem from '../../components/wallet/WalletListItem'
 // import TableRow from '../../components/TableRow'
 import Modal from '../../components/Modal'
 import PktAddressInput from '../../components/inputs/PktAddressInput'
@@ -15,12 +17,16 @@ import PktManager from '../../utils/PktManager'
 import { useTheme } from '@react-navigation/native'
 
 const SendFormView = ({ navigation, route }) => {
-  const { dimensions } = useTheme()
+  const { colors, dimensions } = useTheme()
   const [fromAddress, setFromAddress] = useState('')
+  const [fromContact, setFromContact] = useState({})
   const [isFromAddressValid, setIsFromAddressValid] = useState(false)
+  const [toContact, setToContact] = useState({})
   const [toAddress, setToAddress] = useState('')
   const [isToAddressValid, setIsToAddressValid] = useState(false)
   const [amount, setAmount] = useState(0.0)
+  const [isAmountValid, setIsAmountValid] = useState(false)
+  const [note, setNote] = useState('')
   const [isFormFilled, setIsFormFilled] = useState(false)
   const pktPriceTicker = useRef(new PktPriceTicker())
   const pktManager = useRef(new PktManager())
@@ -41,14 +47,43 @@ const SendFormView = ({ navigation, route }) => {
   }
   useEffect(() => {
     if (route.params) {
-      if (route.params.fromAddress) {
-        setFromAddress(route.params.fromAddress)
+      if (route.params.fromContact) {
+        onFromContactSelected(route.params.fromContact)
       }
       if (route.params.toAddress) {
         setToAddress(route.params.toAddress)
       }
     }
   })
+
+  const onFromContactSelected = (contact) => {
+    setFromContact(contact)
+    setFromAddress(contact.address)
+    setIsFromAddressValid(true)
+  }
+
+  const onToContactSelected = (contact) => {
+    console.log(contact)
+    setToContact(contact)
+    setToAddress(contact.address)
+    setIsToAddressValid(true)
+  }
+
+  const getIsFormFilled = () => {
+    if (
+      fromAddress &&
+      PktManager.isValidAddress(fromAddress) &&
+      toAddress &&
+      PktManager.isValidAddress(toAddress) &&
+      amount &&
+      amount > 0 &&
+      isAmountValid
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   const styles = StyleSheet.create({
     screen: {
@@ -71,6 +106,19 @@ const SendFormView = ({ navigation, route }) => {
     noteInput: {
       paddingBottom: dimensions.paddingVertical
     },
+    fromAddressWalletListItem: {
+      borderColor: colors.inputs.borderColor,
+      borderRadius: dimensions.inputs.borderRadius,
+      borderTopWidth: dimensions.inputs.borderTopWidth,
+      borderLeftWidth: dimensions.inputs.borderLeftWidth,
+      borderRightWidth: dimensions.inputs.borderRightWidth,
+      borderBottomWidth: dimensions.inputs.borderBottomWidth,
+      paddingVertical: dimensions.verticalSpacingBetweenItems
+    },
+    label: {
+      paddingBottom: dimensions.inputs.labelPaddingBottom,
+      color: colors.inputs.labelColor
+    },
     debug: {
     }
   })
@@ -80,16 +128,35 @@ const SendFormView = ({ navigation, route }) => {
       <View style={styles.screen}>
         <TouchableOpacity
           style={styles.fromAddressInput}
-          onPress={() => { navigation.navigate('ContactsViewSet', { selectorMode: true }) }}
+          onPress={() => {
+            navigation.push('ContactBookView', {
+              selectorMode: true,
+              localOnly: true,
+              onContactSelected: onFromContactSelected
+            })
+          }}
         >
-          <LocalAddressSelector
-            label={translate('from')}
-            placeholder={translate('localAddressPlaceholder')}
-            onChangeText={(address) => {
-              setFromAddress(address)
-              updateIsFormFilled(address, toAddress, amount)
-            }}
-          />
+          {fromContact.address
+            ? (
+              <>
+                <BodyText style={styles.label}>{translate('from')}</BodyText>
+                <WalletListItem
+                  name={fromContact.name}
+                  address={fromContact.address}
+                  amount={fromContact.amount}
+                  style={styles.fromAddressWalletListItem}
+                />
+              </>
+            )
+            : (
+              <LocalAddressSelector
+                label={translate('from')}
+                placeholder={translate('localAddressPlaceholder')}
+                onChangeText={(address) => {
+                  setFromAddress(address)
+                }}
+              />
+            )}
         </TouchableOpacity>
         <RemoteAddressWidget
           address={toAddress}
@@ -102,11 +169,13 @@ const SendFormView = ({ navigation, route }) => {
             navigation.push('QrCodeScannerView')
           }}
           onPersonIconPress={() => {
-            navigation.push('Root')
+            navigation.push('ContactBookView', {
+              selectorMode: true,
+              onContactSelected: onToContactSelected
+            })
           }}
           onChangeText={(address) => {
             setToAddress(address)
-            updateIsFormFilled(fromAddress, address, amount)
           }}
           onPress={() => {
             toAddressModalRef.current.open()
@@ -120,17 +189,20 @@ const SendFormView = ({ navigation, route }) => {
           style={styles.amountInput}
           label={translate('amount')}
           fiat={{ code: pktPriceTicker.current.getUserFiatCurrency() }}
-          maxAmount={fromAddress.amount}
+          maxAmount={fromContact.amount}
           disabled={!isFromAddressValid}
-          onChangePktAmount={(amountPkt) => {
+          onChangePktAmount={(amountPkt, isAmountValid) => {
             setAmount(amountPkt)
-            updateIsFormFilled(fromAddress, toAddress, amountPkt)
+            setIsAmountValid(isAmountValid)
           }}
         />
         <GenericTextInput
+          label={translate('note')}
           style={styles.noteInput}
           placeholder={translate('notePlaceholder')}
           help={translate('noteHelpText')}
+          onChangeText={(text) => setNote(text)}
+          value={note}
         />
         {/*  TODO: in a future version, estimate network cost
         <View style={styles.sendingEstimateContainer}>
@@ -148,15 +220,16 @@ const SendFormView = ({ navigation, route }) => {
           title={translate('previewSend')}
           onPress={() => {
             navigation.push(
-              'PreviewSendView',
+              'SendPreviewView',
               {
                 fromAddress,
                 toAddress,
-                amount
+                amount,
+                note
               }
             )
           }}
-          disabled={!isFormFilled}
+          disabled={!getIsFormFilled()}
         />
       </View>
       <Modal
@@ -170,6 +243,15 @@ const SendFormView = ({ navigation, route }) => {
               onValid={(address, isValid) => {
                 setNewToAddress(address)
                 setIsNewToAddressValid(isValid)
+              }}
+              onPersonIconPress={() => {
+                navigation.push('ContactBookView', {
+                  selectorMode: true,
+                  onContactSelected: onToContactSelected
+                })
+              }}
+              onQrCodeIconPress={() => {
+                navigation.push('QrCodeScannerView')
               }}
             />
           </View>

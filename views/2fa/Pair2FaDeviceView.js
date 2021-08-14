@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import Screen from '../../components/Screen'
 import BodyText from '../../components/text/BodyText'
@@ -16,17 +16,30 @@ import { useTheme } from '@react-navigation/native'
 const Pair2FaDeviceView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const [is2FaReady, setIs2FaReady] = useState(false)
+  const [is2FaInitialized, setIs2FaInitialized] = useState(false)
   const [pairingCode, setPairingCode] = useState('')
   const [pairingSecret, setPairingSecret] = useState('')
-  const twoFactorAuth = useRef(new TwoFactorAuth(translate('pktWallet'), translate('pktWallet')))
+  const [twoFactorAuth, setTwoFactorAuth] = useState(null)
   const isPlatformMobile = (Platform.OS === 'ios' || Platform.OS === 'android')
+
+  const user = translate('pktWallet')
+  const service = translate('pktWallet')
+
   useEffect(() => {
-    twoFactorAuth.current.initialize().then(() => {
-      setPairingCode(twoFactorAuth.otpauth)
-      setPairingSecret(twoFactorAuth.secret)
-      setIs2FaReady(true)
-    })
-  })
+    const initializeTwoFactorAuth = async () => {
+      if (!is2FaInitialized) {
+        const twoFactorAuth = new TwoFactorAuth(user, service)
+        setTwoFactorAuth(twoFactorAuth)
+        setIs2FaInitialized(true)
+        await twoFactorAuth.initialize()
+        await twoFactorAuth.createPairingCode()
+        setPairingCode(twoFactorAuth.otpauth)
+        setPairingSecret(twoFactorAuth.secret)
+        setIs2FaReady(true)
+      }
+    }
+    initializeTwoFactorAuth()
+  }, [is2FaInitialized])
 
   const styles = StyleSheet.create({
     screen: {
@@ -60,9 +73,8 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
             tabs={[
               {
                 title: translate('qrCode'),
-                card: (
-                  <>
-                    {/* <Text>{pairingCode}</Text> */}
+                content: (
+                  <View>
                     <AddressQrCode address={pairingCode} ready={is2FaReady} />
                     <View style={styles.linkButtons}>
                       <View style={styles.linkButton}>
@@ -73,12 +85,12 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
                       </View>
                       {isPlatformMobile && <View style={styles.linkButton}><LinkButton title={translate('sharePairingCode')} onPress={() => SharingManager.share(twoFactorAuth.pairingCode)} /></View>}
                     </View>
-                  </>
+                  </View>
                 )
               },
               {
                 title: translate('textCode'),
-                card: (
+                content: (
                   <>
                     <TwoFactorPairText pairingCode={pairingSecret} ready={is2FaReady} />
                     <View style={styles.linkButtons}>

@@ -1,5 +1,6 @@
-import React, { useState, useMemo, createRef, useRef } from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import React, { useState, useMemo, createRef, useEffect } from 'react'
+import { StyleSheet, View, TextInput } from 'react-native'
+import BodyText from '../text/BodyText'
 import TwoFactorAuth from '../../utils/TwoFactorAuth'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
@@ -10,27 +11,35 @@ const OtpInput = (props) => {
   const pinInputRefs = useMemo(() => Array(numChars).fill(0).map(i => createRef()), [])
   const [pin, setPin] = useState('')
   const [pinError, setPinError] = useState(false)
-  const twoFactorAuth = useRef(new TwoFactorAuth(translate('pktWallet'), translate('pktWallet')))
-  const validatePin = (pin) => {
-    const isPinValid = twoFactorAuth.current.isPinValid(pin)
-    setPinError(isPinValid)
+  const [twoFactorAuth, setTwoFactorAuth] = useState(null)
+  const [is2FaInitialized, setIs2FaInitialized] = useState(false)
+  const [, setIs2FaReady] = useState(false)
+
+  const user = translate('pktWallet')
+  const service = translate('pktWallet')
+
+  const validatePin = async (pin) => {
+    const isPinValid = await twoFactorAuth.isPinValid(pin)
+    setPinError(!isPinValid)
     if (isPinValid && props.onValidPin) {
       props.onValidPin(pin)
     }
   }
   const updatePin = (text, position) => {
     setPinError(false)
+    let newPin
     if (text !== '') {
       if (pin.length > position) {
-        const newPin = pin.substr(0, position - 1) + text + pin.substr(position, pin.length)
+        newPin = pin.substr(0, position - 1) + text + pin.substr(position, pin.length)
         setPin(newPin)
       } else {
-        setPin(`${pin}${text}`)
+        newPin = `${pin}${text}`
+        setPin(newPin)
       }
       if (position < pinInputRefs.length - 1) {
         pinInputRefs[position + 1].current.focus()
       } else {
-        validatePin(pin)
+        validatePin(newPin)
       }
     }
   }
@@ -49,6 +58,19 @@ const OtpInput = (props) => {
       return ''
     }
   }
+
+  useEffect(() => {
+    const initializeTwoFactorAuth = async () => {
+      if (!is2FaInitialized) {
+        const twoFactorAuth = new TwoFactorAuth(user, service)
+        setTwoFactorAuth(twoFactorAuth)
+        setIs2FaInitialized(true)
+        await twoFactorAuth.initialize()
+        setIs2FaReady(true)
+      }
+    }
+    initializeTwoFactorAuth()
+  }, [is2FaInitialized])
 
   const styles = StyleSheet.create({
     container: {
@@ -108,7 +130,7 @@ const OtpInput = (props) => {
 
   return (
     <View style={[styles.container, props.style]}>
-      {props.label && <Text style={styles.label}>{props.label}</Text>}
+      {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <View style={styles.inputContainer}>
         {pinInputRefs.map((pinInputRef, index) => (
           <TextInput
@@ -132,8 +154,8 @@ const OtpInput = (props) => {
           />
         ))}
       </View>
-      {(!pinError && props.help) && <Text style={[styles.supportingText, styles.helpText]}>{props.help}</Text>}
-      {(pinError && props.error) && <Text style={[styles.supportingText, styles.errorText]}>{props.error}</Text>}
+      {(!pinError && props.help) && <BodyText style={[styles.supportingText, styles.helpText]}>{props.help}</BodyText>}
+      {(pinError && props.error) && <BodyText style={[styles.supportingText, styles.errorText]}>{props.error}</BodyText>}
     </View>
   )
 }

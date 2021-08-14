@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import { View, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import Screen from '../components/Screen'
 import AnodeTextLogo from '../components/images/AnodeTextLogo'
 import { useTheme } from '@react-navigation/native'
@@ -26,18 +26,13 @@ const SecurityView = ({ navigation, route }) => {
   return (
     <Screen>
       <KeyboardAvoidingView style={styles.container}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('FirstView')}
-          style={styles.fillScreen}
-        >
-          <View style={styles.screen}>
-            <AnodeTextLogo
-              primaryColor={colors.logo.primaryColor}
-              secondaryColor={colors.logo.secondaryColor}
-              size={100}
-            />
-          </View>
-        </TouchableOpacity>
+        <View style={styles.screen}>
+          <AnodeTextLogo
+            primaryColor={colors.logo.primaryColor}
+            secondaryColor={colors.logo.secondaryColor}
+            size={100}
+          />
+        </View>
       </KeyboardAvoidingView>
     </Screen>
   )

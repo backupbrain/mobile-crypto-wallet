@@ -23,6 +23,7 @@ const ContactBookView = ({ navigation, route }) => {
   const [isInSelectorMode, setIsInSelectorMode] = useState(false)
   const [, setAreContactsLoaded] = useState(false)
   const [noSearchResults, setNoSearchResults] = useState(false)
+  const [isLocalOnly, setIsLocalOnly] = useState(route.params?.localOnly)
   /* const fetchMyAddress = async () => {
     // TODO: load this list from the pkd gRPC
     return new Promise((resolve) => {
@@ -59,25 +60,28 @@ const ContactBookView = ({ navigation, route }) => {
       formattedMyAddresses.data.push(mergedAddress)
     }
     formattedAddresses.push(formattedMyAddresses)
-    for (const lookupAddress in lookup) {
-      const row = lookup[lookupAddress]
-      const contact = contacts[row]
-      const initial = contact.name.substr(0, 1).toUpperCase()
-      if (!(initial in lookupByInitial)) {
-        lookupByInitial[initial] = []
+
+    if (!isLocalOnly) {
+      for (const lookupAddress in lookup) {
+        const row = lookup[lookupAddress]
+        const contact = contacts[row]
+        const initial = contact.name.substr(0, 1).toUpperCase()
+        if (!(initial in lookupByInitial)) {
+          lookupByInitial[initial] = []
+        }
+        if (!(contact.address in myAddresses)) {
+          lookupByInitial[initial].push(contact)
+        }
       }
-      if (!(contact.address in myAddresses)) {
-        lookupByInitial[initial].push(contact)
+      // loop through initials
+      for (const key in lookupByInitial) {
+        const contacts = lookupByInitial[key]
+        const contactGroup = {
+          title: key,
+          data: contacts
+        }
+        formattedAddresses.push(contactGroup)
       }
-    }
-    // loop through initials
-    for (const key in lookupByInitial) {
-      const contacts = lookupByInitial[key]
-      const contactGroup = {
-        title: key,
-        data: contacts
-      }
-      formattedAddresses.push(contactGroup)
     }
     setAddresses(formattedAddresses)
     setAreContactsLoaded(true)
@@ -115,8 +119,14 @@ const ContactBookView = ({ navigation, route }) => {
   })
 
   useEffect(() => {
+    console.log('ContactBookView')
+    console.log(route)
+    console.log(navigation)
     if (route.params && route.params.selectorMode) {
       setIsInSelectorMode(route.params.selectorMode === true)
+    }
+    if (route.params && route.params.localOnly) {
+      setIsLocalOnly(true)
     }
     const loadContacts = async () => {
       await contactManager.current.initialize()
@@ -142,9 +152,10 @@ const ContactBookView = ({ navigation, route }) => {
     const filtered = []
     for (const index in addresses) {
       const data = addresses[index].data.filter(
-        (data) =>
-          data.name.startsWith(searchFilter) ||
-          data.address.startsWith(searchFilter)
+        (data) => (
+          (data.name && data.name.toLowerCase().startsWith(searchFilter)) ||
+          (data.address && data.address.includes(searchFilter))
+        )
       )
       if (data.length !== 0) {
         filtered.push({
@@ -153,7 +164,6 @@ const ContactBookView = ({ navigation, route }) => {
         })
       }
     }
-
     if (filtered.length === 0) setNoSearchResults(true)
     return filtered
   }
@@ -189,17 +199,13 @@ const ContactBookView = ({ navigation, route }) => {
               <BodyText>No results</BodyText>
             </View>
           ) : (
-
             <ContactList
               addresses={filter(addresses)}
               onListItemPress={(address) => {
                 if (isInSelectorMode) {
-                  // TODO: select address and return to previous screen
-                  // I think by setting a key in localStorage,
-                  // then navigation.goBack()
-                  console.log(`selected row: ${address}`)
+                  route.params.onContactSelected(address)
+                  navigation.goBack()
                 } else {
-                  console.log(address)
                   navigation.push(
                     'EditContactView', {
                       address: address.address,

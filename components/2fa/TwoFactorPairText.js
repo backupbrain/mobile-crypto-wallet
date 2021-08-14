@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { ActivityIndicator, Text, View, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 const TwoFactorPairText = (props) => {
+  const { colors, dimensions } = useTheme()
   // TODO; size the QR code based on the screen dimensions
-  const [, setDimensions] = useState({ width: 0, height: 0 })
+  const [, setCardDimensions] = useState({ width: 0, height: 0 })
   const formatPairingCode = (rawText) => {
     const spaces = /\s/g
     const strippedText = rawText.replace(spaces, '')
-    const paddedText = strippedText.replace(/(.{10})/g, '$1 ')
+    const paddedText = strippedText.replace(/(.{4})/g, '$1 ')
     // const newLineText = paddedText.replace(/(.{12})/g, '$1\n')
     return paddedText
   }
@@ -19,12 +21,14 @@ const TwoFactorPairText = (props) => {
     },
     card: {
       border: '1px solid #ccc',
-      padding: '20px',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: '6px',
-      width: '200px',
-      height: '200px'
+      height: '200px',
+      paddingVertical: dimensions.paddingHorizontal,
+      paddingHorizontal: dimensions.paddingHorizontal,
+      width: dimensions.addressCard.width,
+      backgroundColor: colors.addressCard.backgroundColor,
+      borderRadius: dimensions.addressCard.borderRadius
     },
     activityIndicatorCard: {
       height: '200px',
@@ -47,7 +51,7 @@ const TwoFactorPairText = (props) => {
       style={styles.container}
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout
-        setDimensions({ width, height })
+        setCardDimensions({ width, height })
       }}
     >
       {props.ready

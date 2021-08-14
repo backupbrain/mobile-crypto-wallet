@@ -18,6 +18,8 @@ const LogOutView = ({ navigation, route }) => {
     pinManager.current.clear()
     passphraseManager.current.clear()
     // QUEStION; clear address book?
+    // QUEStION; clear transaction notes book?
+    // QUEStION; clear wallet history?
   }
   const navigateToFirstView = () => {
     navigation.push('FirstView', { reset: true })

@@ -1,17 +1,33 @@
 import React from 'react'
-import { HeaderButton } from 'react-navigation-header-buttons'
-import { Ionicons } from '@expo/vector-icons'
+import { TouchableOpacity, StyleSheet } from 'react-native'
+import HamburgerMenuIcon from '../images/HamburgerMenuIcon'
 import { useTheme } from '@react-navigation/native'
 
 const HamburgerMenuButton = (props) => {
   const { colors } = useTheme()
+
+  const styles = StyleSheet.create({
+    button: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 42,
+      height: 42
+    }
+  })
+
   return (
-    <HeaderButton
-      {...props}
-      IconComponent={Ionicons}
-      iconSize={23}
-      color={colors.screen.color}
-    />
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        // open the
+        console.log(props)
+        props.navigation.openDrawer()
+      }}
+    >
+      <HamburgerMenuIcon
+        color={colors.text}
+      />
+    </TouchableOpacity>
   )
 }
 

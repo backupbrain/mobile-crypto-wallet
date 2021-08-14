@@ -1,7 +1,15 @@
 import 'react-native-gesture-handler'
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import HamburgerMenuButon from '../components/buttons/HamburgerMenuButton'
+// import { createDrawerNavigator } from '@react-navigation/drawer'
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
+import { useTheme } from '@react-navigation/native'
 
 // import HamburgerMenuButton from '../components/buttons/HamburgerMenuButton'
 import translate from '../translations'
@@ -29,7 +37,7 @@ import CreatePinView from '../views/pin/CreatePinView'
 import LogOutView from '../views/LogOutView'
 import PinLoginView from '../views/pin/PinLoginView'
 
-const MainNavigator = createDrawerNavigator()
+const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 const FirstViewSet = () => {
@@ -96,23 +104,33 @@ const WalletHomeViewSet = () => {
   )
 }
 
-const SendCryptoViewSet = () => {
+const SendCryptoViewSet = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName='SendFormView'>
+    <Stack.Navigator initialRouteName='SendPreviewView'>
       <Stack.Screen
         name='QrCodeScannerView'
-        options={{ title: translate('qrCodeScanner') }}
         component={QrCodeScannerView}
+        options={{
+          title: translate('qrCodeScanner')
+        }}
       />
       <Stack.Screen
         name='SendFormView'
-        options={{ title: translate('sendForm') }}
+        options={{
+          title: translate('sendForm'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={SendFormView}
       />
       <Stack.Screen
         name='SendPreviewView'
         options={{ title: translate('sendPreview') }}
         component={SendPreviewView}
+      />
+      <Stack.Screen
+        name='ContactBookView'
+        options={{ title: translate('contactBook') }}
+        component={ContactBookView}
       />
     </Stack.Navigator>
   )
@@ -176,16 +194,78 @@ const ContactsViewSet = () => {
   )
 }
 
-const DrawerNavigator = () => {
+const LogOutViewSet = () => {
   return (
-    <MainNavigator.Navigator>
-      <MainNavigator.Screen name='ContactsViewSet' component={ContactsViewSet} />
-      <MainNavigator.Screen name='FirstViewSet' component={FirstViewSet} />
-      <MainNavigator.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
-      <MainNavigator.Screen name='SendCryptoViewSet' component={SendCryptoViewSet} />
-      <MainNavigator.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
-      <MainNavigator.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
-      <MainNavigator.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
+    <Stack.Navigator initialRouteName='LogOutView'>
+      <Stack.Screen
+        name='LogOutView'
+        options={{ title: translate('logOut') }}
+        component={LogOutView}
+      />
+    </Stack.Navigator>
+  )
+}
+
+const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItem
+        {...props}
+        label={translate('walletHome')}
+        onPress={() => props.navigation.navigate('WalletHomeViewSet')}
+      />
+      <DrawerItem
+        {...props}
+        label={translate('changePin')}
+        onPress={() => props.navigation.navigate('ChangePinView')}
+      />
+      <DrawerItem
+        {...props}
+        label={translate('changePassphrase')}
+        onPress={() => props.navigation.navigate('ChangePassphraseViewSet')}
+      />
+      <DrawerItem
+        {...props}
+        label={translate('pair2FaDevice')}
+        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet')}
+      />
+      <DrawerItem
+        {...props}
+        label={translate('contactBook')}
+        onPress={() => props.navigation.navigate('ContactBookView')}
+      />
+      <DrawerItem
+        {...props}
+        label={translate('logOut')}
+        onPress={() => props.navigation.navigate('LogOutViewSet')}
+      />
+    </DrawerContentScrollView>
+  )
+}
+
+const DrawerNavigator = () => {
+  // TODO: make sure drawer opens on right and has the right theme.
+  // https://reactnavigation.org/docs/drawer-navigator/
+  const { colors } = useTheme()
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={{
+        drawerPosition: 'right'
+      }}
+    >
+      <Drawer.Screen
+        name='SendCryptoViewSet'
+        component={SendCryptoViewSet}
+      />
+      <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
+      <Drawer.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
+
+      <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
+      <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
+      <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
+      <Drawer.Screen name='ContactsViewSet' component={ContactsViewSet} />
+      <Drawer.Screen name='LogOutViewSet' component={LogOutViewSet} />
 
       <Stack.Screen
         name='SecurityView'
@@ -197,12 +277,7 @@ const DrawerNavigator = () => {
         options={{ title: translate('pinLogin'), headerShown: false }}
         component={PinLoginView}
       />
-      <Stack.Screen
-        name='LogOutView'
-        options={{ title: translate('logOut') }}
-        component={LogOutView}
-      />
-    </MainNavigator.Navigator>
+    </Drawer.Navigator>
   )
 }
 
@@ -216,7 +291,9 @@ const AppNavigator = (props) => {
   if (props.state.match(/inactive|background/)) {
     return <SecurityView />
   } else {
-    return <DrawerNavigator />
+    return (
+      <DrawerNavigator />
+    )
   }
 }
 

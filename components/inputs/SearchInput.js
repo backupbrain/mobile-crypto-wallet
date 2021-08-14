@@ -84,7 +84,12 @@ const SearchInput = (props) => {
           style={styles.input}
           placeholder={props.placeholder}
           value={text}
-          onChangeText={(text) => setText(text)}
+          onChangeText={(text) => {
+            setText(text)
+            if (props.onChangeText) {
+              props.onChangeText(text)
+            }
+          }}
         />
         {hasText(text) &&
           <TouchableOpacity
