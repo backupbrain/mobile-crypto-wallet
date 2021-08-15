@@ -58,18 +58,21 @@ const GenericTextInput = (props) => {
     }
   })
 
-  const textInputStyles = [styles.textInput]
-  if (props.error) {
-    textInputStyles.push(styles.textInputError)
-  } else {
-    textInputStyles.push(styles.textInputRegular)
+  const getTextInputStyle = () => {
+    const textInputStyles = [styles.textInput]
+    if (props.error) {
+      textInputStyles.push(styles.textInputError)
+    } else {
+      textInputStyles.push(styles.textInputRegular)
+    }
+    return textInputStyles
   }
 
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <TextInput
-        style={textInputStyles}
+        style={getTextInputStyle()}
         placeholder={placeholder}
         value={text}
         onChangeText={(text) => {

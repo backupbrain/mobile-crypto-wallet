@@ -18,43 +18,20 @@ import { useTheme } from '@react-navigation/native'
 
 const SendFormView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
-  const [fromAddress, setFromAddress] = useState('')
-  const [fromContact, setFromContact] = useState({})
+  const [fromAddress, setFromAddress] = useState(route?.params?.fromContact.address ?? '')
+  const [fromContact, setFromContact] = useState(route?.params?.fromContact ?? {})
   const [isFromAddressValid, setIsFromAddressValid] = useState(false)
-  const [toContact, setToContact] = useState({})
-  const [toAddress, setToAddress] = useState('')
-  const [isToAddressValid, setIsToAddressValid] = useState(false)
+  const [toContact, setToContact] = useState(route?.params?.toContact ?? {})
+  const [toAddress, setToAddress] = useState(route?.params?.toContact.address ?? '')
+  const [, setIsToAddressValid] = useState(false)
   const [amount, setAmount] = useState(0.0)
   const [isAmountValid, setIsAmountValid] = useState(false)
   const [note, setNote] = useState('')
-  const [isFormFilled, setIsFormFilled] = useState(false)
   const pktPriceTicker = useRef(new PktPriceTicker())
-  const pktManager = useRef(new PktManager())
   const toAddressModalRef = useRef()
   const toAddressInputRef = useRef()
   const [newToAddress, setNewToAddress] = useState('')
   const [isNewToAddressValid, setIsNewToAddressValid] = useState(false)
-  const updateIsFormFilled = (fromAddress, toAddress, amount) => {
-    if (isFromAddressValid &&
-        isToAddressValid &&
-        amount > 0 &&
-        pktManager.current.isAmountLessThanWalletBalance(amount, fromAddress)
-    ) {
-      setIsFormFilled(true)
-    } else {
-      setIsFormFilled(false)
-    }
-  }
-  useEffect(() => {
-    if (route.params) {
-      if (route.params.fromContact) {
-        onFromContactSelected(route.params.fromContact)
-      }
-      if (route.params.toAddress) {
-        setToAddress(route.params.toAddress)
-      }
-    }
-  })
 
   const onFromContactSelected = (contact) => {
     setFromContact(contact)
@@ -66,6 +43,7 @@ const SendFormView = ({ navigation, route }) => {
     console.log(contact)
     setToContact(contact)
     setToAddress(contact.address)
+    toAddressInputRef.current.setAddress(contact.address)
     setIsToAddressValid(true)
   }
 
@@ -176,6 +154,7 @@ const SendFormView = ({ navigation, route }) => {
           }}
           onChangeText={(address) => {
             setToAddress(address)
+            setToContact({ address: address })
           }}
           onPress={() => {
             toAddressModalRef.current.open()
@@ -222,8 +201,8 @@ const SendFormView = ({ navigation, route }) => {
             navigation.push(
               'SendPreviewView',
               {
-                fromAddress,
-                toAddress,
+                fromAddress: fromContact,
+                toAddress: toContact,
                 amount,
                 note
               }

@@ -51,6 +51,7 @@
   "verifyPasswordHelpText": "Retype your new passphrase",
   "passwordVerifyError": "Passwords do not match",
   "whyPassphrase": "A passphrase is used to encrypt your wallet. If you lose this passphrase, you will not be able to access your money.",
+  "numCharsRemaining": "{numCharsRemaining} characters remaining",
 
   "viewWalletBalance": "View Wallet Balance",
   "walletCreatedIntro1": "Your wallet has been set up.",
@@ -132,6 +133,11 @@
   "shareAddress": "Share address",
   "sendPkt": "Send PKT",
 
+  "transaction": "Transaction",
+  "addNote": "Add Note",
+  "editNote": "Edit Note",
+  "openInBlockExplorer": "Open in Block Explorer",
+  "numConfirmations": "Number of Confirmations",
   "noTransactions": "No transactions",
   "loadMore": "Load more...",
   "justNow": "just now",
@@ -152,7 +158,7 @@
   "noNote": "(None)",
   "transactionType": "Transaction type:",
   "receiveTransactionType": "Receive",
-  "spendTransactionType": "Send",
+  "sendTransactionType": "Send",
   "miningIncomeTransactionType": "Mining Income",
   "unknownTransactionType": "Unknown",
   "transactionId": "Text ID",
@@ -169,6 +175,10 @@
   "2faCodeHelpText": "Enter your one-time-password",
 
   "recipientAddress": "Recipient Address",
-  "useAddress": "Use Address"
+  "useAddress": "Use Address",
+
+  "transactionSucceeded": "Transaction Succeeded",
+  "goHome": "Return to Wallet"
+
 
 }

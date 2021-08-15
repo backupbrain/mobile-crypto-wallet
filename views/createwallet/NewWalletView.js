@@ -1,33 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
 import RecoveryWordGrid from '../../components/inputs/RecoveryWordGrid'
 import ActiveButton from '../../components/buttons/ActiveButton'
 import BodyText from '../../components/text/BodyText'
+import PktManager from '../../utils/PktManager'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
-import bip39words from '../../utils/bip39words'
 
 const NewWalletView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [isRecoveryPhraseSet, setIsRecoveryPhraseSet] = useState(false)
   const [recoveryPhrase, setRecoveryPhrase] = useState([])
+  const pktManager = useRef(new PktManager())
+
+  const openWalletAndGetRecoveryPhrase = async () => {
+    const recoveryPhrase = await pktManager.current.createWallet()
+    setRecoveryPhrase(recoveryPhrase)
+    setIsRecoveryPhraseSet(true)
+  }
   useEffect(() => {
     // Update the document title using the browser API
-    const phrase = []
     if (isRecoveryPhraseSet === false) {
-      const totalBip39Words = bip39words.length
-      for (let i = 0; i < 16; i++) {
-        const randInt = Math.floor(Math.random() * totalBip39Words) + 1
-        const randWord = bip39words[randInt]
-        phrase.push(randWord)
-        bip39words.splice(randInt, 0)
-      }
-      setRecoveryPhrase(phrase)
-      setIsRecoveryPhraseSet(true)
+      openWalletAndGetRecoveryPhrase()
     }
-  })
+  }, [])
 
   const styles = StyleSheet.create({
     screen: {

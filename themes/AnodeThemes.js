@@ -66,7 +66,7 @@ const AndroidTheme = {
       fontWeight: 'normal',
       textTransform: 'none',
       textAlign: 'center',
-      textDecoration: 'underline'
+      textDecorationLine: 'underline'
     },
     screen: {
       paddingHorizontal: '20px',

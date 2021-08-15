@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
-import ActiveButton from '../../components/buttons/ActiveButton'
 import AccountBalance from '../../components/wallet/AccountBalance'
 import OtpInput from '../../components/inputs/OtpInput'
 import WalletListItem from '../../components/wallet/WalletListItem'
@@ -12,6 +11,7 @@ import TransactionNoteManager from '../../utils/TransactionNoteManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
+/*
 const sendAmount = 1290.20
 
 const toAddress = {
@@ -24,27 +24,26 @@ const fromAddress = {
   amount: 123456.00134,
   address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk'
 }
+/* */
 
 const SendFormView = ({ navigation, route }) => {
   // TODO: expect fromAddress, toAddress, amount from route.params
   const { colors, dimensions } = useTheme()
   const pktManager = useRef(new PktManager())
   const transactionNoteManager = useRef(new TransactionNoteManager())
-  const [fromAddress, setFromAddress] = useState({})
-  const [toAddress, setToAddress] = useState({})
-  const [amount, setAmount] = useState(0.00)
-  const [note, setNote] = useState('')
+  const [fromAddress] = useState(route.params?.fromAddress)
+  const [toAddress] = useState(route.params?.toAddress)
+  const [amount] = useState(route.params?.amount)
+  const [note] = useState(route.params?.note)
   const [isPinValid, setisPinValid] = useState(false)
 
-  /*
   const send = async () => {
     const transactionId = await pktManager.current.sendCoins(fromAddress.address, toAddress.address, amount)
     if (note && note.length > 0) {
       await transactionNoteManager.current.set(transactionId, note)
     }
-    navigation.navigate('TransactionSuccessView', { reset: true })
+    navigation.navigate('TransactionView', { reset: true, alert: true, transactionId: transactionId })
   }
-  /* */
 
   const styles = StyleSheet.create({
     screen: {
@@ -76,7 +75,7 @@ const SendFormView = ({ navigation, route }) => {
     <Screen>
       <View style={styles.screen}>
         <BodyText style={styles.label}>{translate('youWillSend')}</BodyText>
-        <AccountBalance amount={sendAmount} />
+        <AccountBalance amount={amount} />
         <View style={styles.addressBlock}>
           <BodyText style={styles.label}>{translate('to')}</BodyText>
           <WalletListItem
@@ -103,7 +102,7 @@ const SendFormView = ({ navigation, route }) => {
         <SlideToConfirm
           label={translate('slideToConfirm')}
           onComplete={() => {
-            // send()
+            send()
           }}
           disabled={!isPinValid}
         />

@@ -187,7 +187,7 @@ const PktAddressInput = (props) => {
         </View>
       </View>
       {!isInvalid &&
-        <BodyText style={styles.helpText}>{numCharsLeft(address)} characters remaining</BodyText>}
+        <BodyText style={styles.helpText}>{translate('numCharsRemaining', { numCharsRemaining: numCharsLeft(address) })}</BodyText>}
       {isInvalid &&
         <BodyText style={styles.errorText}>{translate('invalidAddress')}</BodyText>}
     </View>

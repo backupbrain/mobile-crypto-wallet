@@ -12,7 +12,7 @@ const LinkButton = (props) => {
       fontWeight: dimensions.link.fontWeight,
       textTransform: dimensions.link.textTransform,
       textAlign: dimensions.link.textAlign,
-      textDecoration: dimensions.link.textDecoration,
+      textDecorationLine: dimensions.link.textDecorationLine,
       color: colors.link.color
     }
   })

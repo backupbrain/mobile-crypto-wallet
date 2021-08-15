@@ -1,73 +1,26 @@
-import React, { useState, useRef } from 'react'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
-// import LinkButton from '../buttons/LinkButton'
-import PasteIcon from '../images/PasteIcon'
-import PersonIcon from '../images/PersonIcon'
-import ScanQrCodeIcon from '../images/ScanQrCodeIcon'
-import PktManager from '../../utils/PktManager'
+import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react'
+import { TextInput, View, TouchableOpacity, StyleSheet } from 'react-native'
+import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 
-const addressLength = 43
-
-const numCharsLeft = (text) => {
-  return addressLength - text.replace(/\s/g, '').length
-}
-
-const PktAddressInput = (props) => {
-  // TODO: verify address
+const PasswordInput = (props, ref) => {
   const { colors, dimensions } = useTheme()
-  const pktManager = useRef(new PktManager())
+  const textRef = useRef()
   const [text, setText] = useState('')
-  const [isValid, setIsValid] = useState(false)
-  const [isInvalid, setIsInvalid] = useState(false)
-  const setAddress = (rawText) => {
-    const spaces = /\s/g
-    const strippedText = rawText.replace(spaces, '')
-    // cap length
-    const cappedText = strippedText.substr(0, addressLength)
-    const paddedText = cappedText.replace(/(.{5})/g, '$1 ')
-    const newLineText = paddedText.replace(/(.{12})/g, '$1\n')
-    setText(newLineText)
-    let isValid = false
-    let isInvaild = false
-    if (rawText.length === addressLength) {
-      isValid = pktManager.isValidAddress(rawText)
-      isInvaild = !isValid
-      setIsValid(isValid)
-      setIsInvalid(isInvaild)
-    } else {
-      setIsValid(isValid)
-      setIsInvalid(isInvaild)
-    }
-    if (props.onIsInvalid) {
-      props.onIsInvalid(rawText, isInvalid)
-    }
-    if (props.onIsValid) {
-      props.onIsValid(rawText, isValid)
-    }
-    if (props.onChangeText) {
-      props.onChangeText(rawText)
-    }
-  }
+  const [doHide, setDoHide] = useState(true)
+  let doHidePassword = true
+  useImperativeHandle(ref, () => ({
+    clear: () => textRef.current.clear()
+  }))
 
   const styles = StyleSheet.create({
     container: {
-      paddingBottom: '16px',
-      width: '100%'
+      width: dimensions.inputs.width
     },
-    button: {
-      paddingLeft: dimensions.horizontalSpacingBetweenItems
-    },
-    buttonFirst: {
-      paddingBottom: dimensions.verticalSpacingBetweenItems
-    },
-    buttonMiddle: {
-      paddingVertical: dimensions.verticalSpacingBetweenItems
-    },
-    buttonLast: {
-      paddingTop: dimensions.verticalSpacingBetweenItems,
-      paddingBottom: dimensions.verticalSpacingBetweenItems
+    label: {
+      paddingBottom: dimensions.inputs.labelPaddingBottom,
+      color: colors.inputs.labelColor
     },
     textInput: {
       flexDirection: 'row',
@@ -92,77 +45,76 @@ const PktAddressInput = (props) => {
       borderBottomColor: colors.inputs.borderBottomErrorColor
     },
     input: {
-      height: '200px',
-      fontSize: '180%',
-      fontFamily: 'monospace',
-      color: colors.inputs.color,
+      flexGrow: 1,
+      paddingHorizontal: dimensions.inputs.paddingHorizontal,
       paddingVertical: dimensions.inputs.paddingVertical,
-      paddingLeft: dimensions.inputs.paddingHorizontal,
-      paddingRight: dimensions.horizontalSpacingBetweenItemsShort
-    },
-    buttonPanel: {
-
+      color: colors.inputs.color
     },
     helpText: {
-      color: '#666',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      color: colors.inputs.helpTextColor
     },
     errorText: {
-      color: '#600',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      color: colors.inputs.errorTextColor
+    },
+    supportingText: {
+      paddingTop: dimensions.inputs.supportingTextPaddingTop,
+      paddingHorizontal: dimensions.inputs.supportingTextPaddingHorizontal
+    },
+    showHideButton: {
+      paddingVertical: dimensions.inputs.paddingVertical,
+      paddingRight: dimensions.inputs.paddingHorizontal,
+      paddingLeft: dimensions.horizontalSpacingBetweenItems,
+      color: colors.primaryButton.backgroundColor
     }
   })
 
-  const textInputStyles = [styles.textInput]
-  if (isInvalid) {
-    textInputStyles.push(styles.textInputError)
-  } else {
-    textInputStyles.push(styles.textInputRegular)
+  const getTextInputStyle = () => {
+    const textInputStyles = [styles.textInput]
+    if (props.error) {
+      textInputStyles.push(styles.textInputError)
+    } else {
+      textInputStyles.push(styles.textInputRegular)
+    }
+    return textInputStyles
   }
 
   return (
     <View style={[styles.container, props.style]}>
-      <View style={textInputStyles}>
+      {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
+      <View style={getTextInputStyle()}>
         <TextInput
+          ref={textRef}
+          secureTextEntry={doHide}
           style={styles.input}
           placeholder={props.placeholder}
           value={text}
-          onChangeText={(text) => setAddress(text)}
-          multiline
-          spellCheck={false}
-          autoCompleteType='off'
-          autoCapitalize='none'
-          onKeyPress={props.onKeyPress}
+          onChangeText={(text) => {
+            if (props.maxLength && props.maxLength > 0) {
+              text = text.substr(0, props.maxLength)
+            }
+            setText(text)
+            if (props.onChangeText) {
+              props.onChangeText(text)
+            }
+          }}
         />
-        <View style={styles.buttonPanel}>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonFirst]}
-            onPress={() => { /* TODO: paste from clipboard */ }}
+        <TouchableOpacity
+          onPress={() => {
+            setDoHide(!doHide)
+            doHidePassword = !doHidePassword
+          }}
+        >
+          <BodyText
+            style={styles.showHideButton}
           >
-            <PasteIcon color={colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonMiddle]}
-            onPress={() => { /* TODO: Open address book */ }}
-          >
-            <PersonIcon color={colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonLast]}
-            onPress={() => { /* TODO: Open Qr Code Scanner */ }}
-          >
-            <ScanQrCodeIcon color={colors.text} />
-          </TouchableOpacity>
-        </View>
+            {doHide ? translate('show') : translate('hide')}
+          </BodyText>
+        </TouchableOpacity>
       </View>
-      {!isInvalid &&
-        <Text style={styles.helpText}>{numCharsLeft(text)} characters remaining</Text>}
-      {isInvalid &&
-        <Text style={styles.errorText}>{translate('invalidAddress')}</Text>}
+      {(props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>}
+      {props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
     </View>
   )
 }
 
-export default PktAddressInput
+export default forwardRef(PasswordInput)

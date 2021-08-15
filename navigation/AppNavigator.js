@@ -28,6 +28,7 @@ import AddressView from '../views/AddressView'
 import QrCodeScannerView from '../views/QrCodeScannerView'
 import SendFormView from '../views/send/SendFormView'
 import SendPreviewView from '../views/send/SendPreviewView'
+import TransactionSuccessView from '../views/send/TransactionSuccessView'
 import ContactBookView from '../views/contacts/ContactBookView'
 import EditContactView from '../views/contacts/EditContactView'
 import Verify2FaDeviceView from '../views/2fa/Verify2FaDeviceView'
@@ -36,11 +37,12 @@ import ChangePinView from '../views/pin/ChangePinView'
 import CreatePinView from '../views/pin/CreatePinView'
 import LogOutView from '../views/LogOutView'
 import PinLoginView from '../views/pin/PinLoginView'
+import TransactionView from '../views/TransactionView'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
-const FirstViewSet = () => {
+const FirstViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='FirstView'>
       <Stack.Screen
@@ -50,55 +52,83 @@ const FirstViewSet = () => {
       />
       <Stack.Screen
         name='CreateNewWalletIntroView'
-        options={{ title: translate('newWalletIntro') }}
+        options={{
+          title: translate('newWalletIntro')
+        }}
         component={NewWalletIntroView}
       />
       <Stack.Screen
         name='LoadExistingWalletIntroView'
-        options={{ title: translate('loadExistingWalletIntro') }}
+        options={{
+          title: translate('loadExistingWalletIntro')
+        }}
         component={LoadExistingWalletIntroView}
       />
       <Stack.Screen
         name='CreateNewWalletView'
-        options={{ title: translate('createNewWallet') }}
+        options={{
+          title: translate('createNewWallet')
+        }}
         component={NewWalletView}
       />
       <Stack.Screen
         name='VerifyRecoveryPhraseView'
-        options={{ title: translate('verifyRecoveryPhrase') }}
+        options={{
+          title: translate('verifyRecoveryPhrase')
+        }}
         component={VerifyRecoveryPhraseView}
       />
       <Stack.Screen
         name='CreatePassphraseView'
-        options={{ title: translate('createPassphrase') }}
+        options={{
+          title: translate('createPassphrase')
+        }}
         component={CreatePassphraseView}
       />
       <Stack.Screen
         name='WalletCreatedView'
-        options={{ title: translate('walletCreated') }}
+        options={{
+          title: translate('walletCreated')
+        }}
         component={WalletCreatedView}
       />
       <Stack.Screen
         name='CreatePinView'
-        options={{ title: translate('createPin') }}
+        options={{
+          title: translate('createPin')
+        }}
         component={CreatePinView}
       />
     </Stack.Navigator>
   )
 }
 
-const WalletHomeViewSet = () => {
+const WalletHomeViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='WalletHomeView'>
       <Stack.Screen
         name='WalletHomeView'
-        options={{ title: translate('walletHome') }}
+        options={{
+          title: translate('walletHome'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={WalletHomeView}
       />
       <Stack.Screen
         name='AddressView'
-        options={{ title: translate('address') }}
+        options={{
+          title: translate('address'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={AddressView}
+      />
+      <Stack.Screen
+        name='TransactionView'
+        options={{
+          title: translate('transaction'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
+        component={TransactionView}
       />
     </Stack.Navigator>
   )
@@ -106,7 +136,7 @@ const WalletHomeViewSet = () => {
 
 const SendCryptoViewSet = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName='SendPreviewView'>
+    <Stack.Navigator initialRouteName='SendFormView'>
       <Stack.Screen
         name='QrCodeScannerView'
         component={QrCodeScannerView}
@@ -124,82 +154,117 @@ const SendCryptoViewSet = ({ navigation }) => {
       />
       <Stack.Screen
         name='SendPreviewView'
-        options={{ title: translate('sendPreview') }}
+        options={{
+          title: translate('sendPreview'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={SendPreviewView}
       />
       <Stack.Screen
         name='ContactBookView'
-        options={{ title: translate('contactBook') }}
+        options={{
+          title: translate('contactBook'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={ContactBookView}
+      />
+      <Stack.Screen
+        name='TransactionSuccessView'
+        options={{
+          title: translate('transactionSucceeded'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
+        component={TransactionSuccessView}
       />
     </Stack.Navigator>
   )
 }
 
-const ChangePinViewSet = () => {
+const ChangePinViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='ChangePinView'>
       <Stack.Screen
         name='ChangePinView'
-        options={{ title: translate('changePin') }}
+        options={{
+          title: translate('changePin'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={ChangePinView}
       />
     </Stack.Navigator>
   )
 }
 
-const ChangePassphraseViewSet = () => {
+const ChangePassphraseViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='ChangePassphraseView'>
       <Stack.Screen
         name='ChangePassphraseView'
-        options={{ title: translate('changePassphrase') }}
+        options={{
+          title: translate('changePassphrase'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={ChangePassphraseView}
       />
     </Stack.Navigator>
   )
 }
 
-const RePair2FaDeviceViewSet = () => {
+const RePair2FaDeviceViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='ChangePassphraseView'>
       <Stack.Screen
         name='Pair2FaDeviceView'
-        options={{ title: translate('pair2FaDevice') }}
+        options={{
+          title: translate('pair2FaDevice'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={Pair2FaDeviceView}
       />
       <Stack.Screen
         name='Verify2FaDeviceView'
-        options={{ title: translate('verify2FaDevice') }}
+        options={{
+          title: translate('verify2FaDevice'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={Verify2FaDeviceView}
       />
     </Stack.Navigator>
   )
 }
 
-const ContactsViewSet = () => {
+const ContactsViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='ContactBookView'>
       <Stack.Screen
         name='ContactBookView'
-        options={{ title: translate('contactBook') }}
+        options={{
+          title: translate('contactBook'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={ContactBookView}
       />
       <Stack.Screen
         name='EditContactView'
-        options={{ title: translate('editContact') }}
+        options={{
+          title: translate('editContact'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={EditContactView}
       />
     </Stack.Navigator>
   )
 }
 
-const LogOutViewSet = () => {
+const LogOutViewSet = ({ navigation }) => {
   return (
     <Stack.Navigator initialRouteName='LogOutView'>
       <Stack.Screen
         name='LogOutView'
-        options={{ title: translate('logOut') }}
+        options={{
+          title: translate('logOut'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
         component={LogOutView}
       />
     </Stack.Navigator>
@@ -254,18 +319,15 @@ const DrawerNavigator = () => {
         drawerPosition: 'right'
       }}
     >
-      <Drawer.Screen
-        name='SendCryptoViewSet'
-        component={SendCryptoViewSet}
-      />
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
       <Drawer.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
 
       <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
-      <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
+      <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <Drawer.Screen name='ContactsViewSet' component={ContactsViewSet} />
       <Drawer.Screen name='LogOutViewSet' component={LogOutViewSet} />
+      <Drawer.Screen name='SendCryptoView' component={SendCryptoViewSet} />
 
       <Stack.Screen
         name='SecurityView'

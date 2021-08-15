@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import React, { useState, forwardRef, useImperativeHandle } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import BodyText from '../text/BodyText'
 import ClipboardManager from '../../utils/ClipboardManager'
@@ -12,7 +12,7 @@ import translate from '../../translations'
 const RemoteAddressWidget = (props, ref) => {
   // TODO: lookup address by ContactManager name or by federated address
   const { colors, dimensions } = useTheme()
-  const [address, _setAddress] = useState('')
+  const [address, _setAddress] = useState(props.address)
   const [displayAddress, setDisplayAddress] = useState('')
   const [inputWidth, setInputWidth] = useState(10)
   const [isInputWidthSet, setIsInputWidthSet] = useState(false)
@@ -47,12 +47,6 @@ const RemoteAddressWidget = (props, ref) => {
       props.onChangeText(address)
     }
   }
-
-  useEffect(() => {
-    if (props.address) {
-      setAddress(props.address)
-    }
-  }, [setAddress, props.address])
 
   const styles = StyleSheet.create({
     container: {

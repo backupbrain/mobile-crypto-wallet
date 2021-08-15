@@ -2,6 +2,7 @@
 // import Bs58Check from 'bs58check'
 // import Bech32 from 'bech32'
 import AppConstants from '../utils/AppConstants'
+import bip39words from './bip39words'
 
 export default class PktManager {
   constructor () {
@@ -30,6 +31,14 @@ export default class PktManager {
 
   async openWallet (passphrase) {
     return new Promise((resolve, reject) => {
+      const phrase = []
+      const totalBip39Words = bip39words.length
+      for (let i = 0; i < 16; i++) {
+        const randInt = Math.floor(Math.random() * totalBip39Words) + 1
+        const randWord = bip39words[randInt]
+        phrase.push(randWord)
+        bip39words.splice(randInt, 0)
+      }
       resolve(true)
     }, 10)
   }
@@ -101,8 +110,9 @@ export default class PktManager {
   }
 
   async sendCoins (fromAddress, toAddress, amount) {
+    const transactionId = '1e35cf4bfc8a54fab721dc8bfec6fb0cb9baea94466b134aa9a57fa304ba1d05'
     return new Promise((resolve, reject) => {
-      resolve(true)
+      resolve(transactionId)
     })
   }
 
@@ -154,6 +164,29 @@ export default class PktManager {
     ]
     return new Promise((resolve, reject) => {
       resolve(transactions)
+    })
+  }
+
+  async getTransaction (transactionId) {
+    const transaction = {
+      address: 'pkt1qz40pvqy3s26p4glgyaak02tulj96mayclh96uk',
+      category: 'send',
+      amount: 0.00010000,
+      label: '',
+      vout: 0,
+      confirmations: 1,
+      blockhash: '00000000000001753b24411d0e4726212f6a53aeda481ceff058ffb49e1cd969',
+      blockheight: 1772396,
+      blockindex: 72,
+      blocktime: 1592600085,
+      txid: transactionId,
+      walletconflicts: [],
+      time: 1592599938,
+      timereceived: 1592599938,
+      'bip125-replaceable': 'no'
+    }
+    return new Promise((resolve, reject) => {
+      resolve(transaction)
     })
   }
 

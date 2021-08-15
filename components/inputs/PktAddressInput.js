@@ -24,7 +24,6 @@ const PktAddressInput = (props) => {
   const [addressLength] = useState(AppConstants.PKT_ADDRESS_LENGTH)
   const [address, _setAddress] = useState('')
   const [displayedAddress, setDisplayedAddress] = useState('')
-  const [isInitialAddressSet, setIsInitialAddressSet] = useState(false)
   const [, setIsValid] = useState(false)
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -68,11 +67,10 @@ const PktAddressInput = (props) => {
   }
 
   useEffect(() => {
-    if (props.address && !isInitialAddressSet) {
+    if (props.address) {
       setAddress(props.address)
-      setIsInitialAddressSet(true)
     }
-  }, [setAddress, props.address])
+  }, [props.address])
 
   const styles = StyleSheet.create({
     container: {
@@ -187,7 +185,7 @@ const PktAddressInput = (props) => {
         </View>
       </View>
       {!isInvalid &&
-        <BodyText style={styles.helpText}>{numCharsLeft(address)} characters remaining</BodyText>}
+        <BodyText style={styles.helpText}>{translate('numCharsRemaining', { numCharsRemaining: numCharsLeft(address) })}</BodyText>}
       {isInvalid &&
         <BodyText style={styles.errorText}>{translate('invalidAddress')}</BodyText>}
     </View>

@@ -37,7 +37,7 @@ const PktTransactionText = (props) => {
   })
   const formatTransaction = (transactionId) => {
     if (transactionId && transactionId.length > 0) {
-      const numRows = 4
+      const numRows = 5
       // break up into numRows
       const maxRowLength = Math.floor(transactionId.length / numRows)
       const newLineRegex = new RegExp('.{' + maxRowLength + '}|.{1,' + (maxRowLength - 1) + '}', 'g')
