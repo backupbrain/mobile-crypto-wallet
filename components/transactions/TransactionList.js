@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import TransactionListItem from './TransactionListItem'
 import translate from '../../translations'
@@ -6,6 +6,10 @@ import { useTheme } from '@react-navigation/native'
 
 const TransactionList = (props) => {
   const { colors, dimensions } = useTheme()
+
+  useEffect(() => {
+    console.log('transaction list changed')
+  })
 
   const styles = StyleSheet.create({
     container: {
@@ -34,6 +38,7 @@ const TransactionList = (props) => {
     <View style={styles.container}>
       {props.transactions.length &&
         <FlatList
+          refreshing={props.refreshing}
           data={props.transactions}
           renderItem={({ item, index }) => (
             <TouchableOpacity
@@ -46,7 +51,7 @@ const TransactionList = (props) => {
               />
             </TouchableOpacity>
           )}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
         />}
       {!props.transactions.length &&
         <Text style={styles.noTransactions}>{translate('noTransactions')}</Text>}

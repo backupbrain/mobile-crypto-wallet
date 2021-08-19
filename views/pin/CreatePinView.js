@@ -22,7 +22,7 @@ const CreatePinView = ({ navigation, route }) => {
     return isFormFilled
   }
   const savePin = () => {
-    pinManager.set(pin1)
+    pinManager.current.set(pin1)
   }
 
   const styles = StyleSheet.create({

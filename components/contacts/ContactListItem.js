@@ -15,7 +15,7 @@ const ContactListItem = (props) => {
         style={props.style}
         name={props.item?.name}
         address={props.item?.address}
-        amount={props.item?.amount}
+        amount={props.item?.total}
         local={props.item?.isLocal}
         navigation={props?.navigation}
       />

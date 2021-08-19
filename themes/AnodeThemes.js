@@ -3,7 +3,10 @@ const AndroidTheme = {
   dimensions: {
     chart: {
       yAxisMarginLeft: '10px',
-      xAxisMarginTop: '8px'
+      xAxisMarginTop: '8px',
+      fontWeight: 'normal',
+      fontSize: '0.8em',
+      fontFamily: 'Arial, Helvetica, sans'
     },
     alertBanner: {
       width: 'auto',
@@ -119,8 +122,11 @@ const AndroidTheme = {
 export const AnodeLightTheme = {
   dark: false,
   colors: {
+    chart: {
+      axisTextColor: '#1F1F1F'
+    },
     alertBanner: {
-      successBackgroundColor: '#126B19',
+      successBackgroundColor: '#1f9145',
       warningBackgroundColor: '#F6C79F',
       dangerBackgroundColor: '#C15B5C',
       infoBackgroundContainer: '#F1F2F6',
@@ -206,7 +212,7 @@ export const AnodeLightTheme = {
       backgroundColor: '#fff'
     },
     transactionListItem: {
-      confirmedIconColor: '#126B19',
+      confirmedIconColor: '#1f9145',
       unconfirmedIconColor: '#F6C79F'
     },
     background: '#F1F2F6',
@@ -220,8 +226,11 @@ export const AnodeLightTheme = {
 export const AnodeDarkTheme = {
   dark: true,
   colors: {
+    chart: {
+      axisTextColor: '#fff'
+    },
     alertBanner: {
-      successBackgroundColor: '#0C2F2C',
+      successBackgroundColor: '#1f9145',
       warningBackgroundColor: '#FF8319',
       dangerBackgroundColor: '#A50000',
       infoBackgroundContainer: '#0B2432',
@@ -305,7 +314,7 @@ export const AnodeDarkTheme = {
       backgroundColor: '#fff'
     },
     transactionListItem: {
-      confirmedIconColor: '#0C2F2C',
+      confirmedIconColor: '#1f9145',
       unconfirmedIconColor: '#FF8319'
     },
     background: '#0B2432',

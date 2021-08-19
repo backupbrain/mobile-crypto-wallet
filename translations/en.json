@@ -156,6 +156,7 @@
   "status": "Status",
   "note": "Note:",
   "noNote": "(None)",
+  "unNotedTransaction": "(No note)",
   "transactionType": "Transaction type:",
   "receiveTransactionType": "Receive",
   "sendTransactionType": "Send",

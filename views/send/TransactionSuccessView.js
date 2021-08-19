@@ -367,7 +367,7 @@ const TransactionSuccessView = ({ navigation, route }) => {
           <WalletListItem
             address={transaction.address}
             name={fromName}
-            amount={fromAddress.amount}
+            amount={fromAddress.total}
           />
         </View>
         <View style={styles.addressData}>
@@ -377,7 +377,7 @@ const TransactionSuccessView = ({ navigation, route }) => {
           <WalletListItem
             address={transaction.address}
             name={toName}
-            amount={toAddress.amount}
+            amount={toAddress.total}
           />
         </View>
         <View style={styles.addressData}>

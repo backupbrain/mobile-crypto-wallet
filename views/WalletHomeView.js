@@ -103,7 +103,10 @@ const WalletHomeView = ({ navigation, route }) => {
           <WalletList
             style={styles.walletList}
             addresses={addresses}
-            onListItemPress={(address) => navigation.navigate('AddressView', { address })}
+            onListItemPress={(address) => {
+              console.log(address)
+              navigation.push('AddressView', { address })
+            }}
             onCreateAddressPress={() => {
               // TODO: create new address, bring up modal editor
             }}

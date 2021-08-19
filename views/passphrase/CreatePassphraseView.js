@@ -21,7 +21,7 @@ const CreatePassphraseView = ({ navigation, route }) => {
     }
   }
   const savePassphrase = (passphrase) => {
-    passphraseManager.set(passphrase)
+    passphraseManager.current.set(passphrase)
   }
 
   const styles = StyleSheet.create({

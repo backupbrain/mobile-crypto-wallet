@@ -35,7 +35,7 @@ const ChangePinView = ({ navigation, route }) => {
     return isFormFilled
   }
   const changePin = () => {
-    pinManager.set(pin1)
+    pinManager.current.set(pin1)
     setStoredPin(pin1)
     currentPinRef.current.clear()
     newPinRef.current.clear()

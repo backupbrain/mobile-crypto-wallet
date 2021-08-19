@@ -39,12 +39,12 @@ const WalletList = (props) => {
         sections={[{ title: translate('myAddresses'), data: addresses }]}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={props.onListItemPress}
+            onPress={() => props.onListItemPress(item)}
           >
             <WalletListItem
               name={item.name}
               address={item.address}
-              amount={item.amount}
+              amount={item.total}
               style={styles.listItem}
             />
           </TouchableOpacity>
@@ -58,7 +58,7 @@ const WalletList = (props) => {
             }}
           />
         )}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       {!addresses.length &&
         <BodyText style={styles.noAddresses}>{translate('noAddresses')}</BodyText>}

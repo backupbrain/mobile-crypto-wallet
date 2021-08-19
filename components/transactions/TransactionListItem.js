@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import BodyText from '../text/BodyText'
 import InboundIcon from '../images/InboundIcon'
@@ -43,7 +43,8 @@ const TransactionListItem = (props) => {
   const [numConfirmations, setNumConfirmations] = useState(0)
   const [isInbound, setIsInbound] = useState(false)
   const [time, setTime] = useState(null)
-  const [name, setName] = useState(translate('unnamedAddress'))
+  const [note, setNote] = useState(translate('unNotedTransaction'))
+  const currentTime = useRef(new Date())
 
   const toUsd = (amount) => {
     // TODO: use actual PKT price
@@ -54,9 +55,27 @@ const TransactionListItem = (props) => {
     // return props.pktPriceTicker.convertCurrency(isConverted, amount)
   }
 
-  const formatDate = (date, now) => {
-    // TODO: figure out how long ago this happened
-    return translate('minutesAgo', { num: 3 })
+  const formatDate = (timestamp, now) => {
+    // FIXME: localize the output
+    // console.log(now)
+    let output = ''
+    const targetDate = new Date(parseInt(timestamp) * 1000)
+    // console.log(targetDate)
+    const secondsDiff = Math.round((now - targetDate) / 1000)
+    // console.log(secondsDiff)
+    // if this happened in the last 24 hours AND after midnight,
+    // return the time
+    // otherwis return the date
+    const oneDay = 24 * 60 * 60
+    const hour = targetDate.getHours()
+    if (secondsDiff < oneDay && hour >= 1) {
+      output = targetDate.toLocaleTimeString('en-US')
+    } else {
+      const month = ('0' + (targetDate.getMonth() + 1)).slice(-2)
+      const day = ('0' + targetDate.getDate()).slice(-2)
+      output = `${targetDate.getFullYear()}-${month}-${day}`
+    }
+    return output
   }
 
   useEffect(() => {
@@ -74,10 +93,10 @@ const TransactionListItem = (props) => {
         setIsInbound(false)
       }
     }
-    if (props.contact && props.contact.name) {
-      setName(props.contact.name)
+    if (props.transaction.note) {
+      setNote(props.transaction.note)
     }
-  }, [setName, props.contact])
+  }, [setNote, props.contact])
 
   const styles = StyleSheet.create({
     container: {
@@ -91,7 +110,7 @@ const TransactionListItem = (props) => {
     amountInformation: {
       textAlign: 'right'
     },
-    accountName: {
+    accountNote: {
       fontWeight: 'bold',
       paddingBottom: dimensions.verticalSpacingBetweenItemsShort
     },
@@ -121,12 +140,12 @@ const TransactionListItem = (props) => {
           : <UnconfirmedIcon color={colors.transactionListItem.unconfirmedIconColor} />}
       </View>
       <View style={styles.accountInformation}>
-        <BodyText style={styles.accountName}>{name}</BodyText>
+        <BodyText style={styles.accountNote}>{note}</BodyText>
         <BodyText style={styles.address}>{truncateAddress(address)}</BodyText>
       </View>
       <View style={styles.amountInformation}>
         <BodyText style={styles.amount}>{formatAmount(amount)} {translate('pkt')}</BodyText>
-        <BodyText style={styles.altAmount}>{formatDate(time, props.now)}</BodyText>
+        <BodyText style={styles.altAmount}>{formatDate(time, currentTime.current)}</BodyText>
       </View>
     </View>
   )

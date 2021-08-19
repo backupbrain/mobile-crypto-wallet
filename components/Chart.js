@@ -9,7 +9,7 @@ import { useTheme } from '@react-navigation/native'
 // https://github.com/JesperLekland/react-native-svg-charts-examples/blob/master/storybook/stories/both-axes.js
 
 const Chart = (props) => {
-  const { dimensions } = useTheme()
+  const { colors, dimensions } = useTheme()
   const [chartWidth, setChartWidth] = useState(300)
   const fillColor = props.fillColor || '#000'
   const lineColor = props.lineColor || '#ccc'
@@ -58,7 +58,10 @@ const Chart = (props) => {
           contentInset={contentInset}
           svg={{
             fill: lineColor,
-            stroke: lineColor
+            color: colors.chart.axisTextColor,
+            fontSize: dimensions.chart.fontSize,
+            fontWeight: dimensions.chart.fontFamily,
+            fontFamily: dimensions.chart.fontFamily
           }}
           numberOfTicks={5}
           formatLabel={(value) => `${kFormatter(value)}`}
@@ -88,7 +91,13 @@ const Chart = (props) => {
               data={props.data}
               formatLabel={(value, index) => index}
               contentInset={contentInset}
-              svg={{ fill: legendColor }}
+              svg={{
+                fill: legendColor,
+                color: colors.chart.axisTextColor,
+                fontSize: dimensions.chart.fontSize,
+                fontWeight: dimensions.chart.fontFamily,
+                fontFamily: dimensions.chart.fontFamily
+              }}
             />
           </View>
         </View>

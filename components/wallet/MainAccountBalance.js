@@ -10,7 +10,7 @@ import { useTheme } from '@react-navigation/native'
 const sumBalances = (addresses) => {
   let sum = 0.0
   for (const row in addresses) {
-    sum += addresses[row].amount
+    sum += addresses[row].total
   }
   return sum
 }

@@ -23,7 +23,7 @@ const Tabs = (props) => {
       flexDirection: 'row',
       width: '100%',
       marginBottom: dimensions.button.paddingVertical,
-      paddingHorizontal: dimensions.tabs.tabMarginHorizontal
+      justifyContent: 'center'
     },
     firstTab: {
       borderTopLeftRadius: dimensions.button.borderRadius,

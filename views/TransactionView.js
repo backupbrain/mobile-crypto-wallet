@@ -6,6 +6,7 @@ import ActiveButton from '../components/buttons/ActiveButton'
 import LinkButton from '../components/buttons/LinkButton'
 import BodyText from '../components/text/BodyText'
 import AccountBalance from '../components/wallet/AccountBalance'
+import WalletList from '../components/wallet/WalletList'
 import WalletListItem from '../components/wallet/WalletListItem'
 import ConfirmedIcon from '../components/images/ConfirmedIcon'
 import UnconfirmedIcon from '../components/images/UnconfirmedIcon'
@@ -145,10 +146,12 @@ const TransactionView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
   const modalRef = useRef()
   const [transaction, setTransaction] = useState({})
+  const [, setExtendedTransactionData] = useState({})
   const [fromName, setFromName] = useState(translate('unnamedAddress'))
-  const [toName, setToName] = useState(translate('unnamedAddress'))
+  // const [toName, setToName] = useState(translate('unnamedAddress'))
   const [fromAddress, setFromAddress] = useState({})
-  const [toAddress, setToAddress] = useState({})
+  // const [toAddress, setToAddress] = useState({})
+  const [toAddresses, setToAddresses] = useState([])
   const [note, setNote] = useState('')
   const [newNote, setNewNote] = useState('')
   const [hasNote, setHasNote] = useState(false)
@@ -157,7 +160,7 @@ const TransactionView = ({ navigation, route }) => {
   const pktManager = useRef(new PktManager())
 
   const isSpend = (transaction) => {
-    return (transaction.category === 'spend')
+    return (transaction.category === 'send')
   }
 
   const isReceive = (transaction) => {
@@ -177,7 +180,7 @@ const TransactionView = ({ navigation, route }) => {
     if (isReceive(transaction)) {
       return translate('receiveTransactionType')
     } else if (isSpend(transaction)) {
-      return translate('spendTransactionType')
+      return translate('sendTransactionType')
     } else if (isMiningIncome(transaction)) {
       return translate('miningIncomeTransactionType')
     } else {
@@ -185,26 +188,60 @@ const TransactionView = ({ navigation, route }) => {
     }
   }
 
-  const fetchContacts = async (transaction) => {
+  const fetchContacts = async (transaction, extendedTransactionData) => {
     // TODO: match transaction addressses with local addresses
-    const contacts = await contactManager.current.getAll()
+    await contactManager.current.getAll()
     const fromContact = await contactManager.current.getByAddress(transaction.address)
-    const toContact = await contactManager.current.getByAddress(transaction.address)
+    // const toContact = await contactManager.current.getByAddress(transaction.address)
     if (fromContact) {
-      setFromName(fromContact)
+      setFromName(fromContact.name)
     }
+    /*
     if (toContact) {
-      setToName(toContact)
+      setToName(toContact.name)
     }
+    /* */
     const fromAddress = await pktManager.current.getAddressInfo(transaction.address)
-    const toAddress = await pktManager.current.getAddressInfo(transaction.address)
+    // const toAddress = await pktManager.current.getAddressInfo(transaction.address)
 
     if (fromAddress) {
+      fromAddress.isLocal = true
+      if (fromContact) {
+        fromAddress.name = fromContact.name
+      }
       setFromAddress(fromAddress)
     } else {
+      if (fromContact) {
+        fromAddress.name = fromContact.name
+      }
       setFromAddress({ address: transaction.address })
     }
+    // get to addresses
+    // TODO: determine if the first detail must be shown
+    const rawToAddresses = extendedTransactionData.details.slice(1, extendedTransactionData.details.length)
+    const toAddresses = []
+    for (let row = 0; row < rawToAddresses.length; row++) {
+      const toAddress = rawToAddresses[row]
+      const address = {
+        total: null,
+        name: null,
+        address: toAddress.address
+      }
+      const myToAdddress = await pktManager.current.getAddressInfo(toAddress.address)
+      if (myToAdddress) {
+        address.total = myToAdddress.total
+        address.isLocal = true
+      }
+      const toContact = await contactManager.current.getByAddress(toAddress.address)
+      if (toContact) {
+        address.name = toContact.name
+      }
+      toAddresses.push(address)
+    }
+    setToAddresses(toAddresses)
+    /*
     if (toAddress) {
+      toAddress.isLocal = true
       setToAddress(toAddress)
     } else {
       setToAddress({ address: transaction.address })
@@ -218,6 +255,7 @@ const TransactionView = ({ navigation, route }) => {
         setToName(contact.name)
       }
     }
+    /* */
   }
 
   const openInBlockExplorer = (transaction) => {
@@ -240,15 +278,23 @@ const TransactionView = ({ navigation, route }) => {
   }
 
   const getTransactionDateTime = (transaction) => {
-    const date = new Date(transaction.time)
+    console.log(transaction)
+    const date = new Date(parseInt(transaction.time) * 1000)
+    console.log(date)
     return date.toLocaleString()
   }
 
   useEffect(() => {
-    if (route.params && route.params.transaction) {
+    const fetchTransactionData = async () => {
       setTransaction(route.params.transaction)
-      fetchContacts(route.params.transaction)
+      const transactionId = route.params.transaction.id
+      const extendedTransactionData = await pktManager.current.getTransaction(transactionId)
+      setExtendedTransactionData(extendedTransactionData)
+      fetchContacts(route.params.transaction, extendedTransactionData)
       fetchNote(route.params.transaction)
+    }
+    if (route.params && route.params.transaction) {
+      fetchTransactionData()
     }
   }, [route.params, setTransaction])
 
@@ -267,6 +313,9 @@ const TransactionView = ({ navigation, route }) => {
       paddingVertical: dimensions.verticalSpacingBetweenItems
     },
     toLabel: {
+      paddingTop: dimensions.verticalSpacingBetweenItems
+    },
+    toAddress: {
       paddingVertical: dimensions.verticalSpacingBetweenItems
     },
     addressData: {
@@ -312,6 +361,9 @@ const TransactionView = ({ navigation, route }) => {
     },
     noNote: {
       color: colors.disabledText
+    },
+    modalBackgronud: {
+      justifyContent: 'flex-end'
     }
   })
 
@@ -372,18 +424,23 @@ const TransactionView = ({ navigation, route }) => {
           <WalletListItem
             address={transaction.address}
             name={fromName}
-            amount={fromAddress.amount}
+            amount={fromAddress.total}
           />
         </View>
         <View style={styles.addressData}>
           <BodyText style={styles.toLabel}>
             {translate('to')}
           </BodyText>
-          <WalletListItem
-            address={transaction.address}
-            name={toName}
-            amount={toAddress.amount}
-          />
+          {/* TODO use a FlatList for this list of addresses */}
+          {toAddresses.map((toAddress, index) => (
+            <WalletListItem
+              style={styles.toAddress}
+              key={index.toString()}
+              address={toAddress.address}
+              name={toAddress.name}
+              amount={toAddress.total}
+            />
+          ))}
         </View>
         <View style={styles.tableRow}>
           <BodyText style={styles.statusLabel}>
@@ -433,6 +490,7 @@ const TransactionView = ({ navigation, route }) => {
         />
       </View>
       <Modal
+        backgroundStyle={styles.modalBackgronud}
         ref={modalRef}
         title={translate('editNote')}
         content={

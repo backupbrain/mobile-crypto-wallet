@@ -31,7 +31,7 @@ const WalletCreatedView = ({ navigation, route }) => {
         </View>
         <ActivityButton
           title={translate('viewWalletBalance')}
-          onPress={() => navigation.navigate('WalletHomeView', { reset: true })}
+          onPress={() => navigation.navigate('WalletHomeViewSet', { reset: true })}
         />
       </View>
     </Screen>

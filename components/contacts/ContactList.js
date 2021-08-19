@@ -39,7 +39,7 @@ const ContactList = (props) => {
     <View style={styles.container}>
       <SectionList
         sections={props.addresses}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => item + index.toString()}
         renderItem={({ item }) => (
           <ContactListItem
             item={item}

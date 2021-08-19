@@ -15,6 +15,7 @@ import SharingManager from '../utils/SharingManager'
 import ContactManager from '../utils/ContactManager'
 import PktManager from '../utils/PktManager'
 import PktPriceTicker from '../utils/PktPriceTicker'
+import TransactionNoteManager from '../utils/TransactionNoteManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../translations'
 
@@ -154,38 +155,59 @@ const TransactionTabContent = (props) => {
   const [transactions, _setTransactions] = useState([])
   const [areTransactionsFetched, setAreTransactionsFetched] = useState(false)
   const [offset, setOffset] = useState(0)
-  const [numTransactions, ] = useState(100)
-  const [isLoadingTransactions, setIsLoadingTransactions] = useState(false)
+  const [numTransactions, ] = useState(10) // FIXME: make this 100
+  const [isLoadingTransactions, setIsLoadingTransactions] = useState(true)
   const [areMoreTransactionsAvailable, setAreMoreTransactionsAvailable] = useState(true)
+  const transactionNoteManager = useRef(new TransactionNoteManager())
   const address = props.address
   const pktPriceTicker = props.pktPriceTicker
   const setTransactions = async (offset) => {
-    if (!areTransactionsFetched) {
-      if (!offset) {
-        offset = 0
-      }
-      const transactions = await pktManager.current.getTransactions(
-        address, numTransactions, offset
-      )
-      _setTransactions(transactions)
-      setAreTransactionsFetched(true)
-      setAreMoreTransactionsAvailable(transactions.length >= numTransactions)
+    // console.log(`Loading transactions from ${offset}`)
+    if (!offset) {
+      offset = 0
     }
+    const existingTransactions = transactions
+    const newTransactions = await pktManager.current.getTransactions(
+      address, numTransactions, offset
+    )
+    // console.log(`${newTransactions.length} transactions fetched`)
+    // match notes to the transactions
+    for (let row = 0; row < newTransactions.length; row++) {
+      const transaction = newTransactions[row]
+      const note = await transactionNoteManager.current.get(transaction.txid)
+      if (note) {
+        transaction[note] = note
+      }
+      existingTransactions.push(transaction)
+    }
+    // console.log(`setting ${existingTransactions.length} transactions`)
+    _setTransactions(existingTransactions)
+    setAreTransactionsFetched(true)
+    setAreMoreTransactionsAvailable(newTransactions.length >= numTransactions)
+    setIsLoadingTransactions(false)
   }
   useEffect(() => {
-    setTransactions()
+    const initialize = async () => {
+      await setTransactions()
+    }
+    initialize()
+  }, [])
+
+  useEffect(() => {
+    console.log('refresh')
   })
 
   const styles = StyleSheet.create({
     loadMoreButton: {
       paddingVertical: dimensions.paddingVertical,
-      paddingHorizontal: dimensions.paddingHorizontal,
+      paddingHorizontal: dimensions.paddingHorizontal
     }
   })
 
   return (
     <View>
       <TransactionList
+        refreshing={isLoadingTransactions}
         transactions={transactions}
         contacts={props.contacts}
         contactLookup={props.contactLookup}
@@ -198,7 +220,7 @@ const TransactionTabContent = (props) => {
       />
       {areMoreTransactionsAvailable &&
         <View style={styles.loadMoreButton}>
-          {areTransactionsFetched
+          {!isLoadingTransactions
             ? (<LinkButton
                 title={translate('loadMore')}
                 onPress={() => {
@@ -208,7 +230,7 @@ const TransactionTabContent = (props) => {
                   setTransactions(nextOffset)
                 }}
               />)
-            : (<ActivityIndicator size='large' />)}
+            : (<ActivityIndicator size='small' />)}
         </View>}
     </View>
   )
@@ -224,6 +246,7 @@ const AddressView = ({ navigation, route }) => {
   const contactManager = useRef(new ContactManager())
 
   const fetchContacts = async () => {
+    // TODO: use the contactManager.current.getByAddress() function
     if (!areContactsLoaded) {
       let address = {}
       if (route.params && route.params.address) {
@@ -246,13 +269,14 @@ const AddressView = ({ navigation, route }) => {
   }
 
   useEffect(() => {
+    console.log(route.params)
     if (route.params && route.params.address) {
       setAddress(route.params.address)
     } else {
       setAddress(dummyAddress)
     }
     fetchContacts()
-  }, [fetchContacts, setAddress, route.params])
+  }, [route.params])
 
   const styles = StyleSheet.create({
     screen: {
@@ -288,12 +312,12 @@ const AddressView = ({ navigation, route }) => {
         <WalletListItem
           name={address.name}
           address={address.address}
-          amount={address.amount}
+          amount={address.total}
           showAmount={false}
           style={styles.walletListItem}
         />
         <AccountBalance
-          amount={address.amount}
+          amount={address.total}
           isVisible
         />
         <Tabs
@@ -306,7 +330,7 @@ const AddressView = ({ navigation, route }) => {
               )
             },
             {
-              title: translate('Address'),
+              title: translate('address'),
               content: (
                 <TextCodeTabContent
                   address={address}

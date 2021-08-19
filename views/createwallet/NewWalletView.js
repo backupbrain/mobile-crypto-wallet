@@ -17,6 +17,8 @@ const NewWalletView = ({ navigation, route }) => {
 
   const openWalletAndGetRecoveryPhrase = async () => {
     const recoveryPhrase = await pktManager.current.createWallet()
+    console.log('recoveryPhrase')
+    console.log(recoveryPhrase)
     setRecoveryPhrase(recoveryPhrase)
     setIsRecoveryPhraseSet(true)
   }

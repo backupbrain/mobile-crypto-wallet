@@ -121,7 +121,7 @@ const SendFormView = ({ navigation, route }) => {
                 <WalletListItem
                   name={fromContact.name}
                   address={fromContact.address}
-                  amount={fromContact.amount}
+                  amount={fromContact.total}
                   style={styles.fromAddressWalletListItem}
                 />
               </>
@@ -168,7 +168,7 @@ const SendFormView = ({ navigation, route }) => {
           style={styles.amountInput}
           label={translate('amount')}
           fiat={{ code: pktPriceTicker.current.getUserFiatCurrency() }}
-          maxAmount={fromContact.amount}
+          maxAmount={fromContact.total}
           disabled={!isFromAddressValid}
           onChangePktAmount={(amountPkt, isAmountValid) => {
             setAmount(amountPkt)

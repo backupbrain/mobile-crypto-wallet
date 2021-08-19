@@ -49,7 +49,7 @@ const ContactBookView = ({ navigation, route }) => {
       const myContact = await contactManager.getByAddress(myAddress.address)
       const mergedAddress = {
         address: myAddress.address,
-        amount: myAddress.amount,
+        amount: myAddress.total,
         isLocal: true,
         name: null
       }

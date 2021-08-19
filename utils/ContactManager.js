@@ -9,7 +9,7 @@ export class Contact {
 }
 
 export default class ContactManager {
-  static get DEBUG () { return false }
+  static get DEBUG () { return true }
 
   constructor () {
     this.contacts = []
@@ -30,6 +30,7 @@ export default class ContactManager {
     }
     this.setAll(contacts)
     this.isLoaded = true
+    return contacts
   }
 
   async save () {

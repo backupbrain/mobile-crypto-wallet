@@ -89,7 +89,7 @@ const SendFormView = ({ navigation, route }) => {
           <WalletListItem
             name={fromAddress.name}
             address={fromAddress.address}
-            amount={fromAddress.amount}
+            amount={fromAddress.total}
           />
         </View>
         <View style={styles.otpInputContainer}>

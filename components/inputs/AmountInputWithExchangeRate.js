@@ -8,7 +8,7 @@ import translate from '../../translations'
 
 const AmountInputWithExchangeRate = (props) => {
   // TODO: build "send max" feature,
-  // which sends the total address.amount minus PKT transation fee
+  // which sends the total address.total minus PKT transation fee
   const { colors, dimensions } = useTheme()
   const [amount, _setAmount] = useState('')
   const [convertedAmount, setConvertedAmount] = useState('')
