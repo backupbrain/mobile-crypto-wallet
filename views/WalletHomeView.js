@@ -40,7 +40,7 @@ const WalletHomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchMyAddresses()
-  })
+  }, [fetchMyAddresses])
 
   const styles = StyleSheet.create({
     screen: {
@@ -64,7 +64,8 @@ const WalletHomeView = ({ navigation, route }) => {
       marginLeft: '4px'
     },
     walletListContainer: {
-      width: '100%'
+      width: '100%',
+      minHeight: '100%'
     }
   })
 

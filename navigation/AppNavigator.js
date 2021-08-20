@@ -319,8 +319,8 @@ const DrawerNavigator = () => {
         drawerPosition: 'right'
       }}
     >
-      <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
       <Drawer.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
+      <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
 
       <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
       <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
