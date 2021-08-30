@@ -42,6 +42,7 @@ import PktManager from '../utils/PktManager'
 import PassphraseManager from '../utils/PassphraseManager'
 import PinManager from '../utils/PinManager'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
+import { Text } from 'react-native'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -184,7 +185,7 @@ const WalletHomeViewSet = ({ navigation }) => {
         options={{
           title: translate('transaction'),
           headerRight: () => <HamburgerMenuButon navigation={navigation} />,
-          headerShown:false
+          headerShown: false
         }}
         component={SendCryptoViewSet}
       />
@@ -330,35 +331,39 @@ const LogOutViewSet = ({ navigation }) => {
 }
 
 const CustomDrawerContent = (props) => {
+
+  const {colors} = useTheme()
+
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props}  >
       <DrawerItem
         {...props}
-        label={translate('walletHome')}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('walletHome')}</Text>}
         onPress={() => props.navigation.navigate('WalletHomeViewSet')}
       />
       <DrawerItem
         {...props}
-        label={translate('changePin')}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('changePin')}</Text>}
         onPress={() => props.navigation.navigate('ChangePinViewSet')}
       />
       <DrawerItem
         {...props}
-        label={translate('changePassphrase')}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('changePassphrase')}</Text>}
         onPress={() => props.navigation.navigate('ChangePassphraseViewSet')}
       />
       <DrawerItem
         {...props}
-        label={translate('pair2FaDevice')}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
         onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet')}
-      />
+        />
       <DrawerItem
         {...props}
-        label={translate('contactBook')}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('contactBook')}</Text>}
         onPress={() => props.navigation.navigate('ContactsViewSet')}
-      />
+        />
       <DrawerItem
         {...props}
+        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('logOut')}</Text>}
         label={translate('logOut')}
         onPress={() => props.navigation.navigate('LogOutViewSet')}
       />
@@ -370,18 +375,18 @@ const DrawerNavigator = () => {
   // TODO: make sure drawer opens on right and has the right theme.
   // https://reactnavigation.org/docs/drawer-navigator/
   const { colors } = useTheme()
-
+  console.log(colors.bodyText.color)
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerPosition: 'right',
         drawerStyle: {
-          backgroundColor: 'white',
-          width: 210,
+          backgroundColor: colors.screen.backgroundColor,
+          width: 210
         },
         drawerType: 'front',
-        headerShown: false,
+        headerShown: false
       }}
     >
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
