@@ -39,7 +39,7 @@ const WalletList = (props) => {
         sections={[{ title: translate('myAddresses'), data: addresses }]}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => props.onListItemPress(item)}
+            onPress={props.onListItemPress.bind(this,item)}
           >
             <WalletListItem
               name={item.name}
@@ -53,9 +53,7 @@ const WalletList = (props) => {
           <ListSectionHeader
             title={translate('myAddresses')}
             linkText={translate('createAddress')}
-            onClick={() => {
-              props.onLinkPress()
-            }}
+            onClick={props.onLinkPress}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

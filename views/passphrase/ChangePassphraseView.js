@@ -47,6 +47,28 @@ const ChangePassphraseView = ({ navigation, route }) => {
     }
   })
 
+  const _onPasswordChangeHandler = (text) => {
+    setCurrentPassword(text)
+    verifyFormFilled(text, newPassphrase, _doPassphrasesMatch)
+  }
+
+  const _onNewPasswordChangeHandler = (passphrase) => {
+    setnewPassphrase(passphrase)
+  }
+
+  const _onPasswordMatchHandler = (doPassphrasesMatch, newPassphrase) => {
+    setdoPassphrasesMatch(doPassphrasesMatch)
+    verifyFormFilled(currentPassword, newPassphrase, doPassphrasesMatch)
+  }
+
+  const _onPasswordVerifyChangeHandler = (text) => {}
+
+  const _onActivityPressHandler = () => {
+    saveNewPassphrase(newPassphrase)
+    // TODO: create alert and reset all password inputs
+    // navigation.push('ChangePasswordView')
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -55,33 +77,21 @@ const ChangePassphraseView = ({ navigation, route }) => {
         </View>
         <PasswordInput
           placeholder={translate('currentPassphrase')}
-          onChangeText={(text) => {
-            setCurrentPassword(text)
-            verifyFormFilled(text, newPassphrase, _doPassphrasesMatch)
-          }}
+          onChangeText={_onPasswordChangeHandler}
         />
         <CreateNewPasswordInput
           passwordPlaceholder={translate('newPassphrase')}
           passwordHelp={translate('passwordHelpText')}
           passwordVerifyPlaceholder={translate('verifyPassword')}
           passwordVerifyHelp={translate('verifyPasswordHelpText')}
-          onPasswordChangeText={(passphrase) => {
-            setnewPassphrase(passphrase)
-          }}
-          onPasswordVerifyChangeText={(text) => {}}
-          onPasswordsMatch={(doPassphrasesMatch, newPassphrase) => {
-            setdoPassphrasesMatch(doPassphrasesMatch)
-            verifyFormFilled(currentPassword, newPassphrase, doPassphrasesMatch)
-          }}
+          onPasswordChangeText={_onNewPasswordChangeHandler}
+          onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
+          onPasswordsMatch={_onPasswordMatchHandler}
           style={styles.createPassphraseBlock}
         />
         <ActivityButton
           title={translate('changePassphrase')}
-          onPress={() => {
-            saveNewPassphrase(newPassphrase)
-            // TODO: create alert and reset all password inputs
-            // navigation.push('ChangePasswordView')
-          }}
+          onPress={_onActivityPressHandler}
           disabled={!isFormFilled}
         />
       </View>

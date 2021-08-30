@@ -17,14 +17,14 @@ export default class PinManager {
 
   async set (pin) {
     this.pin = pin
-    AdaptiveStorage.set(AppConstants.LOGIN_PIN_KEY, pin)
+    await AdaptiveStorage.set(AppConstants.LOGIN_PIN_KEY, pin)
   }
 
   isValid (pin) {
     return pin === this.pin
   }
 
-  clear () {
-    AdaptiveStorage.remove(AppConstants.LOGIN_PIN_KEY)
+  async clear () {
+    await AdaptiveStorage.remove(AppConstants.LOGIN_PIN_KEY)
   }
 }

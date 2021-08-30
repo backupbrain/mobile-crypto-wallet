@@ -18,7 +18,7 @@ const NewWalletView = ({ navigation, route }) => {
   const openWalletAndGetRecoveryPhrase = async () => {
     const recoveryPhrase = await pktManager.current.createWallet()
     console.log('recoveryPhrase')
-    console.log(recoveryPhrase)
+    console.log(recoveryPhrase.join(' '))
     setRecoveryPhrase(recoveryPhrase)
     setIsRecoveryPhraseSet(true)
   }
@@ -28,7 +28,6 @@ const NewWalletView = ({ navigation, route }) => {
       openWalletAndGetRecoveryPhrase()
     }
   }, [])
-
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,

@@ -110,6 +110,14 @@ const AlertBanner = (props, ref) => {
     }
     return bannerStyle
   }
+
+  const _onCloseHandler = () => {
+    if (props.onClose) {
+      props.onClose()
+    }
+    close()
+  }
+
   return (
     <Animated.View style={[styles.container, props.styles, { opacity: fadeAnim }]}>
       {isVisible &&
@@ -117,12 +125,7 @@ const AlertBanner = (props, ref) => {
           <Text style={styles.textStyle}>{props.label}</Text>
           {props.noclose &&
             <TouchableOpacity
-              onPress={() => {
-                if (props.onClose) {
-                  props.onClose()
-                }
-                close()
-              }}
+              onPress={_onCloseHandler}
             >
               <View style={styles.closeButton}>
                 <Close size={16} color={colors.text} />

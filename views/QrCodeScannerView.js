@@ -197,9 +197,7 @@ const BarcodeScannnerScreen = ({ route }) => {
             <Camera
               onBarCodeScanned={didScan ? undefined : handleBarCodeScanned}
               style={[StyleSheet.absoluteFillObject]}
-              onCameraReady={() => {
-                setCameraReady()
-              }}
+              onCameraReady={setCameraReady}
               onFaceDetected={null}
               onTextRecognized={null}
               ref={(ref) => {
@@ -238,9 +236,7 @@ const BarcodeScannnerScreen = ({ route }) => {
             >
               <TouchableOpacity
                 style={styles.captureButton}
-                onPress={() => {
-                  takePicture()
-                }}
+                onPress={takePicture}
               />
             </View>
             <View style={{ height: imagePadding, backgroundColor: '#000' }} />

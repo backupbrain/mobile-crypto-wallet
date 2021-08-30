@@ -34,6 +34,21 @@ const CreatePassphraseView = ({ navigation, route }) => {
     }
   })
 
+  const _onPasswordChangeHandler = (text) => {
+    setPassphrase(text)
+  }
+
+  const _onPasswordVerifyChangeHandler = (text) => {}
+
+  const _onPasswordMatchHandler = (doPassphrasesMatch, password) => {
+    verifyFormFilled(passphrase, doPassphrasesMatch)
+  }
+
+  const _onActivityPressHandler = () => {
+    savePassphrase(passphrase)
+    navigation.push('WalletCreatedView')
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -44,21 +59,14 @@ const CreatePassphraseView = ({ navigation, route }) => {
             passwordHelp={translate('passwordHelpText')}
             passwordVerifyPlaceholder={translate('verifyPassword')}
             passwordVerifyHelp={translate('verifyPasswordHelpText')}
-            onPasswordChangeText={(text) => {
-              setPassphrase(text)
-            }}
-            onPasswordVerifyChangeText={(text) => {}}
-            onPasswordsMatch={(doPassphrasesMatch, password) => {
-              verifyFormFilled(passphrase, doPassphrasesMatch)
-            }}
+            onPasswordChangeText={_onPasswordChangeHandler}
+            onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
+            onPasswordsMatch={_onPasswordMatchHandler}
           />
         </View>
         <ActivityButton
           title={translate('createPassphrase')}
-          onPress={(passphrase) => {
-            savePassphrase(passphrase)
-            navigation.push('WalletCreatedView')
-          }}
+          onPress={_onActivityPressHandler}
           disabled={!isFormFilled}
         />
       </View>

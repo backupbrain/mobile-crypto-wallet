@@ -8,13 +8,16 @@ import PinPad from '../../components/buttons/PinPad'
 import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
+import TwoFactorAuth from '../../utils/TwoFactorAuth'
 
 const PinLoginView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const pinManager = useRef(new PinManager())
+  const TwoFactorSecret = useRef(new TwoFactorAuth())
   const [activeView, setActiveView] = useState('WalletHomeView')
   const [pin, setPin] = useState('')
   const [isPinValid, setIsPinValid] = useState(null)
+
   const onKeyPress = (number) => {
     let newPin = pin + number
     if (newPin.length > 4) {
@@ -22,10 +25,16 @@ const PinLoginView = ({ navigation, route }) => {
     }
     setPin(newPin)
     if (newPin.length === 4) {
-      const isPinValid = pinManager.isValid(newPin)
+      const isPinValid = pinManager.current.isValid(newPin)
       setIsPinValid(isPinValid)
       if (isPinValid) {
-        navigation.navigate(activeView)
+        TwoFactorAuth.getPairingCode().then(secret => {
+          if(!secret){
+            navigation.navigate('RePair2FaDeviceViewSet')
+          }else{
+            navigation.navigate(activeView)
+          }
+        })
       } else {
         setPin('')
       }
@@ -43,7 +52,7 @@ const PinLoginView = ({ navigation, route }) => {
   }
   useEffect(() => {
     // TODO: route to last-used page
-    setActiveView('WalletHomeView')
+    setActiveView('WalletHomeViewSet')
   }, [setActiveView])
 
   const styles = StyleSheet.create({
@@ -72,6 +81,14 @@ const PinLoginView = ({ navigation, route }) => {
     }
   })
 
+  const _onPinPadKeyPress = (number) => {
+    onKeyPress(number)
+  }
+
+  const _onPinPadDeleteHandler = () => {
+    onBackspace()
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -83,12 +100,8 @@ const PinLoginView = ({ navigation, route }) => {
           <View style={styles.bottomAlign}>
             <DotDashPinInput pin={pin} error={isPinValid === false} />
             <PinPad
-              onKeyPress={(number) => {
-                onKeyPress(number)
-              }}
-              onDelete={() => {
-                onBackspace()
-              }}
+              onKeyPress={_onPinPadKeyPress}
+              onDelete={_onPinPadDeleteHandler}
             />
           </View>
         </View>

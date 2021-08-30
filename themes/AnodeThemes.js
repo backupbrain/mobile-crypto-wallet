@@ -158,7 +158,7 @@ export const AnodeLightTheme = {
       color: '#1F1F1F'
     },
     inputs: {
-      color: '#fff',
+      color: '#000',
       borderColor: '#A9A9A9',
       backgroundColor: 'transparent',
       borderTopColor: 'transparent',

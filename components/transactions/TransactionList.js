@@ -42,7 +42,7 @@ const TransactionList = (props) => {
           data={props.transactions}
           renderItem={({ item, index }) => (
             <TouchableOpacity
-              onPress={() => props.onListItemPress(index)}
+              onPress={props.onListItemPress.bind(this,index)}
             >
               <TransactionListItem
                 transaction={item}

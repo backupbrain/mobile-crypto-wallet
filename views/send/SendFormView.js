@@ -101,18 +101,68 @@ const SendFormView = ({ navigation, route }) => {
     }
   })
 
+  const _onPressHandler = () => {
+    navigation.push('ContactBookView', {
+      selectorMode: true,
+      localOnly: true,
+      onContactSelected: onFromContactSelected
+    })
+  }
+
+  const _onQrCodeIconPressHandler = () => {
+    navigation.push('QrCodeScannerView')
+  }
+
+  const _onPersonIconPressHandler = () => {
+    navigation.push('ContactBookView', {
+      selectorMode: true,
+      onContactSelected: onToContactSelected
+    })
+  }
+
+  const _onRemoteAddressChangeHandler = (address) => {
+    setToAddress(address)
+    setToContact({ address: address })
+  }
+
+  const _onRemoteAddressPressHandler = () => {
+    toAddressModalRef.current.open()
+  }
+
+  const _onRemoteAddressValidHandler = (address, isValid) => {
+    setToAddress(address)
+    setIsToAddressValid(isValid)
+  }
+
+  const _onChangePktAmountHandler = (amountPkt, isAmountValid) => {
+    setAmount(amountPkt)
+    setIsAmountValid(isAmountValid)
+  }
+
+  const _onActiveButtonPressHandler = () => {
+    navigation.push(
+      'SendPreviewView',
+      {
+        fromAddress: fromContact,
+        toAddress: toContact,
+        amount,
+        note
+      }
+    )
+  }
+
+  const _onActivePressHandler = () => {
+    setToAddress(newToAddress)
+    toAddressInputRef.current.setAddress(newToAddress)
+    toAddressModalRef.current.close()
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
         <TouchableOpacity
           style={styles.fromAddressInput}
-          onPress={() => {
-            navigation.push('ContactBookView', {
-              selectorMode: true,
-              localOnly: true,
-              onContactSelected: onFromContactSelected
-            })
-          }}
+          onPress={_onPressHandler}
         >
           {fromContact.address
             ? (
@@ -143,26 +193,11 @@ const SendFormView = ({ navigation, route }) => {
           label={translate('to')}
           placeholder={translate('remoteAddressPlaceholder')}
           /* help={translate('remoteAddressHelpText')} */
-          onQrCodeIconPress={() => {
-            navigation.push('QrCodeScannerView')
-          }}
-          onPersonIconPress={() => {
-            navigation.push('ContactBookView', {
-              selectorMode: true,
-              onContactSelected: onToContactSelected
-            })
-          }}
-          onChangeText={(address) => {
-            setToAddress(address)
-            setToContact({ address: address })
-          }}
-          onPress={() => {
-            toAddressModalRef.current.open()
-          }}
-          onValid={(address, isValid) => {
-            setToAddress(address)
-            setIsToAddressValid(isValid)
-          }}
+          onQrCodeIconPress={_onQrCodeIconPressHandler}
+          onPersonIconPress={_onPersonIconPressHandler}
+          onChangeText={_onRemoteAddressChangeHandler}
+          onPress={_onRemoteAddressPressHandler}
+          onValid={_onRemoteAddressValidHandler}
         />
         <AmountInputWithExchangeRate
           style={styles.amountInput}
@@ -170,10 +205,7 @@ const SendFormView = ({ navigation, route }) => {
           fiat={{ code: pktPriceTicker.current.getUserFiatCurrency() }}
           maxAmount={fromContact.total}
           disabled={!isFromAddressValid}
-          onChangePktAmount={(amountPkt, isAmountValid) => {
-            setAmount(amountPkt)
-            setIsAmountValid(isAmountValid)
-          }}
+          onChangePktAmount={_onChangePktAmountHandler}
         />
         <GenericTextInput
           label={translate('note')}
@@ -197,17 +229,7 @@ const SendFormView = ({ navigation, route }) => {
         */}
         <ActiveButton
           title={translate('previewSend')}
-          onPress={() => {
-            navigation.push(
-              'SendPreviewView',
-              {
-                fromAddress: fromContact,
-                toAddress: toContact,
-                amount,
-                note
-              }
-            )
-          }}
+          onPress={_onActiveButtonPressHandler}
           disabled={!getIsFormFilled()}
         />
       </View>
@@ -238,11 +260,7 @@ const SendFormView = ({ navigation, route }) => {
         footer={
           <ActiveButton
             title={translate('useAddress')}
-            onPress={() => {
-              setToAddress(newToAddress)
-              toAddressInputRef.current.setAddress(newToAddress)
-              toAddressModalRef.current.close()
-            }}
+            onPress={_onActivePressHandler}
             disabled={!isNewToAddressValid}
           />
         }

@@ -328,6 +328,16 @@ const TransactionSuccessView = ({ navigation, route }) => {
     }
   })
 
+  const _onActiveButtonPressHandler = () => {
+    transactionNoteManager.current.set(
+      transaction.txid,
+      newNote
+    )
+    setNote(newNote)
+    setHasNote(true)
+    modalRef.current.close()
+  }
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -413,15 +423,11 @@ const TransactionSuccessView = ({ navigation, route }) => {
         <ActiveButton
           style={styles.topButton}
           title={getNoteButtonText()}
-          onPress={() => {
-            editNote()
-          }}
+          onPress={editNote}
         />
         <ActiveButton
           title={translate('openInBlockExplorer')}
-          onPress={() => {
-            openInBlockExplorer(transaction)
-          }}
+          onPress={openInBlockExplorer.bind(this,transaction)}
         />
       </View>
       <Modal
@@ -443,15 +449,7 @@ const TransactionSuccessView = ({ navigation, route }) => {
         footer={
           <ActiveButton
             title={translate('saveNote')}
-            onPress={() => {
-              transactionNoteManager.current.set(
-                transaction.txid,
-                newNote
-              )
-              setNote(newNote)
-              setHasNote(true)
-              modalRef.current.close()
-            }}
+            onPress={_onActiveButtonPressHandler}
           />
         }
       />

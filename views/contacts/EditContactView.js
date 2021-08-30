@@ -95,22 +95,34 @@ const EditContactView = ({ navigation, route }) => {
     }
   })
 
+  const _onGenericChangeHandler = (text) => {
+    updateName(text)
+  }
+
+  const _onPktAddressChangeHandler = (address, isValid) => {
+    updateIsAddressValid(name, address, isValid)
+  }
+
+  const _onActiveButtonPressHandler = async () => {
+    updateAddressAndNavigateBack(name, address)
+  }
+
+  const _onDeleteButtonPressHandler = () => {
+    deleteAddressAndNavigateBack(address)
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
         <View
           style={styles.formContainer}
-          onBlur={() => {
-            Keyboard.dismiss()
-          }}
+          onBlur={Keyboard.dismiss}
         >
           <GenericTextInput
             label={translate('addressName')}
             style={styles.nameInput}
             placeholder={translate('addressName')}
-            onChangeText={(text) => {
-              updateName(text)
-            }}
+            onChangeText={_onGenericChangeHandler}
             value={name}
             initialValue={name}
           />
@@ -119,9 +131,7 @@ const EditContactView = ({ navigation, route }) => {
             style={styles.addressInput}
             placeholder={translate('pktAddress')}
             navigation={navigation}
-            onChangeText={(address, isValid) => {
-              updateIsAddressValid(name, address, isValid)
-            }}
+            onChangeText={_onPktAddressChangeHandler}
             address={address}
           />
         </View>
@@ -129,18 +139,14 @@ const EditContactView = ({ navigation, route }) => {
           style={styles.button}
           title={translate('saveAddress')}
           disabled={disableHandler()}
-          onPress={async () => {
-            updateAddressAndNavigateBack(name, address)
-          }}
+          onPress={_onActiveButtonPressHandler}
         />
         {allowDelete && (
           <ActiveButton
             style={styles.lastButton}
             title={translate('deleteAddress')}
             variant='danger'
-            onPress={() => {
-              deleteAddressAndNavigateBack(address)
-            }}
+            onPress={_onDeleteButtonPressHandler}
           />
         )}
       </View>

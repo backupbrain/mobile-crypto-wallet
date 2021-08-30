@@ -39,6 +39,22 @@ const CreateNewPasswordInput = (props, ref) => {
     }
   })
 
+  const _onChangePassword1 = (text) => {
+    setNewPassword(text)
+    verifyPasswordMatch(text, verificationPassword)
+    if (props.onPasswordChangeText) {
+      props.onPasswordChangeText(text)
+    }
+  }
+
+  const _onChangePassword2 = (text) => {
+    setVerificationPassword(text)
+    verifyPasswordMatch(newPassword, text)
+    if (props.onPasswordVerifyChangeText) {
+      props.onPasswordVerifyChangeText(text)
+    }
+  }
+
   return (
     <View style={props.style}>
       <Text>{_doPasswordsMatch}</Text>
@@ -47,13 +63,7 @@ const CreateNewPasswordInput = (props, ref) => {
         maxLength={props.maxLength}
         label={props.passwordLabel}
         placeholder={props.passwordPlaceholder}
-        onChangeText={(text) => {
-          setNewPassword(text)
-          verifyPasswordMatch(text, verificationPassword)
-          if (props.onPasswordChangeText) {
-            props.onPasswordChangeText(text)
-          }
-        }}
+        onChangeText={_onChangePassword1}
         help={props.passwordHelp}
       />
       <PasswordInput
@@ -62,13 +72,7 @@ const CreateNewPasswordInput = (props, ref) => {
         maxLength={props.maxLength}
         label={props.passwordVerifyLabel}
         placeholder={props.passwordVerifyPlaceholder}
-        onChangeText={(text) => {
-          setVerificationPassword(text)
-          verifyPasswordMatch(newPassword, text)
-          if (props.onPasswordVerifyChangeText) {
-            props.onPasswordVerifyChangeText(text)
-          }
-        }}
+        onChangeText={_onChangePassword2}
         help={passwordVerifyHelpText}
         error={_doPasswordsMatch === false ? translate('passwordVerifyError') : null}
       />

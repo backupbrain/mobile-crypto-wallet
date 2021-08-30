@@ -78,6 +78,11 @@ const PasswordInput = (props, ref) => {
     return textInputStyles
   }
 
+  const _buttonOnPressHandler = () => {
+    setDoHide(!doHide)
+    doHidePassword = !doHidePassword
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
@@ -99,10 +104,7 @@ const PasswordInput = (props, ref) => {
           }}
         />
         <TouchableOpacity
-          onPress={() => {
-            setDoHide(!doHide)
-            doHidePassword = !doHidePassword
-          }}
+          onPress={_buttonOnPressHandler}
         >
           <BodyText
             style={styles.showHideButton}
@@ -111,8 +113,9 @@ const PasswordInput = (props, ref) => {
           </BodyText>
         </TouchableOpacity>
       </View>
-      {(props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>}
-      {props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
+      {/* Double negative needed to prevent warning */}
+      {(!!props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>} 
+      {!!props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
     </View>
   )
 }

@@ -69,16 +69,12 @@ const QrCodeTabContent = (props) => {
           <LinkButton
             style={styles.linkTextTop}
             title={translate('copyAddress')}
-            onPress={() => {
-              ClipboardManager.set(address.address)
-            }}
+            onPress={ClipboardManager.set.bind(this,address.address)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               title={translate('shareAddress')}
-              onPress={() => {
-                SharingManager.share(address.address)
-              }}
+              onPress={SharingManager.share.bind(this,address.address)}
             />}
         </View>
       </View>
@@ -131,16 +127,12 @@ const TextCodeTabContent = (props) => {
           <LinkButton
             style={styles.linkTextTop}
             title={translate('copyAddress')}
-            onPress={() => {
-              ClipboardManager.set(address.address)
-            }}
+            onPress={ClipboardManager.set.bind(this,address.address)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               title={translate('shareAddress')}
-              onPress={() => {
-                SharingManager.share(address.address)
-              }}
+              onPress={SharingManager.share.bind(this,address.address)}
             />}
         </View>
       </View>
@@ -204,6 +196,19 @@ const TransactionTabContent = (props) => {
     }
   })
 
+  const _onLinkButtonPressHandler = () => {
+    setIsLoadingTransactions(true)
+    const nextOffset = offset + numTransactions
+    setOffset(nextOffset)
+    setTransactions(nextOffset)
+  }
+
+  const _onListItemPressHandler = (row) => {
+    if (props.onListItemPress) {
+      props.onListItemPress(transactions[row])
+    }
+  }
+
   return (
     <View>
       <TransactionList
@@ -212,23 +217,14 @@ const TransactionTabContent = (props) => {
         contacts={props.contacts}
         contactLookup={props.contactLookup}
         pktPriceTicker={pktPriceTicker}
-        onListItemPress={(row) => {
-          if (props.onListItemPress) {
-            props.onListItemPress(transactions[row])
-          }
-        }}
+        onListItemPress={_onListItemPressHandler}
       />
       {areMoreTransactionsAvailable &&
         <View style={styles.loadMoreButton}>
           {!isLoadingTransactions
             ? (<LinkButton
                 title={translate('loadMore')}
-                onPress={() => {
-                  setIsLoadingTransactions(true)
-                  const nextOffset = offset + numTransactions
-                  setOffset(nextOffset)
-                  setTransactions(nextOffset)
-                }}
+                onPress={_onLinkButtonPressHandler}
               />)
             : (<ActivityIndicator size='small' />)}
         </View>}

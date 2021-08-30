@@ -118,7 +118,7 @@ const Modal = (props, ref) => {
                 <TouchableOpacity
                   style={styles.closeButton}
                   onLayout={onCloseButtonLayout}
-                  onPress={() => close()}
+                  onPress={close}
                 >
                   <Close color={colors.text} size='16' />
                 </TouchableOpacity>

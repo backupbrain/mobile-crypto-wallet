@@ -1,5 +1,5 @@
 import React from 'react'
-import Svg, { Path } from 'react-native-Svg'
+import Svg, { Path } from 'react-native-svg'
 
 function AnodeTextLogo (props) {
   const size = props.size || 100

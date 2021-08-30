@@ -50,9 +50,7 @@ const PinPad = (props) => {
             <View key={keyIndex} style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => {
-                  onKeyPress(key)
-                }}
+                onPress={onKeyPress.bind(this,key)}
               >
                 <Text style={styles.buttonText}>{key}</Text>
               </TouchableOpacity>
@@ -69,9 +67,7 @@ const PinPad = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              onKeyPress(0)
-            }}
+            onPress={onKeyPress.bind(this,0)}
           >
             <Text style={styles.buttonText}>0</Text>
           </TouchableOpacity>
@@ -79,9 +75,7 @@ const PinPad = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              onDelete()
-            }}
+            onPress={onDelete}
           >
             <Text style={styles.buttonText}>&lt;</Text>
           </TouchableOpacity>

@@ -17,14 +17,14 @@ export default class PassphraseManager {
 
   async set (passphrase) {
     this.passphrase = passphrase
-    AdaptiveStorage.set(AppConstants.PASSPHRASE_KEY, passphrase)
+    await AdaptiveStorage.set(AppConstants.PASSPHRASE_KEY, passphrase)
   }
 
   isValid (passphrase) {
     return passphrase === this.passphrase
   }
 
-  clear () {
-    AdaptiveStorage.remove(AppConstants.PASSPHRASE_KEY)
+  async clear () {
+    await AdaptiveStorage.remove(AppConstants.PASSPHRASE_KEY)
   }
 }

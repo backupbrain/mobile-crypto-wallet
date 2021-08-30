@@ -64,17 +64,13 @@ const TransactionQrCode = (props) => {
         <View style={styles.addressOptionsGroup}>
           <LinkButton
             title={translate('copyTransactionId')}
-            onPress={() => {
-              ClipboardManager.set(transaction.txid)
-            }}
+            onPress={ClipboardManager.set.bind(this,transaction.txid)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               style={styles.linkTextBottom}
               title={translate('shareTransactionId')}
-              onPress={() => {
-                SharingManager.share(transaction.txid)
-              }}
+              onPress={SharingManager.share.bind(this,transaction.txid)}
             />}
         </View>
       </View>
@@ -124,17 +120,13 @@ const TransactionTextCode = (props) => {
         <View style={styles.addressOptionsGroup}>
           <LinkButton
             title={translate('copyTransactionId')}
-            onPress={() => {
-              ClipboardManager.set(transaction.txid)
-            }}
+            onPress={ClipboardManager.set.bind(this,transaction.txid)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               style={styles.linkTextBottom}
               title={translate('shareTransactionId')}
-              onPress={() => {
-                SharingManager.share(transaction.txid)
-              }}
+              onPress={SharingManager.share.bind(this,transaction.txid)}
             />}
         </View>
       </View>
@@ -377,6 +369,16 @@ const TransactionView = ({ navigation, route }) => {
     return bannerStyles
   }
 
+  const _onActiveButtonPressHandler = () => {
+    transactionNoteManager.current.set(
+      transaction.txid,
+      newNote
+    )
+    setNote(newNote)
+    setHasNote(true)
+    modalRef.current.close()
+  }
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -478,15 +480,11 @@ const TransactionView = ({ navigation, route }) => {
         <ActiveButton
           style={styles.topButton}
           title={translate('addNote')}
-          onPress={() => {
-            editNote()
-          }}
+          onPress={editNote}
         />
         <ActiveButton
           title={translate('openInBlockExplorer')}
-          onPress={() => {
-            openInBlockExplorer(transaction)
-          }}
+          onPress={openInBlockExplorer.bind(this,transaction)}
         />
       </View>
       <Modal
@@ -508,15 +506,7 @@ const TransactionView = ({ navigation, route }) => {
         footer={
           <ActiveButton
             title={translate('saveNote')}
-            onPress={() => {
-              transactionNoteManager.current.set(
-                transaction.txid,
-                newNote
-              )
-              setNote(newNote)
-              setHasNote(true)
-              modalRef.current.close()
-            }}
+            onPress={_onActiveButtonPressHandler}
           />
         }
       />

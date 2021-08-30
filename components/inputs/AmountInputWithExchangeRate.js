@@ -156,6 +156,13 @@ const AmountInputWithExchangeRate = (props) => {
     return inputCurrencyStyles
   }
 
+  const _swapIconOnPressHandler = () =>{
+    if (amount !== '') {
+      setAmount(convertedAmount)
+    }
+    setIsConverted(!isConverted)
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
@@ -193,12 +200,7 @@ const AmountInputWithExchangeRate = (props) => {
         <View>
           <TouchableOpacity
             style={styles.switchButton}
-            onPress={() => {
-              if (amount !== '') {
-                setAmount(convertedAmount)
-              }
-              setIsConverted(!isConverted)
-            }}
+            onPress={_swapIconOnPressHandler}
           >
             <VerticalSwapIcon
               height={AppConstants.INLINE_ICON_HEIGHT}

@@ -11,15 +11,16 @@ const OtpInput = (props) => {
   const pinInputRefs = useMemo(() => Array(numChars).fill(0).map(i => createRef()), [])
   const [pin, setPin] = useState('')
   const [pinError, setPinError] = useState(false)
-  const [twoFactorAuth, setTwoFactorAuth] = useState(null)
+
+  // REDUNDANT :
+  /* const [twoFactorAuth, setTwoFactorAuth] = useState(null)
   const [is2FaInitialized, setIs2FaInitialized] = useState(false)
-  const [, setIs2FaReady] = useState(false)
-
+  const [, setIs2FaReady] = useState(false) 
   const user = translate('pktWallet')
-  const service = translate('pktWallet')
+  const service = translate('pktWallet') */
 
-  const validatePin = async (pin) => {
-    const isPinValid = await twoFactorAuth.isPinValid(pin)
+  const validatePin = (pin) => {
+    const isPinValid = TwoFactorAuth.isPinValid(pin,props.secret)
     setPinError(!isPinValid)
     if (isPinValid && props.onValidPin) {
       props.onValidPin(pin)
@@ -59,7 +60,8 @@ const OtpInput = (props) => {
     }
   }
 
-  useEffect(() => {
+  // REDUNDANT :
+  /* useEffect(() => {
     const initializeTwoFactorAuth = async () => {
       if (!is2FaInitialized) {
         const twoFactorAuth = new TwoFactorAuth(user, service)
@@ -70,7 +72,7 @@ const OtpInput = (props) => {
       }
     }
     initializeTwoFactorAuth()
-  }, [is2FaInitialized])
+  }, [is2FaInitialized]) */
 
   const styles = StyleSheet.create({
     container: {
@@ -95,7 +97,8 @@ const OtpInput = (props) => {
       borderLeftWidth: dimensions.inputs.borderLeftWidth,
       borderRightWidth: dimensions.inputs.borderRightWidth,
       borderBottomWidth: dimensions.inputs.borderBottomWidth,
-      textAlign: 'center'
+      textAlign: 'center',
+      outlineStyle: 'none'
     },
     textInputRegular: {
       borderTopColor: colors.inputs.borderTopColor,

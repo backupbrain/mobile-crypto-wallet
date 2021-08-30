@@ -92,6 +92,14 @@ const Tabs = (props) => {
   const currentTab = () => {
     return props.tabs[selectedTabId].content
   }
+
+  const _onPressTabHandler = index => {
+    setSelectedTabId(index)
+    if (props.onChange) {
+      props.onChange(index)
+    }
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.tabs}>
@@ -99,12 +107,7 @@ const Tabs = (props) => {
           <TouchableOpacity
             key={`tab${index}`}
             style={tab.styles}
-            onPress={() => {
-              setSelectedTabId(index)
-              if (props.onChange) {
-                props.onChange(index)
-              }
-            }}
+            onPress={_onPressTabHandler.bind(this,index)}
           >
             <Text style={tab.textStyle}>{tab.title}</Text>
           </TouchableOpacity>

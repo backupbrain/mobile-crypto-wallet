@@ -77,16 +77,25 @@ const PktTransactionText = (props) => {
     formatTransaction(props.transactionId)
   }, [props.transactionId, dimensions.width, setIsReady])
 
+  const _onLayoutViewHandler = (event) => {
+    const { width, height } = event.nativeEvent.layout
+    setCardDimensions({ width, height })
+    setIsReady(props.transactionId, width)
+  }
+
+  const _onLayoutTextHandler = (event) => {
+    const { width } = event.nativeEvent.layout
+    if (index === 0) {
+      setMaxTextWidth(width, index)
+    }
+  }
+
   return (
     <View
       style={[styles.container, props.style]}
     >
       <View
-        onLayout={(event) => {
-          const { width, height } = event.nativeEvent.layout
-          setCardDimensions({ width, height })
-          setIsReady(props.transactionId, width)
-        }}
+        onLayout={_onLayoutViewHandler}
       >
         {isReady
           ? (
@@ -95,12 +104,7 @@ const PktTransactionText = (props) => {
                 <Text
                   key={index}
                   style={getTransactionTextLayout(index)}
-                  onLayout={(event) => {
-                    const { width } = event.nativeEvent.layout
-                    if (index === 0) {
-                      setMaxTextWidth(width, index)
-                    }
-                  }}
+                  onLayout={_onLayoutTextHandler}
                 >
                   {transactionRow}
                 </Text>

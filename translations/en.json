@@ -91,6 +91,7 @@
   "logoutIntro2": "If you do this, you will no longer have access to your funds.",
   "logoutIntro3": "You can restore this wallet at any time using 16 word secret recovery phrase and your password for that wallet.",
   "logoutSuccessAlert": "You have logged out of your account",
+  "confirmDeleteContacts": "Delete my contacts and transaction notes",
 
   "send": "Send",
   "receive": "Receive",

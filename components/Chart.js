@@ -167,15 +167,18 @@ const Chart = (props) => {
       marginRight: dimensions.horizontalSpacingBetweenItems
     }
   })
+
+  const _onLayoutHandler = (event) => {
+    const { width } = event.nativeEvent.layout
+    setChartWidth(width)
+  }
+
   return (
     <View>
       <HeaderText style={styles.header}>{props.title}</HeaderText>
       <View
         style={styles.chartContainer}
-        onLayout={(event) => {
-          const { width } = event.nativeEvent.layout
-          setChartWidth(width)
-        }}
+        onLayout={_onLayoutHandler}
       >
         <YAxis
           style={styles.yAxis}

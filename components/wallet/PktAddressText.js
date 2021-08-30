@@ -77,16 +77,25 @@ const PktAddressText = (props) => {
     formatAddress(props.address)
   }, [props.address, dimensions.width, setIsReady])
 
+  const _onLayoutViewHandler = (event) => {
+    const { width, height } = event.nativeEvent.layout
+    setCardDimensions({ width, height })
+    setIsReady(props.address, width)
+  }
+
+  const _onLayoutTextHandler = (event) => {
+    const { width } = event.nativeEvent.layout
+    if (index === 0) {
+      setMaxTextWidth(width, index)
+    }
+  }
+
   return (
     <View
       style={[styles.container, props.style]}
     >
       <View
-        onLayout={(event) => {
-          const { width, height } = event.nativeEvent.layout
-          setCardDimensions({ width, height })
-          setIsReady(props.address, width)
-        }}
+        onLayout={_onLayoutViewHandler}
       >
         {isReady
           ? (
@@ -95,12 +104,7 @@ const PktAddressText = (props) => {
                 <Text
                   key={index}
                   style={getAddressTextLayout(index)}
-                  onLayout={(event) => {
-                    const { width } = event.nativeEvent.layout
-                    if (index === 0) {
-                      setMaxTextWidth(width, index)
-                    }
-                  }}
+                  onLayout={_onLayoutTextHandler}
                 >
                   {addressRow}
                 </Text>

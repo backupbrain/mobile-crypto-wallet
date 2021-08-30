@@ -73,6 +73,11 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     }
   })
 
+  const _onRecoveryChangeHandler = (text) => {
+    setIsInvalidRecoveryPhrase(false)
+    setText(text)
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -80,17 +85,14 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
           <RecoveryPhraseInput
             recoveryPhrase={recoveryPhrase}
             wordCountChanged={(wordCount) => setWordCount(wordCount)}
-            onChangeText={(text) => {
-              setIsInvalidRecoveryPhrase(false)
-              setText(text)
-            }}
+            onChangeText={_onRecoveryChangeHandler}
             maxWords={MAX_WORDS}
             isInvalid={isInvalidRecoveryPhrase}
           />
         </View>
         <ActivityButton
           title={translate('next')}
-          onPress={() => verifyRecoveryPhraseAndProceed()}
+          onPress={verifyRecoveryPhraseAndProceed}
           disabled={!isFormFilled}
         />
         {/* FIXME: remove this when producing */}

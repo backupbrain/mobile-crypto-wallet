@@ -3,9 +3,9 @@ import AppConstants from './AppConstants'
 import { authenticator } from 'otplib'
 
 export default class TwoFactorAuth {
-  static DEBUG () { return false }
+  static DEBUG() { return false }
 
-  constructor (user, service) {
+  constructor(user, service) {
     this.log(`.constructor("${user}", "${service}")`)
     this.timer = null
     this.user = user
@@ -16,40 +16,40 @@ export default class TwoFactorAuth {
     this.onTokenGenerated = null
   }
 
-  async initialize () {
+  async initialize() {
     this.log('.initialize()')
-    await this.getOrSetPairingCode()
-    this.getGooglePairingUrl()
+    this.secret = await this.getOrSetPairingCode()
+    this.otpauth = this.getGooglePairingUrl(this.secret)
     this.timer = setInterval(() => {
       if (this.timeUntilTokenExpires() === 30) {
-        this.generateToken()
+        this.token = this.generateToken(this.secret)
       }
     }, 1000)
-    this.generateToken()
+    this.token = this.generateToken(this.secret)
   }
 
-  destructor () {
+  destructor() {
     this.log('.destructor()')
     if (this.timer) {
       clearInterval(this.timer)
     }
   }
 
-  async resetPairing () {
+  async resetPairing() {
     await this.createPairingCode()
     this.getGooglePairingUrl()
     this.generateToken()
   }
 
-  async getPairingCode () {
-    this.log('.getPairingCode()')
+  static async getPairingCode() {
+    /* this.log('.getPairingCode()') */
     const secret = await AdaptiveStorage.get(AppConstants.AUTH_PAIRING_CODE)
-    this.secret = secret
+    /* this.secret = secret */
     return secret
   }
 
-  async createPairingCode () {
-    this.log('.createPairingCode()')
+  async createPairingCode() {
+    /* this.log('.createPairingCode()') */
     const secret = authenticator.generateSecret()
     await AdaptiveStorage.set(AppConstants.AUTH_PAIRING_CODE, secret)
     this.secret = secret
@@ -57,45 +57,58 @@ export default class TwoFactorAuth {
     return secret
   }
 
-  async getOrSetPairingCode () {
-    this.log('.getOrSetPairingCode()')
-    let secret = await this.getPairingCode()
+  generateRandomPairingCode() {
+    /* this.log('.generateRandomPairingCode()') */
+    const secret = authenticator.generateSecret()
+    return secret
+  }
+
+  static async savePairingCode(secret) {
+    await AdaptiveStorage.set(AppConstants.AUTH_PAIRING_CODE, secret)
+    /* await this.initialize() */
+    return secret;
+  }
+
+  async getOrSetPairingCode() {
+    /* this.log('.getOrSetPairingCode()') */
+    let secret = await TwoFactorAuth.getPairingCode()
     if (!secret) {
       secret = await this.createPairingCode()
     }
     return secret
   }
 
-  getGooglePairingUrl () {
-    this.log('.startTokenGenerator()')
-    const otpauth = authenticator.keyuri(this.user, this.service, this.secret)
-    this.otpauth = otpauth
+  getGooglePairingUrl(secret) {
+    /* this.log('.startTokenGenerator()') */
+    const otpauth = authenticator.keyuri(this.user, this.service, secret)
+    /* this.otpauth = otpauth
+    this.secret=secret */
     return otpauth
   }
 
-  timeUntilTokenExpires () {
+  timeUntilTokenExpires() {
     return authenticator.timeRemaining()
   }
 
-  generateToken () {
-    this.log('.generateToken()')
-    const token = authenticator.generate(this.secret)
-    this.log(`generating token ${token}`)
+  generateToken(secret) {
+    /* this.log('.generateToken()') */
+    const token = authenticator.generate(secret)
+    console.log(`generating token ${token}`)
     if (this.onTokenGenerated) {
       this.onTokenGenerated(token)
     }
-    this.token = token
+    /* this.token = token */
     return token
   }
 
-  isPinValid (pin) {
-    this.log('.isPinValid()')
-    const isValid = authenticator.verify({ token: pin, secret: this.secret })
-    this.log(`Verifying pin ${pin} against ${this.token} ${this.secret}: ${JSON.stringify(isValid)}`)
+  static isPinValid(pin,secret) {
+    console.log('.isPinValid()',pin,secret)
+    const isValid = authenticator.verify({ token: pin, secret: secret })
+    console.log(`Verifying pin ${pin} against  ${secret}: ${JSON.stringify(isValid)}`)
     return isValid
   }
 
-  log (message) {
+  log(message) {
     const className = this.constructor.name
     let strMessage = message
     if (typeof message !== 'string') {

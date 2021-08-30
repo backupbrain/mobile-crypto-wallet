@@ -136,6 +136,15 @@ const RemoteAddressWidget = (props, ref) => {
     textInputStyles.push(styles.textInputRegular)
   }
 
+  const _onLayoutHandler = (event) => {
+    if (!isInputWidthSet) {
+      const { width } = event.nativeEvent.layout
+      setInputWidth(width)
+      setIsInputWidthSet(true)
+      setDisplayAddress(address)
+    }
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
@@ -159,14 +168,7 @@ const RemoteAddressWidget = (props, ref) => {
         <TouchableOpacity
           style={styles.inputContainer}
           onPress={props.onPress}
-          onLayout={(event) => {
-            if (!isInputWidthSet) {
-              const { width } = event.nativeEvent.layout
-              setInputWidth(width)
-              setIsInputWidthSet(true)
-              setDisplayAddress(address)
-            }
-          }}
+          onLayout={_onLayoutHandler}
         >
           {(address && isInputWidthSet)
             ? <BodyText style={[styles.input, styles.inputText]}>{displayAddress}</BodyText>
@@ -175,9 +177,7 @@ const RemoteAddressWidget = (props, ref) => {
         <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.buttonFirst}
-            onPress={() => {
-              pasteAddressFromClipboard()
-            }}
+            onPress={pasteAddressFromClipboard}
           >
             <PasteIcon
               color={colors.text}
@@ -186,9 +186,7 @@ const RemoteAddressWidget = (props, ref) => {
           {props.onPersonIconPress &&
             <TouchableOpacity
               style={styles.buttonMiddle}
-              onPress={() => {
-                props.onPersonIconPress()
-              }}
+              onPress={props.onPersonIconPress}
             >
               <PersonIcon
                 color={colors.text}
@@ -197,9 +195,7 @@ const RemoteAddressWidget = (props, ref) => {
           {props.onQrCodeIconPress &&
             <TouchableOpacity
               style={styles.buttonLast}
-              onPress={() => {
-                props.onQrCodeIconPress()
-              }}
+              onPress={props.onQrCodeIconPress}
             >
               <ScanQrCodeIcon
                 color={colors.text}

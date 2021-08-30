@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Screen from '../../components/Screen'
 import BodyText from '../../components/text/BodyText'
@@ -6,11 +6,12 @@ import OtpInput from '../../components/inputs/OtpInput'
 import ActiveButton from '../../components/buttons/ActiveButton'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
+import TwoFactorAuth from '../../utils/TwoFactorAuth'
 
 const Verify2FaDeviceView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const [isPinValid, setIsPinValid] = useState(false)
-
+  const secret = useRef(route.params.secret)
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
@@ -31,13 +32,18 @@ const Verify2FaDeviceView = ({ navigation, route }) => {
             onValidPin={() => {
               setIsPinValid(true)
             }}
+            secret={secret.current}
           />
         </View>
         <View style={styles.container}>
           <ActiveButton
             title={translate('next')}
             onPress={() => {
-              navigation.navigate('WalletHomeViewSet')
+              TwoFactorAuth.savePairingCode(secret.current)
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'WalletHomeViewSet' }],
+              });
             }}
             disabled={!isPinValid}
           />

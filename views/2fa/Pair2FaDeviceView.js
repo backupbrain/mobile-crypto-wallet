@@ -32,9 +32,13 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
         setTwoFactorAuth(twoFactorAuth)
         setIs2FaInitialized(true)
         await twoFactorAuth.initialize()
-        await twoFactorAuth.createPairingCode()
-        setPairingCode(twoFactorAuth.otpauth)
-        setPairingSecret(twoFactorAuth.secret)
+        /* await twoFactorAuth.createPairingCode() */
+        const potentialSecret = twoFactorAuth.generateRandomPairingCode()
+        console.log(`temporary secret: ${potentialSecret}`)
+        const potentialOtp = twoFactorAuth.getGooglePairingUrl(potentialSecret)
+        console.log(`new code: ${twoFactorAuth.generateToken(potentialSecret)}`)
+        setPairingCode(potentialOtp)
+        setPairingSecret(potentialSecret)
         setIs2FaReady(true)
       }
     }
@@ -113,7 +117,7 @@ const Pair2FaDeviceView = ({ navigation, route }) => {
           <ActiveButton
             title={translate('next')}
             onPress={() => {
-              navigation.push('Verify2FaDeviceView')
+              navigation.push('Verify2FaDeviceView',{secret:pairingSecret})
             }}
           />
         </View>

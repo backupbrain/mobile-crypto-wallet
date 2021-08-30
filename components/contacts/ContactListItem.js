@@ -3,13 +3,16 @@ import { TouchableOpacity } from 'react-native'
 import WalletListItem from './../wallet/WalletListItem'
 
 const ContactListItem = (props) => {
+
+  const _onPressHandler = () => {
+    if (props.onListItemPress) {
+      props.onListItemPress(props.item)
+    }
+  }
+
   return (
     <TouchableOpacity
-      onPress={() => {
-        if (props.onListItemPress) {
-          props.onListItemPress(props.item)
-        }
-      }}
+      onPress={_onPressHandler}
     >
       <WalletListItem
         style={props.style}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
 import AccountBalance from '../../components/wallet/AccountBalance'
@@ -10,6 +10,7 @@ import PktManager from '../../utils/PktManager'
 import TransactionNoteManager from '../../utils/TransactionNoteManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
+import TwoFactorAuth from '../../utils/TwoFactorAuth'
 
 /*
 const sendAmount = 1290.20
@@ -30,12 +31,18 @@ const SendFormView = ({ navigation, route }) => {
   // TODO: expect fromAddress, toAddress, amount from route.params
   const { colors, dimensions } = useTheme()
   const pktManager = useRef(new PktManager())
+  const TwoFactorManager = useRef(new TwoFactorAuth())
   const transactionNoteManager = useRef(new TransactionNoteManager())
   const [fromAddress] = useState(route.params?.fromAddress)
   const [toAddress] = useState(route.params?.toAddress)
   const [amount] = useState(route.params?.amount)
   const [note] = useState(route.params?.note)
   const [isPinValid, setisPinValid] = useState(false)
+  const [secret, setSecret] = useState("")
+
+  useEffect(()=>{
+    TwoFactorAuth.getPairingCode().then((value)=>setSecret(value))
+  },[])
 
   const send = async () => {
     const transactionId = await pktManager.current.sendCoins(fromAddress.address, toAddress.address, amount)
@@ -97,13 +104,13 @@ const SendFormView = ({ navigation, route }) => {
             label={translate('2faCode')}
             help={translate('2faCodeHelpText')}
             onValidPin={() => setisPinValid(true)}
+            secret ={secret}
+            error = {translate('invalidPin')}
           />
         </View>
         <SlideToConfirm
           label={translate('slideToConfirm')}
-          onComplete={() => {
-            send()
-          }}
+          onComplete={send}
           disabled={!isPinValid}
         />
       </View>

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import HamburgerMenuButon from '../components/buttons/HamburgerMenuButton'
 // import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
@@ -38,13 +38,57 @@ import CreatePinView from '../views/pin/CreatePinView'
 import LogOutView from '../views/LogOutView'
 import PinLoginView from '../views/pin/PinLoginView'
 import TransactionView from '../views/TransactionView'
+import PktManager from '../utils/PktManager'
+import PassphraseManager from '../utils/PassphraseManager'
+import PinManager from '../utils/PinManager'
+import TwoFactorAuth from '../utils/TwoFactorAuth'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 const FirstViewSet = ({ navigation }) => {
+  const [initialRoute, setInitialRoute] = useState('')
+  const WalletManager = useRef(new PktManager())
+  const PassPhraseManager = useRef(new PassphraseManager())
+  const pinManager = useRef(new PinManager())
+
+
+  const PinCheck = () => {
+    pinManager.current.get().then(pin => {
+      if (pin) {
+        setInitialRoute('PinLoginView')
+      } else {
+        setInitialRoute('CreatePinView')
+      }
+    })
+  }
+
+  const PassPhraseCheck = () => {
+    PassPhraseManager.current.get().then(pass => {
+      if (pass) {
+        PinCheck()
+      } else {
+        setInitialRoute('CreatePassphraseView')
+      }
+    })
+  }
+
+  useEffect(() => {
+    WalletManager.current.getAddresses()
+      .then(wallets => {
+        if (wallets.length !== 0) {
+          PassPhraseCheck()
+        } else {
+          setInitialRoute('FirstView')
+        }
+      })
+  }, [])
+
+  if (!initialRoute)
+    return <SecurityView />
+
   return (
-    <Stack.Navigator initialRouteName='FirstView'>
+    <Stack.Navigator initialRouteName={initialRoute}>
       <Stack.Screen
         name='FirstView'
         options={{ title: translate('first'), headerShown: false }}
@@ -99,6 +143,11 @@ const FirstViewSet = ({ navigation }) => {
         }}
         component={CreatePinView}
       />
+      <Stack.Screen
+        name='PinLoginView'
+        options={{ title: translate('pinLogin'), headerShown: false }}
+        component={PinLoginView}
+      />
     </Stack.Navigator>
   )
 }
@@ -129,6 +178,15 @@ const WalletHomeViewSet = ({ navigation }) => {
           headerRight: () => <HamburgerMenuButon navigation={navigation} />
         }}
         component={TransactionView}
+      />
+      <Stack.Screen
+        name='SendView'
+        options={{
+          title: translate('transaction'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />,
+          headerShown:false
+        }}
+        component={SendCryptoViewSet}
       />
     </Stack.Navigator>
   )
@@ -212,7 +270,7 @@ const ChangePassphraseViewSet = ({ navigation }) => {
 
 const RePair2FaDeviceViewSet = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName='ChangePassphraseView'>
+    <Stack.Navigator initialRouteName='Pair2FaDeviceView'>
       <Stack.Screen
         name='Pair2FaDeviceView'
         options={{
@@ -282,7 +340,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={translate('changePin')}
-        onPress={() => props.navigation.navigate('ChangePinView')}
+        onPress={() => props.navigation.navigate('ChangePinViewSet')}
       />
       <DrawerItem
         {...props}
@@ -297,7 +355,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={translate('contactBook')}
-        onPress={() => props.navigation.navigate('ContactBookView')}
+        onPress={() => props.navigation.navigate('ContactsViewSet')}
       />
       <DrawerItem
         {...props}
@@ -312,11 +370,18 @@ const DrawerNavigator = () => {
   // TODO: make sure drawer opens on right and has the right theme.
   // https://reactnavigation.org/docs/drawer-navigator/
   const { colors } = useTheme()
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        drawerPosition: 'right'
+        drawerPosition: 'right',
+        drawerStyle: {
+          backgroundColor: 'white',
+          width: 210,
+        },
+        drawerType: 'front',
+        headerShown: false,
       }}
     >
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
@@ -327,8 +392,6 @@ const DrawerNavigator = () => {
       <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <Drawer.Screen name='ContactsViewSet' component={ContactsViewSet} />
       <Drawer.Screen name='LogOutViewSet' component={LogOutViewSet} />
-      <Drawer.Screen name='SendCryptoView' component={SendCryptoViewSet} />
-
       <Stack.Screen
         name='SecurityView'
         options={{ title: translate('security'), headerShown: false }}
@@ -350,6 +413,9 @@ const AppNavigator = (props) => {
 /* */
 
 const AppNavigator = (props) => {
+  return (
+    <DrawerNavigator />
+  )
   if (props.state.match(/inactive|background/)) {
     return <SecurityView />
   } else {

@@ -20,7 +20,7 @@ const ChangePinView = ({ navigation, route }) => {
   const [pin2, setPin2] = useState('')
   const [isFormFilled, setisFormFilled] = useState('')
   const getStoredCurrentPin = async () => {
-    const pin = await pinManager.get()
+    const pin = await pinManager.current.get()
     return pin
   }
   const isCurrentPinCorrect = (pin) => {
@@ -45,7 +45,7 @@ const ChangePinView = ({ navigation, route }) => {
     const loadStoredPin = async () => {
       const pin = await getStoredCurrentPin()
       setStoredPin(pin)
-      if (pin === undefined) {
+      if (!pin) {
         navigation.navigate('CreatePinView')
       }
     }
@@ -68,6 +68,28 @@ const ChangePinView = ({ navigation, route }) => {
     }
   })
 
+  const _onPasswordChangeHandler = (text) => {
+    setCurrentPin(text)
+    verifyFormFilled(text, pin1, pin2)
+  }
+
+  const _onNewPasswordChangeHandler = (text) => {
+    setPin1(text)
+    verifyFormFilled(currentPin, text, pin2)
+  }
+
+  const _onNewPasswordVerifyChangeHandler = (text) => {
+    setPin2(text)
+    verifyFormFilled(currentPin, pin1, text)
+  }
+
+  const _onNewPasswordMatchHandler = (doPasswordsMatch, password) => {}
+
+  const _onActivityPressHandler = () => {
+    changePin()
+    // TODO: set alert notifying user that pin has been changed
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -76,10 +98,7 @@ const ChangePinView = ({ navigation, route }) => {
             ref={currentPinRef}
             maxLength={4}
             placeholder={translate('currentPin')}
-            onChangeText={(text) => {
-              setCurrentPin(text)
-              verifyFormFilled(text, pin1, pin2)
-            }}
+            onChangeText={_onPasswordChangeHandler}
           />
           <CreateNewPasswordInput
             ref={newPinRef}
@@ -88,25 +107,17 @@ const ChangePinView = ({ navigation, route }) => {
             passwordHelp={translate('pinHelpText')}
             passwordVerifyPlaceholder={translate('verifyPin')}
             passwordVerifyHelp=''
-            onPasswordChangeText={(text) => {
-              setPin1(text)
-              verifyFormFilled(currentPin, text, pin2)
-            }}
-            onPasswordVerifyChangeText={(text) => {
-              setPin2(text)
-              verifyFormFilled(currentPin, pin1, text)
-            }}
-            onPasswordsMatch={(doPasswordsMatch, password) => {}}
+            onPasswordChangeText={_onNewPasswordChangeHandler}
+            onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
+            onPasswordsMatch={_onNewPasswordMatchHandler}
           />
-          {AppConstants.DEVELOPER_MODE && <Text style={styles.developer}>Current PIN: {storedPin}</Text>}
+          {/* Double negative needed to prevent warning */}
+          {!!AppConstants.DEVELOPER_MODE && <Text style={styles.developer}>Current PIN: {storedPin}</Text>}
         </View>
         <ActiveButton
           title={translate('changePin')}
           disabled={!isFormFilled}
-          onPress={() => {
-            changePin()
-            // TODO: set alert notifying user that pin has been changed
-          }}
+          onPress={_onActivityPressHandler}
         />
       </View>
     </Screen>

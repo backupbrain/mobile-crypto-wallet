@@ -35,6 +35,24 @@ const CreatePinView = ({ navigation, route }) => {
     }
   })
 
+
+  const _onNewPasswordChangeHandler = (text) => {
+    setPin1(text)
+    verifyFormFilled(text, pin2)
+  }
+
+  const _onNewPasswordVerifyChangeHandler = (text) => {
+    setPin2(text)
+    verifyFormFilled(pin1, text)
+  }
+
+  const _onNewPasswordMatchHandler = (doPasswordsMatch, password) => {}
+
+  const _onActivityPressHandler = () => {
+    savePin()
+    navigation.push('WalletHomeView')
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -45,24 +63,15 @@ const CreatePinView = ({ navigation, route }) => {
             passwordHelp={translate('pinHelpText')}
             passwordVerifyPlaceholder={translate('verifyPin')}
             passwordVerifyHelp=''
-            onPasswordChangeText={(text) => {
-              setPin1(text)
-              verifyFormFilled(text, pin2)
-            }}
-            onPasswordVerifyChangeText={(text) => {
-              setPin2(text)
-              verifyFormFilled(pin1, text)
-            }}
-            onPasswordsMatch={(doPasswordsMatch, password) => {}}
+            onPasswordChangeText={_onNewPasswordChangeHandler}
+            onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
+            onPasswordsMatch={_onNewPasswordMatchHandler}
           />
         </View>
         <ActiveButton
           title={translate('createPin')}
           disabled={!isFormFilled}
-          onPress={() => {
-            savePin()
-            navigation.push('WalletHomeView')
-          }}
+          onPress={_onActivityPressHandler}
         />
       </View>
     </Screen>

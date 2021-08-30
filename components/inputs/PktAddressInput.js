@@ -164,9 +164,7 @@ const PktAddressInput = (props) => {
         <View style={styles.buttonPanel}>
           <TouchableOpacity
             style={[styles.button, styles.buttonFirst]}
-            onPress={() => {
-              pasteAddressFromClipboard()
-            }}
+            onPress={pasteAddressFromClipboard}
           >
             <PasteIcon color={colors.text} />
           </TouchableOpacity>

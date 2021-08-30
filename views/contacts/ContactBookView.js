@@ -168,6 +168,11 @@ const ContactBookView = ({ navigation, route }) => {
     return filtered
   }
 
+  const _onChangeTextHandler = (text) => {
+    setSearchFilter(text)
+    setNoSearchResults(false)
+  }
+
   return (
     <Screen>
       <View style={styles.screen}>
@@ -176,10 +181,7 @@ const ContactBookView = ({ navigation, route }) => {
             <SearchInput
               placeholder={translate('searchAddresses')}
               style={styles.searchInput}
-              onChangeText={(text) => {
-                setSearchFilter(text)
-                setNoSearchResults(false)
-              }}
+              onChangeText={_onChangeTextHandler}
             />
           </View>
           <View style={styles.addContactButtonContainer}>

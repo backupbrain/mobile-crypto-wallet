@@ -54,6 +54,12 @@ export default class TransactionNoteManager {
     await AdaptiveStorage.set(AppConstants.TRANSACTION_NOTES_KEY, this.notes)
   }
 
+  async clearAll () {
+    this.log('.clearAll()')
+    this.notes={}
+    await AdaptiveStorage.set(AppConstants.TRANSACTION_NOTES_KEY, this.notes)
+  }
+
   log (message) {
     const className = this.constructor.name
     let strMessage = message

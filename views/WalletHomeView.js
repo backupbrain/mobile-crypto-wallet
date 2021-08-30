@@ -37,7 +37,7 @@ const WalletHomeView = ({ navigation, route }) => {
     }
     setAddresses(addresses)
   }
-
+  
   useEffect(() => {
     fetchMyAddresses()
   }, [fetchMyAddresses])
@@ -88,7 +88,7 @@ const WalletHomeView = ({ navigation, route }) => {
           <View style={[styles.sendReceiveButton, styles.leftButton]}>
             <ActivityButton
               title={translate('send')}
-              onPress={() => navigation.push('SendFormView')}
+              onPress={() => navigation.push('SendView')}
             />
           </View>
           <View style={[styles.sendReceiveButton, styles.rightButton]}>
