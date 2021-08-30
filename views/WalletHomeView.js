@@ -64,8 +64,7 @@ const WalletHomeView = ({ navigation, route }) => {
       marginLeft: '4px'
     },
     walletListContainer: {
-      width: '100%',
-      minHeight: '100%'
+      width: '100%'
     }
   })
 

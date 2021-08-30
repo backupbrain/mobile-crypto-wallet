@@ -331,39 +331,60 @@ const LogOutViewSet = ({ navigation }) => {
 }
 
 const CustomDrawerContent = (props) => {
+  const { colors } = useTheme()
+ /*  const [security, setSecurity] = useState(props.security)
+  const firstRender = useRef(true)
 
-  const {colors} = useTheme()
+  useEffect(
+    () => {
+      console.log(security)
+      console.log(props.navigation.getState())
+      
+      if(firstRender.current){
+        firstRender.current=false
+        return
+      }
+
+      setSecurity(props.security)
+      
+      if (props.security)
+      props.navigation.navigate('SecurityView')
+      else
+      props.navigation.goBack()
+      
+
+    }, [props.security]) */
 
   return (
     <DrawerContentScrollView {...props}  >
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('walletHome')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('walletHome')}</Text>}
         onPress={() => props.navigation.navigate('WalletHomeViewSet')}
       />
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('changePin')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('changePin')}</Text>}
         onPress={() => props.navigation.navigate('ChangePinViewSet')}
       />
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('changePassphrase')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('changePassphrase')}</Text>}
         onPress={() => props.navigation.navigate('ChangePassphraseViewSet')}
       />
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
         onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet')}
-        />
+      />
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('contactBook')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('contactBook')}</Text>}
         onPress={() => props.navigation.navigate('ContactsViewSet')}
-        />
+      />
       <DrawerItem
         {...props}
-        label={({ focused, color }) => <Text style={{ color:colors.bodyText.color }}>{translate('logOut')}</Text>}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('logOut')}</Text>}
         label={translate('logOut')}
         onPress={() => props.navigation.navigate('LogOutViewSet')}
       />
@@ -371,14 +392,14 @@ const CustomDrawerContent = (props) => {
   )
 }
 
-const DrawerNavigator = () => {
+const DrawerNavigator = (props) => {
   // TODO: make sure drawer opens on right and has the right theme.
   // https://reactnavigation.org/docs/drawer-navigator/
   const { colors } = useTheme()
-  console.log(colors.bodyText.color)
+  const { security } = props
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} security={security} />}
       screenOptions={{
         drawerPosition: 'right',
         drawerStyle: {
@@ -418,14 +439,15 @@ const AppNavigator = (props) => {
 /* */
 
 const AppNavigator = (props) => {
-  return (
-    <DrawerNavigator />
-  )
+
+  /* return (
+    <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
+  ) */
   if (props.state.match(/inactive|background/)) {
     return <SecurityView />
   } else {
     return (
-      <DrawerNavigator />
+      <DrawerNavigator/>
     )
   }
 }

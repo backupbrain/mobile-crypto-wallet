@@ -23,7 +23,8 @@ const AppConstants = {
   DEFAULT_PKT_FIAT_VALUE: 0.02,
   PADDING_HORIZONTAL: '20px',
   PADDING_VERTICAL: '16px',
-  DEFAULT_PADDING_PX: 20
+  DEFAULT_PADDING_PX: 20,
+  PIN_LOGIN_TIMEOUT_S:60
 }
 
 export default AppConstants
