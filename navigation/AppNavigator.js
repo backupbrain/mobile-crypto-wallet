@@ -443,6 +443,7 @@ const AppNavigator = (props) => {
   /* return (
     <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
   ) */
+  
   if (props.state.match(/inactive|background/)) {
     return <SecurityView />
   } else {

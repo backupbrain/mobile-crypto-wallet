@@ -24,7 +24,8 @@ const AppConstants = {
   PADDING_HORIZONTAL: '20px',
   PADDING_VERTICAL: '16px',
   DEFAULT_PADDING_PX: 20,
-  PIN_LOGIN_TIMEOUT_S:60
+  PIN_LOGIN_TIMEOUT_S:60,
+  WALLET_HISTORY_BALANCE_KEY: 'walletBalanceHistory'
 }
 
 export default AppConstants
