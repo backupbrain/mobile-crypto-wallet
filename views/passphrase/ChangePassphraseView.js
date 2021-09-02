@@ -22,13 +22,14 @@ const ChangePassphraseView = ({ navigation, route }) => {
     const password = await AdaptiveStorage.get(AppConstants.PASSPHRASE_KEY)
     return password
   }
-  const systemPassword = getCurrentPassword()
   const verifyFormFilled = (currentPassword, newPassphrase, doPassphrasesMatch) => {
-    if (currentPassword === systemPassword && newPassphrase.length > 0 && currentPassword.length > 0 && doPassphrasesMatch) {
-      setIsFormFilled(true)
-    } else {
-      setIsFormFilled(false)
-    }
+    getCurrentPassword().then((currentPass) => {
+      if (currentPassword === currentPass && newPassphrase.length > 0 && currentPassword.length > 0 && doPassphrasesMatch) {
+        setIsFormFilled(true)
+      } else {
+        setIsFormFilled(false)
+      }
+    })
   }
   const saveNewPassphrase = (passphrase) => {
     passphraseManager.current.set(passphrase)
@@ -61,7 +62,7 @@ const ChangePassphraseView = ({ navigation, route }) => {
     verifyFormFilled(currentPassword, newPassphrase, doPassphrasesMatch)
   }
 
-  const _onPasswordVerifyChangeHandler = (text) => {}
+  const _onPasswordVerifyChangeHandler = (text) => { }
 
   const _onActivityPressHandler = () => {
     saveNewPassphrase(newPassphrase)

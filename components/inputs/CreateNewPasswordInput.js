@@ -23,7 +23,7 @@ const CreateNewPasswordInput = (props, ref) => {
     }
     setDoPasswordsMatch(doPasswordsMatch)
     if (props.onPasswordsMatch) {
-      return props.onPasswordsMatch(doPasswordsMatch, password1)
+      props.onPasswordsMatch(doPasswordsMatch, password1)
     }
   }
   useImperativeHandle(ref, () => ({

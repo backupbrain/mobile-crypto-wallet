@@ -129,6 +129,7 @@ const FirstViewSet = ({ navigation }) => {
           title: translate('createPassphrase')
         }}
         component={CreatePassphraseView}
+        initialParams={{firstScreen:true}}
       />
       <Stack.Screen
         name='WalletCreatedView'
@@ -143,6 +144,7 @@ const FirstViewSet = ({ navigation }) => {
           title: translate('createPin')
         }}
         component={CreatePinView}
+        initialParams={{firstScreen:true}}
       />
       <Stack.Screen
         name='PinLoginView'

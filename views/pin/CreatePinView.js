@@ -46,11 +46,18 @@ const CreatePinView = ({ navigation, route }) => {
     verifyFormFilled(pin1, text)
   }
 
-  const _onNewPasswordMatchHandler = (doPasswordsMatch, password) => {}
+  const _onNewPasswordMatchHandler = (doPasswordsMatch, password) => { }
 
   const _onActivityPressHandler = () => {
     savePin()
-    navigation.push('WalletHomeView')
+    if (route.params?.firstScreen) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'FirstViewSet' }],
+      });
+    } else {
+      navigation.push('WalletHomeViewSet')
+    }
   }
 
   return (

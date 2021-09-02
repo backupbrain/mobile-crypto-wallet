@@ -38,15 +38,23 @@ const CreatePassphraseView = ({ navigation, route }) => {
     setPassphrase(text)
   }
 
-  const _onPasswordVerifyChangeHandler = (text) => {}
+  const _onPasswordVerifyChangeHandler = (text) => { }
 
   const _onPasswordMatchHandler = (doPassphrasesMatch, password) => {
-    verifyFormFilled(passphrase, doPassphrasesMatch)
+    console.log('outside')
+    verifyFormFilled(password, doPassphrasesMatch)
   }
 
   const _onActivityPressHandler = () => {
     savePassphrase(passphrase)
-    navigation.push('WalletCreatedView')
+    if (route.params?.firstScreen) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'FirstViewSet' }],
+      });
+    } else {
+      navigation.push('WalletHomeViewSet')
+    }
   }
 
   return (
