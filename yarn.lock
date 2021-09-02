@@ -3073,7 +3073,7 @@
   "resolved" "https://registry.npmjs.org/d3-path/-/d3-path-1.0.9.tgz"
   "version" "1.0.9"
 
-"d3-scale@^1.0.6":
+"d3-scale@^1.0.6", "d3-scale@^1.0.7":
   "integrity" "sha512-KvU92czp2/qse5tUfGms6Kjig0AhHOwkzXG0+PqIJB3ke0WUv088AHMZI0OssO9NCkXt4RP8yju9rpH8aGB7Lw=="
   "resolved" "https://registry.npmjs.org/d3-scale/-/d3-scale-1.0.7.tgz"
   "version" "1.0.7"
@@ -6952,6 +6952,11 @@
   "integrity" "sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ=="
   "resolved" "https://registry.npmjs.org/svg-parser/-/svg-parser-2.0.4.tgz"
   "version" "2.0.4"
+
+"svg-path-properties@^1.0.11":
+  "integrity" "sha512-Wo6SjzONZPL9UAgrnwcCkDGRYP9CbHJGkNcPFIgEVRjiOiJxSd/AtwnGk/4N4iOLGUoas57TMxY0xASDeb9YJg=="
+  "resolved" "https://registry.npmjs.org/svg-path-properties/-/svg-path-properties-1.0.11.tgz"
+  "version" "1.0.11"
 
 "svgo@^1.2.2":
   "integrity" "sha512-yhy/sQYxR5BkC98CY7o31VGsg014AKLEPxdfhora76l36hD9Rdy5NZA/Ocn6yayNPgSamYdtX2rFJdcv07AYVw=="

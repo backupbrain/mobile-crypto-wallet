@@ -76,7 +76,7 @@ const getBestTimePoint = (data) => {
 
 const createChartData = data => {
   const DifferenceObj = getBestTimePoint(data)
-  const bucket = new Array(DifferenceObj.amount + 1)
+  const bucket = new Array(DifferenceObj.amount)
   for (let i = 0; i < bucket.length; i++) {
     bucket[i] = {
       balance: 0
@@ -85,7 +85,7 @@ const createChartData = data => {
   let previousSavedBalance = 0
   let previousIndex = 0
   data.sort((a, b) => a.datetime - b.datetime).forEach((transaction) => {
-    const bucketIndex = Math.floor((transaction.datetime - DifferenceObj.startDate.getTime()) / DifferenceObj.intervalInMillis) + 1
+    const bucketIndex = Math.floor((transaction.datetime - DifferenceObj.startDate.getTime()) / DifferenceObj.intervalInMillis)
     // save last data on points that no transaction exists
     for (let i = previousIndex + 1; i < bucketIndex; i++) {
       bucket[i] = {
@@ -105,6 +105,12 @@ const createChartData = data => {
 
 // DUMMY DATA (3 hours between 1st and last transaction)
 const array = [
+  {
+    datetime: 1645082135,
+    amount: 1234.56,
+    address: 'pkt111111111...',
+    balance: 0
+  },
   // receive 1000.20, previous balance was assumed to be 0.00
   {
     datetime: 1650082135,
