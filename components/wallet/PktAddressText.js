@@ -83,12 +83,12 @@ const PktAddressText = (props) => {
     setIsReady(props.address, width)
   }
 
-  const _onLayoutTextHandler = (event) => {
+  /* const _onLayoutTextHandler = (event) => {
     const { width } = event.nativeEvent.layout
     if (index === 0) {
       setMaxTextWidth(width, index)
     }
-  }
+  } */
 
   return (
     <View
@@ -104,7 +104,12 @@ const PktAddressText = (props) => {
                 <Text
                   key={index}
                   style={getAddressTextLayout(index)}
-                  onLayout={_onLayoutTextHandler}
+                  onLayout={(event) => {
+                    const { width } = event.nativeEvent.layout
+                    if (index === 0) {
+                      setMaxTextWidth(width, index)
+                    }
+                  }}
                 >
                   {addressRow}
                 </Text>

@@ -38,7 +38,7 @@ const PinPad = (props) => {
       fontSize: '120%',
       padding: '20px',
       marginTop: '16px',
-      color: colors.screen.color
+      color: colors.bodyText.color
     }
   })
 

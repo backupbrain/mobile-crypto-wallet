@@ -9,6 +9,18 @@ export default class PktManager {
     this.myAddresses = [
       {
         address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
+        total: 0,
+        stotal: '0',
+        spendable: 0,
+        sspendable: '0',
+        immaturereward: 0,
+        simmaturereward: '0',
+        unconfirmed: 0,
+        sunconfirmed: '0',
+        outputcount: 1
+      }
+      /* {
+        address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
         total: 98001,
         stotal: '105227772493824',
         spendable: 98001,
@@ -42,7 +54,7 @@ export default class PktManager {
         unconfirmed: 0,
         sunconfirmed: '0',
         outputcount: 1
-      }
+      } */
     ]
     this.addressLookup = {}
   }
@@ -159,7 +171,7 @@ export default class PktManager {
       offset = 0
     }
     const transactions = [
-      {
+      /* {
         abandoned: false,
         account: '',
         address: 'pkt1qwpw7pd44r6ghl9whr0sgsnz8t66zm27ejqm5ka',
@@ -1394,7 +1406,7 @@ export default class PktManager {
         txid: 'ea2b421f81327e68223e73b240ad54d33c0b735ebe99e75f7fc0b59df7901ce9',
         vout: 0,
         walletconflicts: []
-      }
+      } */
     ]
     return new Promise((resolve, reject) => {
       resolve(transactions.slice(offset, offset + numTransactions))
