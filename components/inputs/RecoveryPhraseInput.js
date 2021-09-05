@@ -4,7 +4,7 @@ import translate from '../../translations'
 import bip39words from '../../utils/bip39words'
 import { useTheme } from '@react-navigation/native'
 
-const DEFAULT_MAX_WORDS = 16
+const DEFAULT_MAX_WORDS = 15
 
 const RecoveryPhraseInput = (props) => {
   const { colors, dimensions } = useTheme()

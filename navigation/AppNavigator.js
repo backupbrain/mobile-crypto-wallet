@@ -442,9 +442,9 @@ const AppNavigator = (props) => {
 
 const AppNavigator = (props) => {
 
-  /* return (
-    <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
-  ) */
+  return (
+    <DrawerNavigator /* security={!!props.state.match(/inactive|background/)} */ />
+  )
   
   if (props.state.match(/inactive|background/)) {
     return <SecurityView />

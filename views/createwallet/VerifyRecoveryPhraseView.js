@@ -7,7 +7,7 @@ import PktManager from '../../utils/PktManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 
-const MAX_WORDS = 16
+const MAX_WORDS = 15
 
 const previewRecoveryText = (words) => {
   return words.join(' ')

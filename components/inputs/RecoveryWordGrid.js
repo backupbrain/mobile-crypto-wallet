@@ -35,7 +35,7 @@ const RecoveryWordGrid = (props) => {
     } else {
       wordMapItemStyles.push(styles.wordRight)
     }
-    if (index < props.words.length - 2) {
+    if (index < props.words.length - 1) {
       wordMapItemStyles.push(styles.wordTop)
     }
     return wordMapItemStyles
