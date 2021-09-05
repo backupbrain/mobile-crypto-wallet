@@ -84,6 +84,7 @@
   "pinHelpText": "Enter 4 digits",
   "verifyPin": "Retype PIN",
   "pinVerifyHelpText": "Retype PIN",
+  "createPinIntro": "Add a PIN so you can easily log into this app",
 
   "pinLoginIntro1": "Enter your PIN to login",
   "invalidPin": "Invalid PIN",

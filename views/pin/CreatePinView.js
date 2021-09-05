@@ -6,6 +6,7 @@ import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInp
 import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
+import BodyText from '../../components/text/BodyText'
 
 const CreatePinView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -25,13 +26,15 @@ const CreatePinView = ({ navigation, route }) => {
     pinManager.current.set(pin1)
   }
 
+
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical
     },
     inputContainer: {
-      marginBottom: dimensions.screen.paddingVertical
+      paddingVertical: dimensions.paddingVertical,
+      paddingBottom: dimensions.paddingVertical
     }
   })
 
@@ -50,19 +53,14 @@ const CreatePinView = ({ navigation, route }) => {
 
   const _onActivityPressHandler = () => {
     savePin()
-    if (route.params?.firstScreen) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'FirstViewSet' }],
-      });
-    } else {
-      navigation.push('WalletHomeViewSet')
-    }
+    navigation.navigate('WalletHomeViewSet')
+
   }
 
   return (
     <Screen>
       <View style={styles.screen}>
+        <BodyText>{translate('createPinIntro')}</BodyText>
         <View style={styles.inputContainer}>
           <CreateNewPasswordInput
             maxLength={4}

@@ -56,9 +56,13 @@ const FirstViewSet = ({ navigation }) => {
 
 
   const PinCheck = () => {
-    pinManager.current.get().then(pin => {
+    pinManager.current.get().then(async pin => {
       if (pin) {
-        setInitialRoute('PinLoginView')
+        const logoutTimeExpired = await PinManager.hasLogoutTimeExpired()
+        if (logoutTimeExpired)
+          setInitialRoute('PinLoginView')
+        else
+          navigation.navigate('WalletHomeViewSet')
       } else {
         setInitialRoute('CreatePinView')
       }
@@ -130,7 +134,7 @@ const FirstViewSet = ({ navigation }) => {
           title: translate('createPassphrase')
         }}
         component={CreatePassphraseView}
-        initialParams={{firstScreen:true}}
+        initialParams={{ firstScreen: true }}
       />
       <Stack.Screen
         name='WalletPassphraseView'
@@ -152,7 +156,7 @@ const FirstViewSet = ({ navigation }) => {
           title: translate('createPin')
         }}
         component={CreatePinView}
-        initialParams={{firstScreen:true}}
+        initialParams={{ firstScreen: true }}
       />
       <Stack.Screen
         name='PinLoginView'
@@ -342,28 +346,28 @@ const LogOutViewSet = ({ navigation }) => {
 
 const CustomDrawerContent = (props) => {
   const { colors } = useTheme()
- /*  const [security, setSecurity] = useState(props.security)
-  const firstRender = useRef(true)
-
-  useEffect(
-    () => {
-      console.log(security)
-      console.log(props.navigation.getState())
-      
-      if(firstRender.current){
-        firstRender.current=false
-        return
-      }
-
-      setSecurity(props.security)
-      
-      if (props.security)
-      props.navigation.navigate('SecurityView')
-      else
-      props.navigation.goBack()
-      
-
-    }, [props.security]) */
+  /*  const [security, setSecurity] = useState(props.security)
+   const firstRender = useRef(true)
+ 
+   useEffect(
+     () => {
+       console.log(security)
+       console.log(props.navigation.getState())
+       
+       if(firstRender.current){
+         firstRender.current=false
+         return
+       }
+ 
+       setSecurity(props.security)
+       
+       if (props.security)
+       props.navigation.navigate('SecurityView')
+       else
+       props.navigation.goBack()
+       
+ 
+     }, [props.security]) */
 
   return (
     <DrawerContentScrollView {...props}  >
@@ -450,15 +454,16 @@ const AppNavigator = (props) => {
 
 const AppNavigator = (props) => {
 
-  return (
-    <DrawerNavigator /* security={!!props.state.match(/inactive|background/)} */ />
-  )
-  
+  /* return (
+    <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
+  ) */
+
   if (props.state.match(/inactive|background/)) {
+    PinManager.saveTime()
     return <SecurityView />
   } else {
     return (
-      <DrawerNavigator/>
+      <DrawerNavigator />
     )
   }
 }
