@@ -41,7 +41,6 @@ const CreatePassphraseView = ({ navigation, route }) => {
   const _onPasswordVerifyChangeHandler = (text) => { }
 
   const _onPasswordMatchHandler = (doPassphrasesMatch, password) => {
-    console.log('outside')
     verifyFormFilled(password, doPassphrasesMatch)
   }
 

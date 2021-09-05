@@ -43,6 +43,7 @@ import PassphraseManager from '../utils/PassphraseManager'
 import PinManager from '../utils/PinManager'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
 import { Text } from 'react-native'
+import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -130,6 +131,13 @@ const FirstViewSet = ({ navigation }) => {
         }}
         component={CreatePassphraseView}
         initialParams={{firstScreen:true}}
+      />
+      <Stack.Screen
+        name='WalletPassphraseView'
+        options={{
+          title: translate('enterWalletPassphrase')
+        }}
+        component={WalletPassphraseView}
       />
       <Stack.Screen
         name='WalletCreatedView'

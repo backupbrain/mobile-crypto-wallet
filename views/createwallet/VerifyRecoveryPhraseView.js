@@ -23,7 +23,7 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const pktManager = useRef(new PktManager())
   const setWordCount = (numWords) => {
     _setWordCount(numWords)
-    setIsFormFilled(numWords >= MAX_WORDS)
+    setIsFormFilled(numWords == MAX_WORDS)
   }
 
   const isValidRecoveryPhrase = (text, recoveryPhrase) => {
@@ -31,9 +31,12 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     // TODO: verify against actual recovery phrase
     const words = text.replace(/\s+/g, ' ').trim(' ').split(' ')
     const numWords = words.length
-    if (numWords !== recoveryPhrase.length) {
+    if (numWords !== MAX_WORDS) {
       return false
     }
+
+    if (!recoveryPhrase) return true
+
     for (let i = 0; i < numWords; i++) {
       const word = words[i]
       const recoveryWord = recoveryPhrase[i]
@@ -47,15 +50,24 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const verifyRecoveryPhraseAndProceed = async () => {
     if (recoveryPhrase !== null) {
       if (isValidRecoveryPhrase(text, recoveryPhrase) === true) {
-        // TODO: load wallet from recovery phrase in pktd
-        await pktManager.current.openWallet(text)
         navigation.push('CreatePassphraseView')
       } else {
         setIsInvalidRecoveryPhrase(true)
       }
     } else {
       // FIXME: for testing, we can just move to the next screen
-      navigation.push('CreatePassphraseView')
+      if (isValidRecoveryPhrase(text, null)) {
+        // TODO: implement openWallet in PktManager
+        await pktManager.current.openWallet(text).then(
+          value => {
+            if (value) {
+              navigation.push('CreatePassphraseView')
+            }
+          }
+        )
+      } else {
+        setIsInvalidRecoveryPhrase(true)
+      }
     }
   }
 

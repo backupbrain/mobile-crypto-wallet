@@ -32,10 +32,10 @@
   "next": "Next",
 
   "newWalletIntro": "Create New Wallet",
-  "dontLoseTheseWords": "DO NOT LOSE these 16 words!",
+  "dontLoseTheseWords": "DO NOT LOSE these 15 words!",
   "ifYouLoseTheseWords": "If you do, you will not be able to access your money",
   "newWalletIntro1": "You are about to create a new wallet",
-  "newWalletIntro2": "Your wallet has a 16-word secret recovery phrase that can be used to restore your wallet on another device.",
+  "newWalletIntro2": "Your wallet has a 15-word secret recovery phrase that can be used to restore your wallet on another device.",
   "newWalletIntro3": "Write down this recovery phrase and store store it in a safe, secure place.",
 
   "continueToRecoveryPhrase": "Continue to Recovery Phrase",
@@ -58,10 +58,13 @@
   "walletCreatedIntro2": "Your may now send or receive PKT ash between friends, family, or strangers.",
 
   "loadExistingWalletIntro1": "You are about to load an existing wallet",
-  "loadExistingWalletIntro2": "You will need to enter the 16 word recovery phrase and password to open the wallet.",
+  "loadExistingWalletIntro2": "You will need to enter the 15 word recovery phrase and password to open the wallet.",
   "continueToSecretPassphrase": "Continue to Secret Passphrase",
+  "enterWalletPassphrase": "Enter Wallet Passphrase",
+  "walletPassphraseIntro": "Your wallet was encrypted using a passphrase that you created. Enter that passphrase here to unlock your wallet.",
 
   "currentPassphrase": "Current Passphrase",
+  "enterPassphrase": "Enter Passphrase",
 
   "previewSend": "Send Preview",
   "estimatedSendingCost": "Estimated Sending Cost",
@@ -89,7 +92,7 @@
   "logoutHeader": "Warning",
   "logoutIntro1": "You are about to disconnect your wallet",
   "logoutIntro2": "If you do this, you will no longer have access to your funds.",
-  "logoutIntro3": "You can restore this wallet at any time using 16 word secret recovery phrase and your password for that wallet.",
+  "logoutIntro3": "You can restore this wallet at any time using 15 word secret recovery phrase and your password for that wallet.",
   "logoutSuccessAlert": "You have logged out of your account",
   "confirmDeleteContacts": "Delete my contacts and transaction notes",
 
