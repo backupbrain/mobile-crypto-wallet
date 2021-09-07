@@ -9,12 +9,20 @@ import translate from '../translations'
 import PktManager from '../utils/PktManager'
 import ContactManager from '../utils/ContactManager'
 import { useTheme } from '@react-navigation/native'
+import Modal from '../components/Modal'
+import PktAddressInput from '../components/inputs/PktAddressInput'
+import WalletListItem from '../components/wallet/WalletListItem'
+import GenericTextInput from '../components/inputs/GenericTextInput'
 
 const WalletHomeView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
   const [addresses, setAddresses] = useState([])
+  const [sendActivated, setSendActivated] = useState(false)
+  const [newAddress, setNewAddress] = useState({})
+  const newAddressName = useRef("")
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
+  const modal = useRef(null)
 
   const fetchMyAddresses = async () => {
     const addresses = pktManager.current.myAddresses
@@ -27,17 +35,20 @@ const WalletHomeView = ({ navigation, route }) => {
         contactLookup[contacts.address] = contacts[i]
       }
     }
+    let total = 0
     for (let i = 0; i < addresses.length; i++) {
       const address = addresses[i]
+      total += address.total
       if (address.address in contactLookup) {
-        address.name = contactLookup[address.address]
+        address.name = contactLookup[address.address].name
       } else {
         address.name = translate('unnamedAddress')
       }
     }
     setAddresses(addresses)
+    setSendActivated(total > 0 ? true : false)
   }
-  
+
   useEffect(() => {
     fetchMyAddresses()
   }, [fetchMyAddresses])
@@ -70,6 +81,37 @@ const WalletHomeView = ({ navigation, route }) => {
 
   return (
     <Screen>
+      <Modal
+        ref={modal}
+        title={translate('createAddress')}
+        content={() =>
+          <View style={{paddingTop:dimensions.paddingVertical}}>
+            <WalletListItem
+              name={newAddress.name}
+              address={newAddress.address}
+              amount={newAddress.total}
+              showAmount={false}
+            /* style={styles.listItem} */
+            />
+            <GenericTextInput
+              placeholder={translate('addressName')}
+              help={translate('newAddressHelp')}
+              onChangeText={(text) => newAddressName.current=text}
+            />
+
+          </View>
+        }
+        footer={() =>
+          <ActivityButton
+            title={translate('createAddress')}
+            onPress={async () => {
+              await contactBook.current.add(newAddressName.current,newAddress.address)
+              await fetchMyAddresses()
+              modal.current.close()
+            }}
+          />
+        }
+      />
       <View style={styles.screen}>
         <View style={styles.accountBalanceContainer}>
           <MainAccountBalance
@@ -88,6 +130,7 @@ const WalletHomeView = ({ navigation, route }) => {
             <ActivityButton
               title={translate('send')}
               onPress={() => navigation.push('SendView')}
+              disabled={!sendActivated}
             />
           </View>
           <View style={[styles.sendReceiveButton, styles.rightButton]}>
@@ -107,8 +150,10 @@ const WalletHomeView = ({ navigation, route }) => {
               console.log(address)
               navigation.push('AddressView', { address })
             }}
-            onCreateAddressPress={() => {
+            onLinkPress={() => {
               // TODO: create new address, bring up modal editor
+              pktManager.current.createAddress().then(address => setNewAddress(address))
+              modal.current.open()
             }}
           />
         </View>

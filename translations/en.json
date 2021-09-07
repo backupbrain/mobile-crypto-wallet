@@ -126,6 +126,7 @@
   "deleteAddress": "Delete Address",
   "noAddresses": "No addresses",
   "editNewAddress": "Edit new address",
+  "newAddressHelp": "Make this address easier to find",
 
   "invalidAmount": "Invalid amount",
   "insufficientFunds": "Insufficient funds",

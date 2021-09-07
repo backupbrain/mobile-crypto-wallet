@@ -107,6 +107,9 @@ const Modal = (props, ref) => {
     }
   })
 
+  let Content = props.content
+  let Footer = props.footer
+
   return (
     <>
       {isVisible &&
@@ -124,11 +127,11 @@ const Modal = (props, ref) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.modalContainer}>
-                {props.content}
+                <Content />
               </View>
               {props.footer &&
                 <View style={styles.footerContainer}>
-                  {props.footer}
+                  <Footer />
                 </View>}
             </Animated.View>
           </Animated.View>

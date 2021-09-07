@@ -53,7 +53,7 @@ const WalletList = (props) => {
           <ListSectionHeader
             title={translate('myAddresses')}
             linkText={translate('createAddress')}
-            onClick={props.onLinkPress}
+            onLinkPress={props.onLinkPress}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

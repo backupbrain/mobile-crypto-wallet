@@ -66,7 +66,7 @@ const MainAccountBalance = (props) => {
     <View style={[styles.container, props.style]}>
       <View style={styles.balanceHeader}>
         <Text style={styles.balanceHeaderTitle}>{translate('balanceHeader')}</Text>
-        {isBalanceVisible ? (
+        {/* {isBalanceVisible ? (
           <LinkButton
             style={styles.balanceHeaderToggle}
             title={translate('hideBalance')}
@@ -78,7 +78,7 @@ const MainAccountBalance = (props) => {
             title={translate('showBalance')}
             onPress={() => setIsBalanceVisible(!isBalanceVisible)}
           />
-        )}
+        )} */}
       </View>
       <AccountBalance
         amount={sumBalances(addresses)}

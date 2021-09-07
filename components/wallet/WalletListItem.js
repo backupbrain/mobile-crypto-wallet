@@ -41,8 +41,8 @@ const toUsd = (amount) => {
 
 const WalletListItem = (props) => {
   const { colors, dimensions } = useTheme()
-  const showAmount = (props.showAmount && props.amount)
-  const isLocalAddress = (props.amount || props.local)
+  const showAmount = (props.showAmount && props.amount !== undefined)
+  const isLocalAddress = (props.amount !== undefined || props.local)
   const address = '' + props.address
   const displayedName = props.name ? props.name : translate('unnamedAddress')
 
