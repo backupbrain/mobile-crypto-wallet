@@ -46,14 +46,14 @@ const OtpInput = (props) => {
   }
   const deleteChar = (position) => {
     setPinError(false)
-    const newPin = pin.substr(0, position)
+    const newPin = pin.substr(0, position-1)
     setPin(newPin)
     if (position > 0) {
       pinInputRefs[position - 1].current.focus()
     }
   }
   const charAtPosition = (position) => {
-    if (position <= pin.length) {
+    if (pin[position]) {
       return pin.substr(position, 1)
     } else {
       return ''
