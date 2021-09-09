@@ -18,11 +18,11 @@ import { useTheme } from '@react-navigation/native'
 
 const SendFormView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
-  const [fromAddress, setFromAddress] = useState(route?.params?.fromContact.address ?? '')
+  const [fromAddress, setFromAddress] = useState(route?.params?.fromContact?.address ?? '')
   const [fromContact, setFromContact] = useState(route?.params?.fromContact ?? {})
   const [isFromAddressValid, setIsFromAddressValid] = useState(false)
   const [toContact, setToContact] = useState(route?.params?.toContact ?? {})
-  const [toAddress, setToAddress] = useState(route?.params?.toContact.address ?? '')
+  const [toAddress, setToAddress] = useState(route?.params?.toContact?.address ?? '')
   const [, setIsToAddressValid] = useState(false)
   const [amount, setAmount] = useState(0.0)
   const [isAmountValid, setIsAmountValid] = useState(false)
@@ -236,7 +236,7 @@ const SendFormView = ({ navigation, route }) => {
       <Modal
         ref={toAddressModalRef}
         title={translate('recipientAddress')}
-        content={
+        content={() =>
           <View>
             <PktAddressInput
               placeholder={translate('remoteAddressPlaceholder')}
@@ -257,7 +257,7 @@ const SendFormView = ({ navigation, route }) => {
             />
           </View>
         }
-        footer={
+        footer={() =>
           <ActiveButton
             title={translate('useAddress')}
             onPress={_onActivePressHandler}

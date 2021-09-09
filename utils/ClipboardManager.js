@@ -16,7 +16,7 @@ export default class ClipboardManager {
   }
 
   static async set (data) {
-    if (this.isWeb()) {
+    if (ClipboardManager.isWeb()) {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(data)
       } else {

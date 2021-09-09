@@ -203,6 +203,15 @@ const WalletHomeViewSet = ({ navigation }) => {
         }}
         component={SendCryptoViewSet}
       />
+      <Stack.Screen
+        name='RePair2FaDeviceViewSet'
+        options={{
+          title: translate('transaction'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />,
+          headerShown: false
+        }}
+        component={RePair2FaDeviceViewSet}
+      />
     </Stack.Navigator>
   )
 }
@@ -421,7 +430,8 @@ const DrawerNavigator = (props) => {
           width: 210
         },
         drawerType: 'front',
-        headerShown: false
+        headerShown: false,
+        swipeEdgeWidth : 0,
       }}
     >
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />

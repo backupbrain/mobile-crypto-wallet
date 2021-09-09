@@ -16,6 +16,7 @@
   "pair2FaDeviceBackupCodes": "Pair 2FA Device Backup Codes",
   "pair2FaDevice": "Pair 2FA Device",
   "verify2FaDevice": "Verify 2FA Device",
+  "whyPair2FaDevice": "You must pair a 2FA device before sending PKT",
   "editContact": "Edit Address",
   "contactBook": "Address Book",
   "changePassphrase": "Change Passphrase",

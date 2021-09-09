@@ -89,7 +89,7 @@ const Modal = (props, ref) => {
       textAlign: dimensions.modal.titleTextAlign,
       marginLeft: closeButtonDimensions.width,
       marginRight: '0',
-      color: colors.screen.color,
+      color: colors.bodyText.color,
       fontWeight: dimensions.modal.titleFontWeight,
       fontSize: dimensions.modal.titleFontSize
     },

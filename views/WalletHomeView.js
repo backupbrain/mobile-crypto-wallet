@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import Screen from '../components/Screen'
 import ActivityButton from '../components/buttons/ActiveButton'
 import WalletList from '../components/wallet/WalletList'
@@ -13,33 +13,35 @@ import Modal from '../components/Modal'
 import PktAddressInput from '../components/inputs/PktAddressInput'
 import WalletListItem from '../components/wallet/WalletListItem'
 import GenericTextInput from '../components/inputs/GenericTextInput'
+import TwoFactorAuth from '../utils/TwoFactorAuth'
 
 const WalletHomeView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
   const [addresses, setAddresses] = useState([])
   const [sendActivated, setSendActivated] = useState(false)
   const [newAddress, setNewAddress] = useState({})
+  const [twoFactorExists, setTwoFactorExists] = useState(false)
   const newAddressName = useRef("")
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
   const modal = useRef(null)
 
   const fetchMyAddresses = async () => {
-    const addresses = pktManager.current.myAddresses
+    let addresses = pktManager.current.myAddresses
     // get contacts
     const contacts = await contactBook.current.getAll()
     // merge contacts
     const contactLookup = {}
     if (contacts !== undefined) {
       for (let i = 0; i < contacts.length; i++) {
-        contactLookup[contacts.address] = contacts[i]
+        contactLookup[contacts[i].address] = contacts[i]
       }
     }
     let total = 0
     for (let i = 0; i < addresses.length; i++) {
       const address = addresses[i]
       total += address.total
-      if (address.address in contactLookup) {
+      if (contactLookup[address.address]) {
         address.name = contactLookup[address.address].name
       } else {
         address.name = translate('unnamedAddress')
@@ -51,6 +53,11 @@ const WalletHomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchMyAddresses()
+    TwoFactorAuth.getPairingCode().then(secret => {
+      if (secret) {
+        setTwoFactorExists(true)
+      }
+    })
   }, [fetchMyAddresses])
 
   const styles = StyleSheet.create({
@@ -76,6 +83,10 @@ const WalletHomeView = ({ navigation, route }) => {
     },
     walletListContainer: {
       width: '100%'
+    },
+    pair2faText:{
+      textAlign:'center',
+      color: colors.inputs.helpTextColor
     }
   })
 
@@ -85,7 +96,7 @@ const WalletHomeView = ({ navigation, route }) => {
         ref={modal}
         title={translate('createAddress')}
         content={() =>
-          <View style={{paddingTop:dimensions.paddingVertical}}>
+          <View style={{ paddingTop: dimensions.paddingVertical }}>
             <WalletListItem
               name={newAddress.name}
               address={newAddress.address}
@@ -96,7 +107,7 @@ const WalletHomeView = ({ navigation, route }) => {
             <GenericTextInput
               placeholder={translate('addressName')}
               help={translate('newAddressHelp')}
-              onChangeText={(text) => newAddressName.current=text}
+              onChangeText={(text) => newAddressName.current = text}
             />
 
           </View>
@@ -105,7 +116,8 @@ const WalletHomeView = ({ navigation, route }) => {
           <ActivityButton
             title={translate('createAddress')}
             onPress={async () => {
-              await contactBook.current.add(newAddressName.current,newAddress.address)
+              await contactBook.current.add(newAddressName.current, newAddress.address)
+              newAddressName.current = ""
               await fetchMyAddresses()
               modal.current.close()
             }}
@@ -127,21 +139,35 @@ const WalletHomeView = ({ navigation, route }) => {
         />
         <View style={styles.sendReceiveButtonPanel}>
           <View style={[styles.sendReceiveButton, styles.leftButton]}>
-            <ActivityButton
-              title={translate('send')}
-              onPress={() => navigation.push('SendView')}
-              disabled={!sendActivated}
-            />
+            {
+              twoFactorExists ?
+                <ActivityButton
+                  title={translate('send')}
+                  onPress={() => navigation.push('SendView')}
+                  disabled={!sendActivated}
+                />
+                :
+                <ActivityButton
+                  title={translate('pair2FaDevice')}
+                  onPress={() => navigation.push('RePair2FaDeviceViewSet',{
+                    screen:'Pair2FaDeviceView'
+                  })}
+                />
+            }
           </View>
           <View style={[styles.sendReceiveButton, styles.rightButton]}>
             <ActivityButton
               title={translate('receive')}
               onPress={() => {
-                navigation.push('Address')
+                navigation.push('AddressView', { address: addresses[0] })
               }}
             />
           </View>
         </View>
+        {
+          !twoFactorExists && 
+          <Text style={styles.pair2faText}>{translate('whyPair2FaDevice')}</Text>
+        }
         <View style={styles.walletListContainer}>
           <WalletList
             style={styles.walletList}

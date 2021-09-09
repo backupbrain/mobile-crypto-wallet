@@ -16,7 +16,7 @@ import ContactManager from '../utils/ContactManager'
 import PktManager from '../utils/PktManager'
 import PktPriceTicker from '../utils/PktPriceTicker'
 import TransactionNoteManager from '../utils/TransactionNoteManager'
-import { useTheme } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
 import translate from '../translations'
 
 // TODO: pull address from props
@@ -28,6 +28,8 @@ const dummyAddress = {
 const QrCodeTabContent = (props) => {
   const { dimensions } = useTheme()
   const address = props.address
+
+  const navigation = useNavigation()
 
   const styles = StyleSheet.create({
     screen: {
@@ -69,16 +71,21 @@ const QrCodeTabContent = (props) => {
           <LinkButton
             style={styles.linkTextTop}
             title={translate('copyAddress')}
-            onPress={ClipboardManager.set.bind(this,address.address)}
+            onPress={ClipboardManager.set.bind(this, address.address)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               title={translate('shareAddress')}
-              onPress={SharingManager.share.bind(this,address.address)}
+              onPress={SharingManager.share.bind(this, address.address)}
             />}
         </View>
       </View>
-      <ActiveButton title={translate('sendPkt')} />
+      <ActiveButton title={translate('sendPkt')} onPress={() => {
+        navigation.navigate('SendView', {
+          screen: 'SendFormView',
+          params: { fromContact: address },
+        })
+      }} />
     </View>
   )
 }
@@ -86,6 +93,8 @@ const QrCodeTabContent = (props) => {
 const TextCodeTabContent = (props) => {
   const { dimensions } = useTheme()
   const address = props.address
+
+  const navigation = useNavigation()
 
   const styles = StyleSheet.create({
     screen: {
@@ -127,16 +136,21 @@ const TextCodeTabContent = (props) => {
           <LinkButton
             style={styles.linkTextTop}
             title={translate('copyAddress')}
-            onPress={ClipboardManager.set.bind(this,address.address)}
+            onPress={ClipboardManager.set.bind(this, address.address)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               title={translate('shareAddress')}
-              onPress={SharingManager.share.bind(this,address.address)}
+              onPress={SharingManager.share.bind(this, address.address)}
             />}
         </View>
       </View>
-      <ActiveButton title={translate('sendPkt')} />
+      <ActiveButton title={translate('sendPkt')} onPress={() => {
+        navigation.navigate('SendView', {
+          screen: 'SendFormView',
+          params: { fromContact: address },
+        })
+      }} />
     </View>
   )
 }
@@ -147,7 +161,7 @@ const TransactionTabContent = (props) => {
   const [transactions, _setTransactions] = useState([])
   const [areTransactionsFetched, setAreTransactionsFetched] = useState(false)
   const [offset, setOffset] = useState(0)
-  const [numTransactions, ] = useState(10) // FIXME: make this 100
+  const [numTransactions,] = useState(10) // FIXME: make this 100
   const [isLoadingTransactions, setIsLoadingTransactions] = useState(true)
   const [areMoreTransactionsAvailable, setAreMoreTransactionsAvailable] = useState(true)
   const transactionNoteManager = useRef(new TransactionNoteManager())
@@ -196,7 +210,7 @@ const TransactionTabContent = (props) => {
     }
   })
 
-  const _onLinkButtonPressHandler = () => {
+  const _onLinkButtonPressHandler = async () => {
     setIsLoadingTransactions(true)
     const nextOffset = offset + numTransactions
     setOffset(nextOffset)
@@ -208,7 +222,6 @@ const TransactionTabContent = (props) => {
       props.onListItemPress(transactions[row])
     }
   }
-
   return (
     <View>
       <TransactionList
@@ -223,10 +236,10 @@ const TransactionTabContent = (props) => {
         <View style={styles.loadMoreButton}>
           {!isLoadingTransactions
             ? (<LinkButton
-                title={translate('loadMore')}
-                onPress={_onLinkButtonPressHandler}
-              />)
-            : (<ActivityIndicator size='small' />)}
+              title={translate('loadMore')}
+              onPress={_onLinkButtonPressHandler}
+            />)
+            : (<ActivityIndicator size='small' color={colors.bodyText.color} />)}
         </View>}
     </View>
   )
@@ -234,7 +247,7 @@ const TransactionTabContent = (props) => {
 
 const AddressView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
-  const [address, setAddress] = useState({})
+  const [address, setAddress] = useState(route?.params?.address ?? dummyAddress.address)
   const [areContactsLoaded, setAreContactsLoaded] = useState(false)
   const [contacts, setContacts] = useState([])
   const [contactLookup, setContactLookup] = useState({})
@@ -244,20 +257,17 @@ const AddressView = ({ navigation, route }) => {
   const fetchContacts = async () => {
     // TODO: use the contactManager.current.getByAddress() function
     if (!areContactsLoaded) {
-      let address = {}
-      if (route.params && route.params.address) {
-        address = route.params.address
-      }
+      let _address = address
       const contacts = await contactManager.current.getAll()
       const contactLookup = {}
       for (let i = 0; i < contacts.length; i++) {
         const contact = contacts[i]
         contactLookup[contact.address] = contact
-        if (contact.address === address.address) {
-          address.name = contact.name
+        if (contact.address === _address.address) {
+          _address.name = contact.name
         }
       }
-      setAddress(address)
+      setAddress(_address)
       setContacts(contacts)
       setContactLookup(contactLookup)
       setAreContactsLoaded(true)
@@ -265,14 +275,8 @@ const AddressView = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    console.log(route.params)
-    if (route.params && route.params.address) {
-      setAddress(route.params.address)
-    } else {
-      setAddress(dummyAddress)
-    }
     fetchContacts()
-  }, [route.params])
+  }, [fetchContacts])
 
   const styles = StyleSheet.create({
     screen: {
@@ -317,7 +321,7 @@ const AddressView = ({ navigation, route }) => {
           isVisible
         />
         <Tabs
-          initialTabId={2}
+          initialTabId={0}
           tabs={[
             {
               title: translate('qr'),

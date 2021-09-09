@@ -72,7 +72,7 @@ export default class ContactManager {
       this.contacts.push(contact)
       this.lookup[contact.address] = this.contacts.length - 1
     }
-    // await this.save()
+     await this.save()
   }
 
   async add (name, address) {

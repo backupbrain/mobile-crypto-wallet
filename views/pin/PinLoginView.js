@@ -28,13 +28,14 @@ const PinLoginView = ({ navigation, route }) => {
       const isPinValid = pinManager.current.isValid(newPin)
       setIsPinValid(isPinValid)
       if (isPinValid) {
-        TwoFactorAuth.getPairingCode().then(secret => {
+        navigation.navigate(activeView)
+        /* TwoFactorAuth.getPairingCode().then(secret => {
           if(!secret){
             navigation.navigate('RePair2FaDeviceViewSet')
           }else{
             navigation.navigate(activeView)
           }
-        })
+        }) */
       } else {
         setPin('')
       }

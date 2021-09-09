@@ -11,7 +11,7 @@ const AmountInputWithExchangeRate = (props) => {
   // which sends the total address.total minus PKT transation fee
   const { colors, dimensions } = useTheme()
   const [amount, _setAmount] = useState('')
-  const [convertedAmount, setConvertedAmount] = useState('')
+  const [convertedAmount, setConvertedAmount] = useState(0)
   const [invalidAmount, setInvalidAmount] = useState(false)
   const [exceedsMax, setExceedsMax] = useState(false)
   const [isConverted, setIsConverted] = useState(false)
@@ -21,7 +21,7 @@ const AmountInputWithExchangeRate = (props) => {
     return (input - 0) == input && ('' + input).trim().length > 0
   }
 
-  const setAmount = (amount) => {
+  const setAmount = (amount , converted) => {
     let isInvalid = false
     let exceedsMax = false
     let convertedAmount = ''
@@ -33,9 +33,9 @@ const AmountInputWithExchangeRate = (props) => {
       isInvalid = true
     } else {
       // check if the amount in PKT exceeds maxAmount
-      convertedAmount = pktPriceTicker.current.convertCurrency(isConverted, floatAmount)
+      convertedAmount = pktPriceTicker.current.convertCurrency(converted, floatAmount)
       let pktAmount = amount
-      if (isConverted) {
+      if (converted) {
         pktAmount = convertedAmount
       }
       const maxAmount = parseFloat(props.maxAmount)
@@ -157,10 +157,10 @@ const AmountInputWithExchangeRate = (props) => {
   }
 
   const _swapIconOnPressHandler = () =>{
-    if (amount !== '') {
-      setAmount(convertedAmount)
-    }
     setIsConverted(!isConverted)
+    if (amount !== '') {
+      setAmount(convertedAmount,!isConverted)
+    }
   }
 
   return (
@@ -173,7 +173,7 @@ const AmountInputWithExchangeRate = (props) => {
               editable
               style={styles.inputAmount}
               placeholder={props.placeholder}
-              onChangeText={amount => setAmount(amount)}
+              onChangeText={amount => setAmount(amount,isConverted)}
               value={amount}
               disabled={props.disabled}
               keyboardType='decimal-pad'

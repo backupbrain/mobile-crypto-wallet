@@ -36,13 +36,13 @@ const TransactionList = (props) => {
 
   return (
     <View style={styles.container}>
-      {props.transactions.length &&
+      {props.transactions.length > 0 &&
         <FlatList
           refreshing={props.refreshing}
           data={props.transactions}
           renderItem={({ item, index }) => (
             <TouchableOpacity
-              onPress={props.onListItemPress.bind(this,index)}
+              onPress={props.onListItemPress.bind(this, index)}
             >
               <TransactionListItem
                 transaction={item}
@@ -53,7 +53,7 @@ const TransactionList = (props) => {
           )}
           keyExtractor={(item, index) => index.toString()}
         />}
-      {!props.transactions.length &&
+      {props.transactions.length === 0 &&
         <Text style={styles.noTransactions}>{translate('noTransactions')}</Text>}
     </View>
   )
