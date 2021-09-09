@@ -64,13 +64,13 @@ const TransactionQrCode = (props) => {
         <View style={styles.addressOptionsGroup}>
           <LinkButton
             title={translate('copyTransactionId')}
-            onPress={ClipboardManager.set.bind(this,transaction.txid)}
+            onPress={ClipboardManager.set.bind(this, transaction.txid)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               style={styles.linkTextBottom}
               title={translate('shareTransactionId')}
-              onPress={SharingManager.share.bind(this,transaction.txid)}
+              onPress={SharingManager.share.bind(this, transaction.txid)}
             />}
         </View>
       </View>
@@ -120,13 +120,13 @@ const TransactionTextCode = (props) => {
         <View style={styles.addressOptionsGroup}>
           <LinkButton
             title={translate('copyTransactionId')}
-            onPress={ClipboardManager.set.bind(this,transaction.txid)}
+            onPress={ClipboardManager.set.bind(this, transaction.txid)}
           />
           {SharingManager.hasSharing() &&
             <LinkButton
               style={styles.linkTextBottom}
               title={translate('shareTransactionId')}
-              onPress={SharingManager.share.bind(this,transaction.txid)}
+              onPress={SharingManager.share.bind(this, transaction.txid)}
             />}
         </View>
       </View>
@@ -483,8 +483,18 @@ const TransactionView = ({ navigation, route }) => {
           onPress={editNote}
         />
         <ActiveButton
+          style={styles.topButton}
+          title={translate('walletHome')}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'WalletHomeViewSet' }],
+            })
+          }}
+        />
+        <ActiveButton
           title={translate('openInBlockExplorer')}
-          onPress={openInBlockExplorer.bind(this,transaction)}
+          onPress={openInBlockExplorer.bind(this, transaction)}
         />
       </View>
       <Modal

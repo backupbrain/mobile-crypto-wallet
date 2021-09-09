@@ -49,7 +49,10 @@ const SendFormView = ({ navigation, route }) => {
     if (note && note.length > 0) {
       await transactionNoteManager.current.set(transactionId, note)
     }
-    navigation.navigate('TransactionView', { reset: true, alert: true, transactionId: transactionId })
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'TransactionView',params: { reset: true, alert: true, transactionId: transactionId } }],
+    })
   }
 
   const styles = StyleSheet.create({

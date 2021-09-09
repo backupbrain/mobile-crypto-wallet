@@ -358,7 +358,10 @@ const TransactionSuccessView = ({ navigation, route }) => {
           <ActiveButton
             title={translate('goHome')}
             onPress={() => {
-              navigation.navigate('WalletHomeViewSet', { reset: true })
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'WalletHomeViewSet' }],
+              })
             }}
           />
         </View>
@@ -427,7 +430,7 @@ const TransactionSuccessView = ({ navigation, route }) => {
         />
         <ActiveButton
           title={translate('openInBlockExplorer')}
-          onPress={openInBlockExplorer.bind(this,transaction)}
+          onPress={openInBlockExplorer.bind(this, transaction)}
         />
       </View>
       <Modal
