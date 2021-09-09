@@ -383,7 +383,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('walletHome')}</Text>}
-        onPress={() => props.navigation.navigate('WalletHomeViewSet')}
+        onPress={() => props.navigation.navigate('WalletHomeViewSet',{screen:'WalletHomeView'})}
       />
       <DrawerItem
         {...props}
@@ -398,7 +398,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
-        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet')}
+        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet',{screen:'Pair2FaDeviceView'})}
       />
       <DrawerItem
         {...props}
