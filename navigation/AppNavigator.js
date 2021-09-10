@@ -44,6 +44,7 @@ import PinManager from '../utils/PinManager'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
 import { Text } from 'react-native'
 import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
+import Unpair2FaDeviceView from '../views/2fa/Unpair2FaDeviceView'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -294,7 +295,15 @@ const ChangePassphraseViewSet = ({ navigation }) => {
 
 const RePair2FaDeviceViewSet = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName='Pair2FaDeviceView'>
+    <Stack.Navigator initialRouteName='Unpair2FaDeviceView'>
+      <Stack.Screen
+        name='Unpair2FaDeviceView'
+        options={{
+          title: translate('pair2FaDevice'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
+        component={Unpair2FaDeviceView}
+      />
       <Stack.Screen
         name='Pair2FaDeviceView'
         options={{
@@ -398,7 +407,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
-        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet',{screen:'Pair2FaDeviceView'})}
+        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet',{screen:'Unpair2FaDeviceView'})}
       />
       <DrawerItem
         {...props}

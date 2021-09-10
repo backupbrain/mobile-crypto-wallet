@@ -20,10 +20,13 @@ const OtpInput = (props) => {
   const service = translate('pktWallet') */
 
   const validatePin = (pin) => {
-    const isPinValid = TwoFactorAuth.isPinValid(pin,props.secret)
+    const isPinValid = TwoFactorAuth.isPinValid(pin, props.secret)
     setPinError(!isPinValid)
     if (isPinValid && props.onValidPin) {
       props.onValidPin(pin)
+    }
+    if (!isPinValid && props.onInvalidPin) {
+      props.onInvalidPin(pin)
     }
   }
   const updatePin = (text, position) => {
@@ -45,10 +48,21 @@ const OtpInput = (props) => {
     }
   }
   const deleteChar = (position) => {
+    console.log(position)
+    if (props.onInvalidPin) {
+      props.onInvalidPin(pin)
+    }
     setPinError(false)
-    const newPin = pin.substr(0, position-1)
+    if (position === numChars - 1 && pin.length === numChars) { //last input
+      var newPin = pin.substr(0, position)
+    } else {
+      var newPin = pin.substr(0, position - 1)
+    }
+    console.log(newPin)
     setPin(newPin)
-    if (position > 0) {
+    if (position === numChars - 1 && pin.length === numChars) {
+      pinInputRefs[position].current.focus()
+    } else if (position > 0) {
       pinInputRefs[position - 1].current.focus()
     }
   }

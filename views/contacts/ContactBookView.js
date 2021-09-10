@@ -153,7 +153,7 @@ const ContactBookView = ({ navigation, route }) => {
     for (const index in addresses) {
       const data = addresses[index].data.filter(
         (data) => (
-          (data.name && data.name.toLowerCase().startsWith(searchFilter)) ||
+          (data.name && data.name.toLowerCase().startsWith(searchFilter.toLowerCase())) ||
           (data.address && data.address.includes(searchFilter))
         )
       )

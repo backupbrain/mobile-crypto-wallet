@@ -29,7 +29,7 @@ const AddressQrCode = (props) => {
   })
 
   const setIsReady = useCallback((address, width) => {
-    if (width > 0 && address && address !== '') {
+    if (/* width > 0 && */ address && address !== '') {
       _setIsReady(true)
     } else {
       _setIsReady(false)
