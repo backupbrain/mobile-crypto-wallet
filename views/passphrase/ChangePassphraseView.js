@@ -10,6 +10,7 @@ import AdaptiveStorage from '../../utils/AdaptiveStorage'
 import PassphraseManager from '../../utils/PassphraseManager'
 import AppConstants from '../../utils/AppConstants'
 import { useTheme } from '@react-navigation/native'
+import AlertBanner from '../../components/AlertBanner'
 
 const ChangePassphraseView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -18,6 +19,7 @@ const ChangePassphraseView = ({ navigation, route }) => {
   const [newPassphrase, setnewPassphrase] = useState('')
   const [_doPassphrasesMatch, setdoPassphrasesMatch] = useState(null)
   const [isFormFilled, setIsFormFilled] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
   const getCurrentPassword = async () => {
     const password = await AdaptiveStorage.get(AppConstants.PASSPHRASE_KEY)
     return password
@@ -67,11 +69,17 @@ const ChangePassphraseView = ({ navigation, route }) => {
   const _onActivityPressHandler = () => {
     saveNewPassphrase(newPassphrase)
     // TODO: create alert and reset all password inputs
+    setShowAlert(true)
     // navigation.push('ChangePasswordView')
   }
 
   return (
     <Screen>
+      <AlertBanner
+        variant='success'
+        label={translate('passphraseChangedAlert')}
+        visible={showAlert}
+      />
       <View style={styles.screen}>
         <View style={styles.textContainer}>
           <BodyText>{translate('whyPassphrase')}</BodyText>

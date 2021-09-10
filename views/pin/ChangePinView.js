@@ -8,6 +8,8 @@ import translate from '../../translations'
 import AppConstants from '../../utils/AppConstants'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
+import BodyText from '../../components/text/BodyText'
+import AlertBanner from '../../components/AlertBanner'
 
 const ChangePinView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -19,6 +21,7 @@ const ChangePinView = ({ navigation, route }) => {
   const [pin1, setPin1] = useState('')
   const [pin2, setPin2] = useState('')
   const [isFormFilled, setisFormFilled] = useState('')
+  const [showAlert, setShowAlert] = useState(false)
   const getStoredCurrentPin = async () => {
     const pin = await pinManager.current.get()
     return pin
@@ -65,6 +68,9 @@ const ChangePinView = ({ navigation, route }) => {
       marginBottom: dimensions.screen.paddingVertical,
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical
+    },
+    textContainer: {
+      paddingBottom: dimensions.paddingVertical
     }
   })
 
@@ -87,12 +93,20 @@ const ChangePinView = ({ navigation, route }) => {
 
   const _onActivityPressHandler = () => {
     changePin()
-    // TODO: set alert notifying user that pin has been changed
+    setShowAlert(true)
   }
 
   return (
     <Screen>
+      <AlertBanner
+        variant='success'
+        label={translate('pinChangedAlert')}
+        visible={showAlert}
+      />
       <View style={styles.screen}>
+      <View style={styles.textContainer}>
+          <BodyText>{translate('changePinIntro')}</BodyText>
+        </View>
         <View style={styles.container}>
           <PasswordInput
             ref={currentPinRef}

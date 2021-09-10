@@ -7,10 +7,12 @@ import ActiveButton from '../../components/buttons/ActiveButton'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 import TwoFactorAuth from '../../utils/TwoFactorAuth'
+import AlertBanner from '../../components/AlertBanner'
 
 const Verify2FaDeviceView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const [isPinValid, setIsPinValid] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
   const secret = useRef(route.params.secret)
   const styles = StyleSheet.create({
     screen: {
@@ -24,6 +26,11 @@ const Verify2FaDeviceView = ({ navigation, route }) => {
 
   return (
     <Screen>
+      <AlertBanner
+        variant='success'
+        label={translate('2faDevicePairedAlert')}
+        visible={showAlert}
+      />
       <View style={styles.screen}>
         <BodyText style={styles.text}>{translate('verify2faIntro')}</BodyText>
         <View style={styles.otpInput}>
@@ -37,13 +44,14 @@ const Verify2FaDeviceView = ({ navigation, route }) => {
         </View>
         <View style={styles.container}>
           <ActiveButton
-            title={translate('next')}
+            title={translate('pair')}
             onPress={() => {
               TwoFactorAuth.savePairingCode(secret.current)
-              navigation.reset({
+              setShowAlert(true)
+              /* navigation.reset({
                 index: 0,
                 routes: [{ name: 'WalletHomeViewSet' }],
-              });
+              }); */
             }}
             disabled={!isPinValid}
           />

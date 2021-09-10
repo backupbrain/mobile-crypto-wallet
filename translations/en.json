@@ -13,6 +13,7 @@
   "sendPreview": "Send Preview",
   "createPin": "Create Pin",
   "changePin": "Change Pin",
+  "changePinIntro": "Your PIN is used to log into this app",
   "pair2FaDeviceBackupCodes": "Pair 2FA Device Backup Codes",
   "pair2FaDevice": "Pair 2FA Device",
   "verify2FaDevice": "Verify 2FA Device",
@@ -99,6 +100,9 @@
   "logoutIntro2": "If you do this, you will no longer have access to your funds.",
   "logoutIntro3": "You can restore this wallet at any time using 15 word secret recovery phrase and your password for that wallet.",
   "logoutSuccessAlert": "You have logged out of your account",
+  "passphraseChangedAlert": "Your passphrase has been changed",
+  "pinChangedAlert": "Your login PIN has been changed",
+  "2faDevicePairedAlert": "Your 2FA Device has been paired",
   "confirmDeleteContacts": "Delete my contacts and transaction notes",
 
   "send": "Send",
@@ -184,6 +188,7 @@
   "slideToConfirm": "Slide to Confirm",
   "2faCode": "2FA Code",
   "2faCodeHelpText": "Enter your one-time-password",
+  "pair":"Pair",
 
   "recipientAddress": "Recipient Address",
   "useAddress": "Use Address",
