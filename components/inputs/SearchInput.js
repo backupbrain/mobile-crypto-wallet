@@ -96,6 +96,7 @@ const SearchInput = (props) => {
             style={styles.closeButton}
             onPress={() => {
               setText('')
+              props.onChangeText('')
             }}
           >
             <Close color={colors.text} size='12' />

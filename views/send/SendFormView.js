@@ -30,10 +30,11 @@ const SendFormView = ({ navigation, route }) => {
   const pktPriceTicker = useRef(new PktPriceTicker())
   const toAddressModalRef = useRef()
   const toAddressInputRef = useRef()
-  const [newToAddress, setNewToAddress] = useState('')
-  const [isNewToAddressValid, setIsNewToAddressValid] = useState(false)
+  const newToAddress = useRef('')
+  const activeButton = useRef()
 
   const onFromContactSelected = (contact) => {
+    console.log(contact)
     setFromContact(contact)
     setFromAddress(contact.address)
     setIsFromAddressValid(true)
@@ -152,10 +153,11 @@ const SendFormView = ({ navigation, route }) => {
   }
 
   const _onActivePressHandler = () => {
-    setToAddress(newToAddress)
-    toAddressInputRef.current.setAddress(newToAddress)
+    setToAddress(newToAddress.current)
+    toAddressInputRef.current.setAddress(newToAddress.current)
     toAddressModalRef.current.close()
   }
+
 
   return (
     <Screen>
@@ -171,7 +173,7 @@ const SendFormView = ({ navigation, route }) => {
                 <WalletListItem
                   name={fromContact.name}
                   address={fromContact.address}
-                  amount={fromContact.total}
+                  amount={fromContact.amount}
                   style={styles.fromAddressWalletListItem}
                 />
               </>
@@ -242,8 +244,7 @@ const SendFormView = ({ navigation, route }) => {
               placeholder={translate('remoteAddressPlaceholder')}
               address={toAddress}
               onValid={(address, isValid) => {
-                setNewToAddress(address)
-                setIsNewToAddressValid(isValid)
+                newToAddress.current = address
               }}
               onPersonIconPress={() => {
                 navigation.push('ContactBookView', {
@@ -259,9 +260,9 @@ const SendFormView = ({ navigation, route }) => {
         }
         footer={() =>
           <ActiveButton
+            ref={activeButton}
             title={translate('useAddress')}
             onPress={_onActivePressHandler}
-            disabled={!isNewToAddressValid}
           />
         }
       />

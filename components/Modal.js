@@ -109,7 +109,7 @@ const Modal = (props, ref) => {
 
   let Content = props.content
   let Footer = props.footer
-
+ 
   return (
     <>
       {isVisible &&

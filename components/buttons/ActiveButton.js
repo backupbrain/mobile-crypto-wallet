@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
-const ActiveButton = (props) => {
+const ActiveButton = (props,ref) => {
   const { colors, dimensions } = useTheme()
   const isDisabled = props.disabled
 
@@ -50,7 +50,7 @@ const ActiveButton = (props) => {
   }
 
   return (
-    <View style={[styles.container, props.style]}>
+    <View style={[styles.container, props.style]} ref={ref}>
       {isDisabled ? (
         <View style={[styles.button, styles.disabledButton]} onPress={props.onPress}>
           <Text style={styles.disabledButtonText}>{props.title}</Text>
@@ -70,4 +70,4 @@ const ActiveButton = (props) => {
   )
 }
 
-export default ActiveButton
+export default forwardRef(ActiveButton)

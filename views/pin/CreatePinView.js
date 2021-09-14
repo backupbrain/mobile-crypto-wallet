@@ -67,7 +67,7 @@ const CreatePinView = ({ navigation, route }) => {
             passwordPlaceholder={translate('pin')}
             passwordHelp={translate('pinHelpText')}
             passwordVerifyPlaceholder={translate('verifyPin')}
-            passwordVerifyHelp=''
+            passwordVerifyHelp={translate('retypeNewPin')}
             onPasswordChangeText={_onNewPasswordChangeHandler}
             onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
             onPasswordsMatch={_onNewPasswordMatchHandler}

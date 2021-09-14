@@ -119,9 +119,6 @@ const ContactBookView = ({ navigation, route }) => {
   })
 
   useEffect(() => {
-    console.log('ContactBookView')
-    console.log(route)
-    console.log(navigation)
     if (route.params && route.params.selectorMode) {
       setIsInSelectorMode(route.params.selectorMode === true)
     }

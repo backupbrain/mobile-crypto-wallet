@@ -17,11 +17,13 @@ const truncateAddress = (address) => {
   }
 }
 
+
 const truncateAddressLong = (address) => {
-  const MAX_LENGTH = 11
+  const MAX_ADDRESS_LENGTH = 11
+  const MAX_SEQUENCE_LENGTH = 11
   const addressLength = address.length
-  if (addressLength > MAX_LENGTH) {
-    return address.substr(0, 15) + '…' + address.substr(addressLength - 15, addressLength)
+  if (addressLength > MAX_ADDRESS_LENGTH) {
+    return address.substr(0, MAX_SEQUENCE_LENGTH) + '…' + address.substr(addressLength - MAX_SEQUENCE_LENGTH, addressLength)
   } else {
     return address
   }
@@ -50,13 +52,14 @@ const WalletListItem = (props) => {
     container: {
       flexDirection: 'row',
       width: '100%',
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden'
     },
     icon: {
       paddingRight: dimensions.horizontalSpacingBetweenItems
     },
     accountInformation: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     amountInformation: {
       textAlign: 'right'
@@ -66,6 +69,7 @@ const WalletListItem = (props) => {
       paddingBottom: dimensions.verticalSpacingBetweenItemsShort
     },
     address: {
+
     },
     amount: {
       paddingBottom: dimensions.verticalSpacingBetweenItemsShort

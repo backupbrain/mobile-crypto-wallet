@@ -83,7 +83,7 @@ const AlertBanner = (props, ref) => {
       textAlign: dimensions.alertBanner.textAlign,
       paddingVertical: dimensions.screen.paddingVertical,
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingRight: paddingRight
+      /* paddingRight: paddingRight */
     },
     closeButton: {
       paddingVertical: dimensions.verticalSpacingBetweenItems,

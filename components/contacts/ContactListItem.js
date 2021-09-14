@@ -3,7 +3,6 @@ import { TouchableOpacity } from 'react-native'
 import WalletListItem from './../wallet/WalletListItem'
 
 const ContactListItem = (props) => {
-
   const _onPressHandler = () => {
     if (props.onListItemPress) {
       props.onListItemPress(props.item)
@@ -18,8 +17,8 @@ const ContactListItem = (props) => {
         style={props.style}
         name={props.item?.name}
         address={props.item?.address}
-        amount={props.item?.total}
-        local={props.item?.isLocal}
+        amount={props.item?.amount}
+        local={props.item?.isLocal ?? false}
         navigation={props?.navigation}
       />
     </TouchableOpacity>

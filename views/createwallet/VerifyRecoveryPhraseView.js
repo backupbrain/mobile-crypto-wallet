@@ -6,6 +6,7 @@ import RecoveryPhraseInput from '../../components/inputs/RecoveryPhraseInput'
 import PktManager from '../../utils/PktManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
+import BodyText from '../../components/text/BodyText'
 
 const MAX_WORDS = 15
 
@@ -61,7 +62,10 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
         await pktManager.current.openWallet(text).then(
           value => {
             if (value) {
-              navigation.push('CreatePassphraseView')
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'FirstViewSet' }],
+              });
             }
           }
         )
@@ -82,6 +86,9 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     debugText: {
       color: '#f00',
       marginBottom: dimensions.screen.paddingVertical
+    },
+    textContainer: {
+      paddingBottom: dimensions.paddingVertical
     }
   })
 
@@ -93,6 +100,9 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
+        <View style={styles.textContainer}>
+          <BodyText>{recoveryPhrase ? translate('verifyRecoveryPhraseCreateWalletIntro') : translate('verifyRecoveryPhraseLoadWalletIntro')}</BodyText>
+        </View>
         <View style={styles.inputContainer}>
           <RecoveryPhraseInput
             recoveryPhrase={recoveryPhrase}

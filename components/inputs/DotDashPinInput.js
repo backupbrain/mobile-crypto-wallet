@@ -12,19 +12,23 @@ const DotDashPinInput = (props) => {
   const styles = StyleSheet.create({
     container: {
       justifyContent: 'center',
-      flexDirection: 'row'
+      flexDirection: 'row',
+      width: '100%'
     },
     pinInputContainer: {
       justifyContent: 'center',
-      flexShrink: 1
+      /* flexShrink: 1 */
     },
     pinCharContainer: {
       flexDirection: 'row',
-      flexShrink: 1
+      /* flexShrink: 1 */
+      width: '100%',
+      justifyContent: 'space-between',
+      maxWidth: 300
     },
     pinChar: {
-      width: '60px',
-      marginRight: dimensions.horizontalSpacingBetweenItems
+      width: 60,
+      /* marginRight: dimensions.horizontalSpacingBetweenItems */
     },
     pinCharLast: {
       marginRight: '0px'
