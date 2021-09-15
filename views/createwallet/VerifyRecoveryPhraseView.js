@@ -24,7 +24,7 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const pktManager = useRef(new PktManager())
   const setWordCount = (numWords) => {
     _setWordCount(numWords)
-    setIsFormFilled(numWords == MAX_WORDS)
+    /* setIsFormFilled(numWords == MAX_WORDS) */
   }
 
   const isValidRecoveryPhrase = (text, recoveryPhrase) => {
@@ -94,6 +94,7 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
 
   const _onRecoveryChangeHandler = (text) => {
     setIsInvalidRecoveryPhrase(false)
+    setIsFormFilled(isValidRecoveryPhrase(text, recoveryPhrase))
     setText(text)
   }
 

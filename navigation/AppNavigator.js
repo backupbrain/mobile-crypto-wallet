@@ -299,7 +299,7 @@ const RePair2FaDeviceViewSet = ({ navigation }) => {
       <Stack.Screen
         name='Unpair2FaDeviceView'
         options={{
-          title: translate('pair2FaDevice'),
+          title: translate('unpair2FaDevice'),
           headerRight: () => <HamburgerMenuButon navigation={navigation} />
         }}
         component={Unpair2FaDeviceView}

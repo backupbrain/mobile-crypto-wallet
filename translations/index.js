@@ -21,9 +21,29 @@ const translationGetters = {
 }
 
 const translate = memoize(
+  (key, vars) => {
+      if (!vars)
+          return i18n.t(key)
+      else {
+          return replaceVariables(i18n.t(key), vars)
+      }
+
+  }
+)
+
+const replaceVariables = (string, variables) => {
+
+  Object.keys(variables).forEach((toReplace) => {
+      string = string.replace(new RegExp(`{\\s*${toReplace}\\s*}`, 'g'), variables[toReplace])
+  })
+
+  return string;
+}
+
+/* const translate = memoize(
   (key, config) => i18n.t(key, config),
   (key, config) => (config ? key + JSON.stringify(config) : key)
-)
+) */
 
 export const significantDigitsFormat = (num, significantFiguresOpt) => {
   // Set default sigfigs to 3
