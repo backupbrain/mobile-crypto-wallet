@@ -251,7 +251,9 @@ const TransactionView = ({ navigation, route }) => {
   }
 
   const openInBlockExplorer = (transaction) => {
-    const url = `https://explorer.pkt.cash/tx/${transaction.txid}`
+    /* const url = `https://explorer.pkt.cash/tx/${transaction.txid}` */
+    // TODO : Change this demo address
+    const url = `https://explorer.pkt.cash/address/pkt1q6hqsqhqdgqfd8t3xwgceulu7k9d9w5t2amath0qxyfjlvl3s3u4sjza2g2`
     Linking.openURL(url).catch((err) => {
       console.log('error occurred trying to open in browser')
       console.log(err)

@@ -31,7 +31,7 @@ const LoadExistingWalletIntroView = ({ navigation, route }) => {
         </View>
         <ActivityButton
           title={translate('continueToSecretPassphrase')}
-          onPress={() => navigation.push('WalletPassphraseView')}
+          onPress={() => navigation.push('VerifyRecoveryPhraseView')}
         />
       </View>
     </Screen>

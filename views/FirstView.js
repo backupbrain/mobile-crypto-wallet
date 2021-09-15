@@ -58,7 +58,7 @@ const FirstView = ({ navigation, route }) => {
         <HeaderText style={styles.pktPalText}>{translate('pktWallet')}</HeaderText>
         <ActiveButton
           title={translate('createNewWallet')}
-          onPress={() => navigation.push('CreateNewWalletIntroView')}
+          onPress={() => navigation.push('CreatePassphraseView')}
           style={styles.firstButton}
         />
         <ActiveButton

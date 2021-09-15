@@ -18,9 +18,9 @@ const toUsd = (amount) => {
 const WalletListItem = (props) => {
   const { colors, dimensions } = useTheme()
   let isVisible = true
-  if (props.visible !== undefined) {
+  /* if (props.visible !== undefined) {
     isVisible = props.visible
-  }
+  } */
 
   const styles = StyleSheet.create({
     container: {

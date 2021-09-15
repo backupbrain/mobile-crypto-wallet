@@ -13,7 +13,7 @@ const WalletPassphraseView = ({ navigation, route }) => {
     const { dimensions } = useTheme()
     const passphraseManager = useRef(new PassphraseManager())
     const [passphrase, setPassphrase] = useState('')
-    
+
     const savePassphrase = (passphrase) => {
         passphraseManager.current.set(passphrase)
     }
@@ -35,7 +35,10 @@ const WalletPassphraseView = ({ navigation, route }) => {
     const _onActivityPressHandler = () => {
         savePassphrase(passphrase)
         // TODO : load wallet with passphrase
-        navigation.push('VerifyRecoveryPhraseView')
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'FirstViewSet' }],
+        });
     }
 
     return (

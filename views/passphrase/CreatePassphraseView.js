@@ -47,10 +47,7 @@ const CreatePassphraseView = ({ navigation, route }) => {
   const _onActivityPressHandler = () => {
     savePassphrase(passphrase)
     if (route.params?.firstScreen) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'FirstViewSet' }],
-      });
+      navigation.push('CreateNewWalletIntroView')
     } else {
       navigation.push('WalletHomeViewSet')
     }

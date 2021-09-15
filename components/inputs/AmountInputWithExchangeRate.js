@@ -11,7 +11,7 @@ const AmountInputWithExchangeRate = (props) => {
   // which sends the total address.total minus PKT transation fee
   const { colors, dimensions } = useTheme()
   const [amount, _setAmount] = useState('')
-  const [convertedAmount, setConvertedAmount] = useState(0)
+  const [convertedAmount, setConvertedAmount] = useState("0.00")
   const [invalidAmount, setInvalidAmount] = useState(false)
   const [exceedsMax, setExceedsMax] = useState(false)
   const [isConverted, setIsConverted] = useState(false)

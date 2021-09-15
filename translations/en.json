@@ -13,7 +13,7 @@
   "sendPreview": "Send Preview",
   "createPin": "Create PIN",
   "changePin": "Change PIN",
-  "changePinIntro": "Your PIN is used to log into this app",
+  "changePinIntro": "Your PIN is used to log into this app.",
   "pair2FaDeviceBackupCodes": "Pair 2FA Device Backup Codes",
   "pair2FaDevice": "Pair 2FA",
   "verify2FaDevice": "Verify 2FA Device",

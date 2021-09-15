@@ -51,7 +51,10 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const verifyRecoveryPhraseAndProceed = async () => {
     if (recoveryPhrase !== null) {
       if (isValidRecoveryPhrase(text, recoveryPhrase) === true) {
-        navigation.push('CreatePassphraseView')
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'FirstViewSet' }],
+        });
       } else {
         setIsInvalidRecoveryPhrase(true)
       }
@@ -62,10 +65,7 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
         await pktManager.current.openWallet(text).then(
           value => {
             if (value) {
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'FirstViewSet' }],
-              });
+              navigation.push('WalletPassphraseView')
             }
           }
         )
