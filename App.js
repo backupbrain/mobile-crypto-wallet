@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react'
-import { AppState } from 'react-native'
+import { AppState, Linking, Platform } from 'react-native'
 import { registerRootComponent } from 'expo'
 import { setI18nConfig } from './translations'
 import * as RNLocalize from 'react-native-localize'
@@ -12,16 +12,47 @@ import { AnodeDarkTheme, AnodeLightTheme } from './themes/AnodeThemes'
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
 import PktPriceTicker from './utils/PktPriceTicker'
+import AdaptiveStorage from './utils/AdaptiveStorage'
+import AppConstants from './utils/AppConstants'
 
-export default function App () {
+export default function App() {
   const [pktPriceTimeout, setPktPriceTimeout] = useState(null)
   const pktPriceTicker = useRef(new PktPriceTicker())
-
+  
+  
   const scheme = useColorScheme()
   const [, forceUpdate] = useReducer(x => x + 1, 0)
   const appState = useRef(AppState.currentState)
   const [appStateVisible, setAppStateVisible] = useState(appState.current)
   setI18nConfig()
+  
+  // DELETE :  navigation state attempt
+  /* const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState();
+  useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const initialUrl = await Linking.getInitialURL();
+
+        // TODO: DELETE true
+        if (true || Platform.OS !== 'web' && initialUrl == null) {
+          // Only restore state if there's no deep link and we're not on web
+          const savedStateString = await AdaptiveStorage.get(AppConstants.NAVIGATION_STATE_KEY);
+          const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+
+          if (state !== undefined) {
+            setInitialState(state);
+          }
+        }
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    if (!isReady) {
+      restoreState();
+    }
+  }, [isReady]); */
 
   const handleLocalizationChange = () => {
     setI18nConfig()
@@ -61,10 +92,26 @@ export default function App () {
     }
   }, [pktPriceTicker, setPktPriceTimeout])
 
+  /* 
+  // DELETE :  navigation state attempt 
+  if (!isReady) {
+    return null;
+
+  } */
+
   return (
     <AppearanceProvider>
       <SafeAreaProvider>
-        <NavigationContainer theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme}>
+        <NavigationContainer
+          // DELETE :  navigation state attempt
+          /* initialState={initialState}
+          onStateChange={(state) => {
+            if (state && state.routes[state.index].name !== 'SecurityView')
+              AdaptiveStorage.set(AppConstants.NAVIGATION_STATE_KEY, JSON.stringify(state))
+          }
+          } */
+          theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme}
+        >
           <AppNavigator state={appStateVisible} />
         </NavigationContainer>
       </SafeAreaProvider>

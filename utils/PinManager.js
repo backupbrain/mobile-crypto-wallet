@@ -22,7 +22,7 @@ export default class PinManager {
   }
 
   static async saveTime() {
-    console.log('save ',new Date().getTime())
+    /* console.log('save ',new Date().getTime()) */
     await AdaptiveStorage.set(AppConstants.PIN_LOGIN_TIMEOUT_KEY, new Date().getTime())
   }
 
@@ -34,7 +34,7 @@ export default class PinManager {
   static async hasLogoutTimeExpired() {
 
     const time = await PinManager.getTime()
-    console.log(new Date().getTime() - time)
+    /* console.log(new Date().getTime() - time) */
     if (new Date().getTime() - time > AppConstants.PIN_LOGIN_TIMEOUT_S * 1000)
       return true
     else

@@ -26,7 +26,8 @@ const AppConstants = {
   DEFAULT_PADDING_PX: 20,
   PIN_LOGIN_TIMEOUT_S:60,
   PIN_LOGIN_TIMEOUT_KEY:'PIN_LOGIN_TIMEOUT_KEY',
-  WALLET_HISTORY_BALANCE_KEY: 'walletBalanceHistory'
+  WALLET_HISTORY_BALANCE_KEY: 'walletBalanceHistory',
+  NAVIGATION_STATE_KEY: 'NAVIGATION_STATE_KEY'
 }
 
 export default AppConstants

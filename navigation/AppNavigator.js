@@ -9,7 +9,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
-import { useTheme } from '@react-navigation/native'
+import { useNavigation, useNavigationState, useTheme } from '@react-navigation/native'
 
 // import HamburgerMenuButton from '../components/buttons/HamburgerMenuButton'
 import translate from '../translations'
@@ -54,7 +54,6 @@ const FirstViewSet = ({ navigation }) => {
   const WalletManager = useRef(new PktManager())
   const PassPhraseManager = useRef(new PassphraseManager())
   const pinManager = useRef(new PinManager())
-
 
   const PinCheck = () => {
     pinManager.current.get().then(async pin => {
@@ -392,7 +391,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('walletHome')}</Text>}
-        onPress={() => props.navigation.navigate('WalletHomeViewSet',{screen:'WalletHomeView'})}
+        onPress={() => props.navigation.navigate('WalletHomeViewSet', { screen: 'WalletHomeView' })}
       />
       <DrawerItem
         {...props}
@@ -407,7 +406,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
-        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet',{screen:'Unpair2FaDeviceView'})}
+        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet', { screen: 'Unpair2FaDeviceView' })}
       />
       <DrawerItem
         {...props}
@@ -428,10 +427,10 @@ const DrawerNavigator = (props) => {
   // TODO: make sure drawer opens on right and has the right theme.
   // https://reactnavigation.org/docs/drawer-navigator/
   const { colors } = useTheme()
-  const { security } = props
+
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} security={security} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerPosition: 'right',
         drawerStyle: {
@@ -440,7 +439,7 @@ const DrawerNavigator = (props) => {
         },
         drawerType: 'front',
         headerShown: false,
-        swipeEdgeWidth : 0,
+        swipeEdgeWidth: 0,
       }}
     >
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
@@ -472,13 +471,16 @@ const AppNavigator = (props) => {
 /* */
 
 const AppNavigator = (props) => {
+  const navigationState = useNavigationState(state => state);
 
   /* return (
     <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
   ) */
 
   if (props.state.match(/inactive|background/)) {
-    PinManager.saveTime()
+    if (navigationState && navigationState.routes[navigationState.index].name !== 'FirstViewSet')
+      PinManager.saveTime()
+
     return <SecurityView />
   } else {
     return (
