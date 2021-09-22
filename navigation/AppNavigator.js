@@ -45,6 +45,8 @@ import TwoFactorAuth from '../utils/TwoFactorAuth'
 import { Text } from 'react-native'
 import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
 import Unpair2FaDeviceView from '../views/2fa/Unpair2FaDeviceView'
+import { useDispatch } from 'react-redux'
+import { securityDisable, securityEnable } from '../store/SecurityAction'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -431,6 +433,12 @@ const DrawerNavigator = (props) => {
   const pinManager = useRef(new PinManager())
   const navigation = useNavigation()
   const navigationState = useNavigationState(state => state)
+  const dispatch = useDispatch()
+
+  if (props.security)
+    dispatch(securityEnable())
+  else
+    dispatch(securityDisable())
 
   useEffect(() => {
     console.log('here')

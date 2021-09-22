@@ -24,7 +24,7 @@ const SecurityView = ({ navigation, route }) => {
   })
 
   return (
-    <Screen>
+    /* <Screen> */
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.screen}>
           <AnodeTextLogo
@@ -34,7 +34,7 @@ const SecurityView = ({ navigation, route }) => {
           />
         </View>
       </KeyboardAvoidingView>
-    </Screen>
+    /* </Screen> */
   )
 }
 

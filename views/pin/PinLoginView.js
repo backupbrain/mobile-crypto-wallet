@@ -28,8 +28,9 @@ const PinLoginView = ({ navigation, route }) => {
       const isPinValid = pinManager.current.isValid(newPin)
       setIsPinValid(isPinValid)
       if (isPinValid) {
-        if (route.params.navigationState)
+        if (route.params.navigationState) {
           navigation.reset(route.params.navigationState)
+        }
         else
           navigation.navigate(activeView)
         /* TwoFactorAuth.getPairingCode().then(secret => {

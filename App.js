@@ -14,6 +14,15 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 import PktPriceTicker from './utils/PktPriceTicker'
 import AdaptiveStorage from './utils/AdaptiveStorage'
 import AppConstants from './utils/AppConstants'
+import { Provider } from 'react-redux'
+import { combineReducers, createStore } from 'redux'
+import { SecurityReducer } from './store/SecurityReducer'
+
+const rootReducer = combineReducers({
+  security: SecurityReducer
+});
+
+const store = createStore(rootReducer);
 
 export default function App() {
   const [pktPriceTimeout, setPktPriceTimeout] = useState(null)
@@ -106,22 +115,24 @@ export default function App() {
   } */
 
   return (
-    <AppearanceProvider>
-      <SafeAreaProvider>
-        <NavigationContainer
-          // DELETE
-          /* initialState={initialState}
-          onStateChange={(state) => {
-            if (state && state.routes[state.index].name !== 'SecurityView')
+    <Provider store={store}>
+      <AppearanceProvider>
+        <SafeAreaProvider>
+          <NavigationContainer
+            // DELETE
+            /* initialState={initialState}
+            onStateChange={(state) => {
+              if (state && state.routes[state.index].name !== 'SecurityView')
               AdaptiveStorage.set(AppConstants.NAVIGATION_STATE_KEY, JSON.stringify(state))
-          }
+            }
           } */
-          theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme}
-        >
-          <AppNavigator state={appStateVisible} />
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </AppearanceProvider>
+            theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme}
+          >
+            <AppNavigator state={appStateVisible} />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </AppearanceProvider>
+    </Provider>
   )
 }
 
