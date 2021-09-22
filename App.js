@@ -18,15 +18,17 @@ import AppConstants from './utils/AppConstants'
 export default function App() {
   const [pktPriceTimeout, setPktPriceTimeout] = useState(null)
   const pktPriceTicker = useRef(new PktPriceTicker())
-  
-  
+  const mountedRef = useRef(true)
+
+
   const scheme = useColorScheme()
   const [, forceUpdate] = useReducer(x => x + 1, 0)
   const appState = useRef(AppState.currentState)
   const [appStateVisible, setAppStateVisible] = useState(appState.current)
   setI18nConfig()
-  
-  // DELETE :  navigation state attempt
+
+
+  // DELETE
   /* const [isReady, setIsReady] = useState(false);
   const [initialState, setInitialState] = useState();
   useEffect(() => {
@@ -40,17 +42,22 @@ export default function App() {
           const savedStateString = await AdaptiveStorage.get(AppConstants.NAVIGATION_STATE_KEY);
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
 
-          if (state !== undefined) {
+          if (mountedRef.current && state !== undefined) {
             setInitialState(state);
           }
         }
       } finally {
-        setIsReady(true);
+        if (mountedRef.current)
+          setIsReady(true);
       }
     };
 
     if (!isReady) {
       restoreState();
+    }
+
+    return () => {
+      mountedRef.current = false
     }
   }, [isReady]); */
 
@@ -92,9 +99,8 @@ export default function App() {
     }
   }, [pktPriceTicker, setPktPriceTimeout])
 
-  /* 
-  // DELETE :  navigation state attempt 
-  if (!isReady) {
+  // DELETE
+  /* if (!isReady) {
     return null;
 
   } */
@@ -103,7 +109,7 @@ export default function App() {
     <AppearanceProvider>
       <SafeAreaProvider>
         <NavigationContainer
-          // DELETE :  navigation state attempt
+          // DELETE
           /* initialState={initialState}
           onStateChange={(state) => {
             if (state && state.routes[state.index].name !== 'SecurityView')

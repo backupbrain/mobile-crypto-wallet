@@ -28,7 +28,10 @@ const PinLoginView = ({ navigation, route }) => {
       const isPinValid = pinManager.current.isValid(newPin)
       setIsPinValid(isPinValid)
       if (isPinValid) {
-        navigation.navigate(activeView)
+        if (route.params.navigationState)
+          navigation.reset(route.params.navigationState)
+        else
+          navigation.navigate(activeView)
         /* TwoFactorAuth.getPairingCode().then(secret => {
           if(!secret){
             navigation.navigate('RePair2FaDeviceViewSet')
@@ -53,6 +56,7 @@ const PinLoginView = ({ navigation, route }) => {
   }
   useEffect(() => {
     // TODO: route to last-used page
+
     setActiveView('WalletHomeViewSet')
   }, [setActiveView])
 

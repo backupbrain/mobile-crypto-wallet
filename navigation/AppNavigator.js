@@ -54,13 +54,14 @@ const FirstViewSet = ({ navigation }) => {
   const WalletManager = useRef(new PktManager())
   const PassPhraseManager = useRef(new PassphraseManager())
   const pinManager = useRef(new PinManager())
+  const navigationState = useNavigationState(state => state)
 
   const PinCheck = () => {
     pinManager.current.get().then(async pin => {
       if (pin) {
         const logoutTimeExpired = await PinManager.hasLogoutTimeExpired()
         if (logoutTimeExpired)
-          setInitialRoute('PinLoginView')
+          navigation.navigate('PinLoginView', { navigationState })
         else
           navigation.navigate('WalletHomeViewSet')
       } else {
@@ -427,6 +428,25 @@ const DrawerNavigator = (props) => {
   // TODO: make sure drawer opens on right and has the right theme.
   // https://reactnavigation.org/docs/drawer-navigator/
   const { colors } = useTheme()
+  const pinManager = useRef(new PinManager())
+  const navigation = useNavigation()
+  const navigationState = useNavigationState(state => state)
+
+  useEffect(() => {
+    console.log('here')
+    const checkForLogoutExpiry = async () => {
+      const logoutTimeExpired = await PinManager.hasLogoutTimeExpired()
+      if (logoutTimeExpired) {
+        pinManager.current.get().then(async pin => {
+          if (pin) {
+            navigation.navigate('PinLoginView', { navigationState })
+          }
+        })
+      }
+    }
+
+    checkForLogoutExpiry()
+  }, [props.security])
 
   return (
     <Drawer.Navigator
@@ -473,11 +493,16 @@ const AppNavigator = (props) => {
 const AppNavigator = (props) => {
   const navigationState = useNavigationState(state => state);
 
-  /* return (
-    <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
-  ) */
-
   if (props.state.match(/inactive|background/)) {
+    if (navigationState && navigationState.routes[navigationState.index].name !== 'FirstViewSet')
+      PinManager.saveTime()
+  }
+
+  return (
+    <DrawerNavigator security={!!props.state.match(/inactive|background/)} />
+  )
+
+  /* if (props.state.match(/inactive|background/)) {
     if (navigationState && navigationState.routes[navigationState.index].name !== 'FirstViewSet')
       PinManager.saveTime()
 
@@ -486,7 +511,7 @@ const AppNavigator = (props) => {
     return (
       <DrawerNavigator />
     )
-  }
+  } */
 }
 
 export default AppNavigator

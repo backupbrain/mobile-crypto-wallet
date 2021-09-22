@@ -11,6 +11,8 @@ import { useTheme } from '@react-navigation/native'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
 import ContactManager from '../utils/ContactManager'
 import TransactionNoteManager from '../utils/TransactionNoteManager'
+import AdaptiveStorage from '../utils/AdaptiveStorage'
+import AppConstants from '../utils/AppConstants'
 
 const LogOutView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
@@ -24,6 +26,7 @@ const LogOutView = ({ navigation, route }) => {
     // TOdO: unlink wallet from pktd
     pinManager.current.clear()
     passphraseManager.current.clear()
+    AdaptiveStorage.remove(AppConstants.NAVIGATION_STATE_KEY)
     /* twoFactorAuth.current.clear() */
     if (isChecked) {
       contactManager.current.clearAll()
@@ -33,7 +36,10 @@ const LogOutView = ({ navigation, route }) => {
   }
 
   const navigateToFirstView = () => {
-    navigation.push('FirstView', { reset: true })
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'FirstViewSet' }],
+    })
   }
 
   const styles = StyleSheet.create({
