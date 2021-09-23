@@ -87,6 +87,7 @@
 
   "localAddressSelectorPlaceholder": "Select address...",
   "currentPin": "Current PIN",
+  "enterPin": "Enter Your PIN",
   "pin": "PIN",
   "pinHelpText": "Enter 4 digits",
   "verifyPin": "Retype PIN",

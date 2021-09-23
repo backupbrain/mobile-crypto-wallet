@@ -206,7 +206,7 @@ const WalletHomeViewSet = ({ navigation }) => {
         }}
         component={SendCryptoViewSet}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name='RePair2FaDeviceViewSet'
         options={{
           title: translate('transaction'),
@@ -214,7 +214,7 @@ const WalletHomeViewSet = ({ navigation }) => {
           headerShown: false
         }}
         component={RePair2FaDeviceViewSet}
-      />
+      /> */}
     </Stack.Navigator>
   )
 }
@@ -406,11 +406,11 @@ const CustomDrawerContent = (props) => {
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('changePassphrase')}</Text>}
         onPress={() => props.navigation.navigate('ChangePassphraseViewSet')}
       />
-      <DrawerItem
+      {/* <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
         onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet', { screen: 'Unpair2FaDeviceView' })}
-      />
+      /> */}
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('contactBook')}</Text>}
@@ -441,7 +441,6 @@ const DrawerNavigator = (props) => {
     dispatch(securityDisable())
 
   useEffect(() => {
-    console.log('here')
     const checkForLogoutExpiry = async () => {
       const logoutTimeExpired = await PinManager.hasLogoutTimeExpired()
       if (logoutTimeExpired) {
@@ -474,7 +473,7 @@ const DrawerNavigator = (props) => {
       <Drawer.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
 
       <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
-      <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} />
+      {/* <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} /> */}
       <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <Drawer.Screen name='ContactsViewSet' component={ContactsViewSet} />
       <Drawer.Screen name='LogOutViewSet' component={LogOutViewSet} />

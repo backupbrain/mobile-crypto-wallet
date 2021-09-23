@@ -20,7 +20,7 @@ const WalletHomeView = ({ navigation, route }) => {
   const [addresses, setAddresses] = useState([])
   const [sendActivated, setSendActivated] = useState(false)
   const [newAddress, setNewAddress] = useState({})
-  const [twoFactorExists, setTwoFactorExists] = useState(false)
+  /* const [twoFactorExists, setTwoFactorExists] = useState(false) */
   const newAddressName = useRef("")
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
@@ -53,11 +53,11 @@ const WalletHomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchMyAddresses()
-    TwoFactorAuth.getPairingCode().then(secret => {
+    /* TwoFactorAuth.getPairingCode().then(secret => {
       if (secret) {
         setTwoFactorExists(true)
       }
-    })
+    }) */
   }, [fetchMyAddresses])
 
   const styles = StyleSheet.create({
@@ -139,8 +139,13 @@ const WalletHomeView = ({ navigation, route }) => {
         />
         <View style={styles.sendReceiveButtonPanel}>
           <View style={[styles.sendReceiveButton, styles.leftButton]}>
+            <ActivityButton
+              title={translate('send')}
+              onPress={() => navigation.push('SendView')}
+              disabled={!sendActivated}
+            />
             {
-              twoFactorExists ?
+              /* twoFactorExists ?
                 <ActivityButton
                   title={translate('send')}
                   onPress={() => navigation.push('SendView')}
@@ -152,7 +157,7 @@ const WalletHomeView = ({ navigation, route }) => {
                   onPress={() => navigation.push('RePair2FaDeviceViewSet',{
                     screen:'Pair2FaDeviceView'
                   })}
-                />
+                /> */
             }
           </View>
           <View style={[styles.sendReceiveButton, styles.rightButton]}>
@@ -165,8 +170,8 @@ const WalletHomeView = ({ navigation, route }) => {
           </View>
         </View>
         {
-          !twoFactorExists && 
-          <Text style={styles.pair2faText}>{translate('whyPair2FaDevice')}</Text>
+          /* !twoFactorExists && 
+          <Text style={styles.pair2faText}>{translate('whyPair2FaDevice')}</Text> */
         }
         <View style={styles.walletListContainer}>
           <WalletList

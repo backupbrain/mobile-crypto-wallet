@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
 import AccountBalance from '../../components/wallet/AccountBalance'
@@ -11,6 +11,8 @@ import TransactionNoteManager from '../../utils/TransactionNoteManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 import TwoFactorAuth from '../../utils/TwoFactorAuth'
+import PinManager from '../../utils/PinManager'
+import PasswordInput from '../../components/inputs/PasswordInput'
 
 /*
 const sendAmount = 1290.20
@@ -32,6 +34,7 @@ const SendFormView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
   const pktManager = useRef(new PktManager())
   const TwoFactorManager = useRef(new TwoFactorAuth())
+  const Pin_Manager = useRef(new PinManager())
   const transactionNoteManager = useRef(new TransactionNoteManager())
   const [fromAddress] = useState(route.params?.fromAddress)
   const [toAddress] = useState(route.params?.toAddress)
@@ -39,10 +42,12 @@ const SendFormView = ({ navigation, route }) => {
   const [note] = useState(route.params?.note)
   const [isPinValid, setisPinValid] = useState(false)
   const [secret, setSecret] = useState("")
+  const [pin, setPin] = useState("")
 
-  useEffect(()=>{
-    TwoFactorAuth.getPairingCode().then((value)=>setSecret(value))
-  },[])
+  useEffect(() => {
+    /* TwoFactorAuth.getPairingCode().then((value)=>setSecret(value)) */
+    Pin_Manager.current.get()
+  }, [])
 
   const send = async () => {
     const transactionId = await pktManager.current.sendCoins(fromAddress.address, toAddress.address, amount)
@@ -51,7 +56,7 @@ const SendFormView = ({ navigation, route }) => {
     }
     navigation.reset({
       index: 0,
-      routes: [{ name: 'TransactionView',params: { reset: true, alert: true, transactionId: transactionId } }],
+      routes: [{ name: 'TransactionView', params: { reset: true, alert: true, transactionId: transactionId } }],
     })
   }
 
@@ -64,7 +69,8 @@ const SendFormView = ({ navigation, route }) => {
     },
     otpInputContainer: {
       marginTop: '10px',
-      marginBottom: '20px'
+      marginBottom: '20px',
+      width:'100%'
     },
     walletListItem: {
       width: '100%',
@@ -80,6 +86,15 @@ const SendFormView = ({ navigation, route }) => {
       paddingBottom: dimensions.paddingVertical
     }
   })
+
+  const _onPasswordChangeHandler = (text) => {
+    setPin(text)
+    if (Pin_Manager.current.isValid(text)) {
+      setisPinValid(true)
+    } else {
+      setisPinValid(false)
+    }
+  }
 
   return (
     <Screen>
@@ -103,12 +118,19 @@ const SendFormView = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.otpInputContainer}>
-          <OtpInput
+          {/* <OtpInput
             label={translate('2faCode')}
             help={translate('2faCodeHelpText')}
             onValidPin={() => setisPinValid(true)}
             secret ={secret}
             error = {translate('invalidPin')}
+          /> */}
+          <PasswordInput
+            maxLength={4}
+            placeholder ={translate('currentPin')}
+            help={translate('enterPin')}
+            onChangeText={_onPasswordChangeHandler}
+            error={!isPinValid && pin ? translate("invalidPin") : null}
           />
         </View>
         <SlideToConfirm

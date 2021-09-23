@@ -28,7 +28,8 @@ const PinLoginView = ({ navigation, route }) => {
       const isPinValid = pinManager.current.isValid(newPin)
       setIsPinValid(isPinValid)
       if (isPinValid) {
-        if (route.params.navigationState) {
+        setPin('')
+        if (route.params.navigationState?.history.length > 1) {
           navigation.reset(route.params.navigationState)
         }
         else
