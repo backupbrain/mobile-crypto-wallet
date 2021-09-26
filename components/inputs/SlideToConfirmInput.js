@@ -54,7 +54,7 @@ const SlideToConfirmInput = (props) => {
       paddingVertical: dimensions.button.paddingVertical
     },
     troughEnabledText: {
-      color: colors.primaryButton.color
+      color: colors.bodyText.color
     },
     troughDisabledText: {
       color: colors.disabledButton.color

@@ -30,7 +30,7 @@ const LoadExistingWalletIntroView = ({ navigation, route }) => {
           <BodyText>{translate('loadExistingWalletIntro2')}</BodyText>
         </View>
         <ActivityButton
-          title={translate('continueToSecretPassphrase')}
+          title={translate('continueToRecoveryPhrase')}
           onPress={() => navigation.push('VerifyRecoveryPhraseView')}
         />
       </View>

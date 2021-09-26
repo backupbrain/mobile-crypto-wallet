@@ -108,6 +108,10 @@ export default class TwoFactorAuth {
     return isValid
   }
 
+  async clear () {
+    AdaptiveStorage.remove(AppConstants.AUTH_PAIRING_CODE)
+  }
+
   log(message) {
     const className = this.constructor.name
     let strMessage = message

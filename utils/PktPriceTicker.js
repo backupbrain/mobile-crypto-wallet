@@ -156,9 +156,10 @@ export default class PktPriceTicker {
       output = this.convertFrom(amount, this.getUserFiatCurrency())
     } else {
       output = this.formatAmount(this.convertTo(amount, this.getUserFiatCurrency()))
+      output = parseFloat(output)
     }
     if (isNaN(output)) {
-      output = '0.00'
+      output = 0.00
     }
     return output
   }

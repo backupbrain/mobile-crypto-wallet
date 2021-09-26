@@ -21,7 +21,7 @@ const AmountInputWithExchangeRate = (props) => {
     return (input - 0) == input && ('' + input).trim().length > 0
   }
 
-  const setAmount = (amount , converted) => {
+  const setAmount = (amount, converted) => {
     let isInvalid = false
     let exceedsMax = false
     let convertedAmount = ''
@@ -34,6 +34,7 @@ const AmountInputWithExchangeRate = (props) => {
     } else {
       // check if the amount in PKT exceeds maxAmount
       convertedAmount = pktPriceTicker.current.convertCurrency(converted, floatAmount)
+      convertedAmount = convertedAmount.toFixed?.(2) ?? convertedAmount
       let pktAmount = amount
       if (converted) {
         pktAmount = convertedAmount
@@ -156,10 +157,10 @@ const AmountInputWithExchangeRate = (props) => {
     return inputCurrencyStyles
   }
 
-  const _swapIconOnPressHandler = () =>{
+  const _swapIconOnPressHandler = () => {
     setIsConverted(!isConverted)
     if (amount !== '') {
-      setAmount(convertedAmount,!isConverted)
+      setAmount(convertedAmount, !isConverted)
     }
   }
 
@@ -173,7 +174,7 @@ const AmountInputWithExchangeRate = (props) => {
               editable
               style={styles.inputAmount}
               placeholder={props.placeholder}
-              onChangeText={amount => setAmount(amount,isConverted)}
+              onChangeText={amount => setAmount(amount, isConverted)}
               value={amount}
               disabled={props.disabled}
               keyboardType='decimal-pad'
