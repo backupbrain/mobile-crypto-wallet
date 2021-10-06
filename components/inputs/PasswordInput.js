@@ -93,6 +93,7 @@ const PasswordInput = (props, ref) => {
           style={styles.input}
           placeholder={props.placeholder}
           value={text}
+          autoCapitalize='none'
           onChangeText={(text) => {
             if (props.maxLength && props.maxLength > 0) {
               text = text.substr(0, props.maxLength)

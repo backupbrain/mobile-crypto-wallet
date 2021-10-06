@@ -168,12 +168,12 @@ const PktAddressInput = (props) => {
           >
             <PasteIcon color={colors.text} />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[styles.button, styles.buttonMiddle]}
             onPress={props.onPersonIconPress}
           >
             <PersonIcon color={colors.text} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={[styles.button, styles.buttonLast]}
             onPress={props.onQrCodeIconPress}
