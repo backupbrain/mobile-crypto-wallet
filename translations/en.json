@@ -55,6 +55,7 @@
   "verifyPassword": "Verify Passphrase",
   "verifyPasswordHelpText": "Retype your new passphrase",
   "passwordVerifyError": "Passphrases do not match",
+  "pinVerifyError": "PINs do not match",
   "whyPassphrase": "A passphrase is used to encrypt your wallet. If you lose this passphrase, you will not be able to access your money.",
   "numCharsRemaining": "{numCharsRemaining} characters remaining",
 
@@ -89,6 +90,7 @@
   "currentPin": "Current PIN",
   "enterPin": "Enter Your PIN",
   "pin": "PIN",
+  "newPin": "New PIN",
   "pinHelpText": "Enter 4 digits",
   "verifyPin": "Retype PIN",
   "pinVerifyHelpText": "Retype PIN",

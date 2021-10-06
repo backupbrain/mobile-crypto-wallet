@@ -65,7 +65,8 @@ const CreateNewPasswordInput = (props, ref) => {
         placeholder={props.passwordPlaceholder}
         onChangeText={_onChangePassword1}
         help={props.passwordHelp}
-      />
+        keyboardType={props.keyboardType}
+        />
       <PasswordInput
         style={styles.passwordVerifyStyle}
         ref={password2Ref}
@@ -74,7 +75,8 @@ const CreateNewPasswordInput = (props, ref) => {
         placeholder={props.passwordVerifyPlaceholder}
         onChangeText={_onChangePassword2}
         help={passwordVerifyHelpText}
-        error={_doPasswordsMatch === false ? translate('passwordVerifyError') : null}
+        keyboardType={props.keyboardType}
+        error={_doPasswordsMatch === false ? ( props?.error ?? translate('passwordVerifyError') ) : null}
       />
     </View>
   )

@@ -130,6 +130,7 @@ const SendFormView = ({ navigation, route }) => {
             placeholder ={translate('currentPin')}
             help={translate('enterPin')}
             onChangeText={_onPasswordChangeHandler}
+            keyboardType='numeric'
             error={!isPinValid && pin ? translate("invalidPin") : null}
           />
         </View>

@@ -113,17 +113,20 @@ const ChangePinView = ({ navigation, route }) => {
             maxLength={4}
             placeholder={translate('currentPin')}
             onChangeText={_onPasswordChangeHandler}
+            keyboardType='numeric'
           />
           <CreateNewPasswordInput
             ref={newPinRef}
             maxLength={4}
-            passwordPlaceholder={translate('pin')}
+            passwordPlaceholder={translate('newPin')}
             passwordHelp={translate('pinHelpText')}
             passwordVerifyPlaceholder={translate('verifyPin')}
             passwordVerifyHelp={translate('retypeNewPin')}
             onPasswordChangeText={_onNewPasswordChangeHandler}
             onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
             onPasswordsMatch={_onNewPasswordMatchHandler}
+            keyboardType='numeric'
+            error={translate('pinVerifyError')}
           />
           {/* Double negative needed to prevent warning */}
           {!!AppConstants.DEVELOPER_MODE && <Text style={styles.developer}>Current PIN: {storedPin}</Text>}

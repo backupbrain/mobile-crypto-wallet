@@ -71,6 +71,7 @@ const CreatePinView = ({ navigation, route }) => {
             onPasswordChangeText={_onNewPasswordChangeHandler}
             onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
             onPasswordsMatch={_onNewPasswordMatchHandler}
+            keyboardType='numeric'
           />
         </View>
         <ActiveButton

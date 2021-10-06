@@ -1,5 +1,5 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react'
-import { TextInput, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { TextInput, View, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
@@ -83,6 +83,16 @@ const PasswordInput = (props, ref) => {
     doHidePassword = !doHidePassword
   }
 
+  const getKeyboardType = () => {
+
+    if (!props.keyboardType)
+      return 'default'
+    if (props.keyboardType === 'numeric')
+      return Platform.OS === 'android' ? 'numeric' : 'number-pad'
+    else
+      return props.keyboardType
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
@@ -94,6 +104,7 @@ const PasswordInput = (props, ref) => {
           placeholder={props.placeholder}
           value={text}
           autoCapitalize='none'
+          keyboardType={getKeyboardType()}
           onChangeText={(text) => {
             if (props.maxLength && props.maxLength > 0) {
               text = text.substr(0, props.maxLength)
@@ -115,7 +126,7 @@ const PasswordInput = (props, ref) => {
         </TouchableOpacity>
       </View>
       {/* Double negative needed to prevent warning */}
-      {(!!props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>} 
+      {(!!props.help && !props.error) && <BodyText style={[styles.helpText, styles.supportingText]}>{props.help}</BodyText>}
       {!!props.error && <BodyText style={[styles.errorText, styles.supportingText]}>{props.error}</BodyText>}
     </View>
   )

@@ -325,6 +325,16 @@ const TransactionView = ({ navigation, route }) => {
       justifyContent: 'flex-start',
       alignItems: 'flex-start'
     },
+    bannerLabel: {
+      flexGrow: 1,
+      paddingRight: dimensions.verticalSpacingBetweenItems,
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      color:colors.alertBanner.color
+    },
+    confirmationText:{
+      color:colors.alertBanner.color
+    },
     confirmedStatusIcon: {
       paddingLeft: dimensions.verticalSpacingBetweenItems
     },
@@ -335,7 +345,7 @@ const TransactionView = ({ navigation, route }) => {
     banner: {
       flexDirection: 'row',
       paddingVertical: dimensions.screen.paddingVertical,
-      paddingHorizontal: dimensions.screen.paddingHorizontal
+      paddingHorizontal: dimensions.screen.paddingHorizontal,
     },
     bannerConfirmed: {
       backgroundColor: colors.alertBanner.successBackgroundColor
@@ -395,20 +405,20 @@ const TransactionView = ({ navigation, route }) => {
       </View>
       <View style={[getBannerStyle()]}>
         <BodyText
-          style={styles.statusLabel}
+          style={styles.bannerLabel}
         >
           {translate('status')}
         </BodyText>
         {transaction.confirmations
-          ? <BodyText>{translate('confirmed')}</BodyText>
-          : <BodyText>{translate('unconfirmed')}</BodyText>}
+          ? <BodyText style={styles.confirmationText}>{translate('confirmed')}</BodyText>
+          : <BodyText style={styles.confirmationText}>{translate('unconfirmed')}</BodyText>}
         <View style={styles.confirmedStatusIcon}>
           {transaction.confirmations
             ? <ConfirmedIcon
-              color={colors.text}
+              color={colors.alertBanner.color}
             />
             : <UnconfirmedIcon
-              color={colors.text}
+              color={colors.alertBanner.color}
             />}
         </View>
       </View>
@@ -484,7 +494,7 @@ const TransactionView = ({ navigation, route }) => {
           title={translate('addNote')}
           onPress={editNote}
         />
-        <ActiveButton
+        {/* <ActiveButton
           style={styles.topButton}
           title={translate('walletHome')}
           onPress={() => {
@@ -493,7 +503,7 @@ const TransactionView = ({ navigation, route }) => {
               routes: [{ name: 'WalletHomeViewSet' }],
             })
           }}
-        />
+        /> */}
         <ActiveButton
           title={translate('openInBlockExplorer')}
           onPress={openInBlockExplorer.bind(this, transaction)}

@@ -83,13 +83,6 @@ const PktTransactionText = (props) => {
     setIsReady(props.transactionId, width)
   }
 
-  const _onLayoutTextHandler = (event) => {
-    const { width } = event.nativeEvent.layout
-    if (index === 0) {
-      setMaxTextWidth(width, index)
-    }
-  }
-
   return (
     <View
       style={[styles.container, props.style]}
@@ -104,7 +97,12 @@ const PktTransactionText = (props) => {
                 <Text
                   key={index}
                   style={getTransactionTextLayout(index)}
-                  onLayout={_onLayoutTextHandler}
+                  onLayout={(event) => {
+                    const { width } = event.nativeEvent.layout
+                    if (index === 0) {
+                      setMaxTextWidth(width, index)
+                    }
+                  }}
                 >
                   {transactionRow}
                 </Text>
