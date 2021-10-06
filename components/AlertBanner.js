@@ -112,10 +112,10 @@ const AlertBanner = (props, ref) => {
   }
 
   const _onCloseHandler = () => {
+    close()
     if (props.onClose) {
       props.onClose()
     }
-    close()
   }
 
   return (
@@ -123,12 +123,12 @@ const AlertBanner = (props, ref) => {
       {isVisible &&
         <View style={getStyles()}>
           <Text style={styles.textStyle}>{props.label}</Text>
-          {props.noclose &&
+          {props.onClose &&
             <TouchableOpacity
               onPress={_onCloseHandler}
             >
               <View style={styles.closeButton}>
-                <Close size={16} color={colors.text} />
+                <Close size={16} color={colors.alertBanner.color} />
               </View>
             </TouchableOpacity>}
         </View>}

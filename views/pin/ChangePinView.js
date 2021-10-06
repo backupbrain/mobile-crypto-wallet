@@ -21,7 +21,6 @@ const ChangePinView = ({ navigation, route }) => {
   const [pin1, setPin1] = useState('')
   const [pin2, setPin2] = useState('')
   const [isFormFilled, setisFormFilled] = useState('')
-  const [showAlert, setShowAlert] = useState(false)
   const getStoredCurrentPin = async () => {
     const pin = await pinManager.current.get()
     return pin
@@ -93,16 +92,17 @@ const ChangePinView = ({ navigation, route }) => {
 
   const _onActivityPressHandler = () => {
     changePin()
-    setShowAlert(true)
+    currentPinRef.current.clear()
+    newPinRef.current.clear()
+    navigation.navigate('WalletHomeView',{
+      showAlert:true,
+      variant:'success',
+      label:translate('pinChangedAlert')
+    })
   }
 
   return (
     <Screen>
-      <AlertBanner
-        variant='success'
-        label={translate('pinChangedAlert')}
-        visible={showAlert}
-      />
       <View style={styles.screen}>
       <View style={styles.textContainer}>
           <BodyText>{translate('changePinIntro')}</BodyText>

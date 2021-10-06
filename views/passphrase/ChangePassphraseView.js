@@ -19,7 +19,6 @@ const ChangePassphraseView = ({ navigation, route }) => {
   const [newPassphrase, setnewPassphrase] = useState('')
   const [_doPassphrasesMatch, setdoPassphrasesMatch] = useState(null)
   const [isFormFilled, setIsFormFilled] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
   const getCurrentPassword = async () => {
     const password = await AdaptiveStorage.get(AppConstants.PASSPHRASE_KEY)
     return password
@@ -69,17 +68,16 @@ const ChangePassphraseView = ({ navigation, route }) => {
   const _onActivityPressHandler = () => {
     saveNewPassphrase(newPassphrase)
     // TODO: create alert and reset all password inputs
-    setShowAlert(true)
+    navigation.navigate('WalletHomeView',{
+      showAlert:true,
+      variant:'success',
+      label:translate('passphraseChangedAlert')
+    })
     // navigation.push('ChangePasswordView')
   }
 
   return (
     <Screen>
-      <AlertBanner
-        variant='success'
-        label={translate('passphraseChangedAlert')}
-        visible={showAlert}
-      />
       <View style={styles.screen}>
         <View style={styles.textContainer}>
           <BodyText>{translate('whyPassphrase')}</BodyText>

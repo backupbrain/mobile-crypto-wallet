@@ -14,10 +14,14 @@ import PktAddressInput from '../components/inputs/PktAddressInput'
 import WalletListItem from '../components/wallet/WalletListItem'
 import GenericTextInput from '../components/inputs/GenericTextInput'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
+import AlertBanner from '../components/AlertBanner'
 
 const WalletHomeView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
   const [addresses, setAddresses] = useState([])
+  const [variant, setVariant] = useState('')
+  const [label, setLabel] = useState('')
+  const [showAlert, setShowAlert] = useState(false)
   const [sendActivated, setSendActivated] = useState(false)
   const [newAddress, setNewAddress] = useState({})
   /* const [twoFactorExists, setTwoFactorExists] = useState(false) */
@@ -25,6 +29,12 @@ const WalletHomeView = ({ navigation, route }) => {
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
   const modal = useRef(null)
+
+  useEffect(() => {
+    setVariant(route.params?.variant)
+    setLabel(route.params?.label)
+    setShowAlert(route.params?.showAlert ?? false)
+  }, [route.params?.showAlert])
 
   const fetchMyAddresses = async () => {
     let addresses = pktManager.current.myAddresses
@@ -84,14 +94,22 @@ const WalletHomeView = ({ navigation, route }) => {
     walletListContainer: {
       width: '100%'
     },
-    pair2faText:{
-      textAlign:'center',
+    pair2faText: {
+      textAlign: 'center',
       color: colors.inputs.helpTextColor
     }
   })
 
   return (
     <Screen>
+      <AlertBanner
+        variant={variant}
+        label={label}
+        visible={showAlert}
+        onClose={() => {
+          setShowAlert(false)
+        }}
+      />
       <Modal
         ref={modal}
         title={translate('createAddress')}
@@ -120,6 +138,9 @@ const WalletHomeView = ({ navigation, route }) => {
               newAddressName.current = ""
               await fetchMyAddresses()
               modal.current.close()
+              setVariant('success')
+              setLabel(translate('newAddressAlert'))
+              setShowAlert(true)
             }}
           />
         }

@@ -106,6 +106,7 @@
   "logoutSuccessAlert": "You have logged out of your account",
   "passphraseChangedAlert": "Your passphrase has been changed",
   "pinChangedAlert": "Your login PIN has been changed",
+  "newAddressAlert" : "A new address has been created",
   "2faDevicePairedAlert": "Your 2FA Device has been paired",
   "confirmDeleteContacts": "Delete my contacts and transaction notes",
 

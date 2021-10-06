@@ -7,7 +7,6 @@ import SecurityView from '../views/SecurityView'
 const Screen = (props) => {
   const { colors } = useTheme()
   const security = useSelector(state => state.security.securityScreen)
-  console.log('security', security)
 
   const styles = StyleSheet.create({
     screen: {
