@@ -10,7 +10,7 @@ import { useTheme } from '@react-navigation/native'
 
 const NewWalletView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [isRecoveryPhraseSet, setIsRecoveryPhraseSet] = useState(false)
   const [recoveryPhrase, setRecoveryPhrase] = useState([])
   const pktManager = useRef(new PktManager())
@@ -57,12 +57,12 @@ const NewWalletView = ({ navigation, route }) => {
         <View style={styles.recoveryWordGrid}>
           <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
         </View>
-        <ActiveButton
+        {/* <ActiveButton
           title={translate('pressAndHoldToReveal')}
           onPressIn={() => { setIsVisible(true) }}
           onPressOut={() => { setIsVisible(false) }}
           style={styles.firstButton}
-        />
+        /> */}
         <ActiveButton
           title={translate('next')}
           onPress={() => { navigation.push('VerifyRecoveryPhraseView', { recoveryPhrase }) }}
