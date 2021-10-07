@@ -260,8 +260,9 @@ const TransactionView = ({ navigation, route }) => {
     })
   }
 
-  const fetchNote = async (transaction) => {
-    const note = await transactionNoteManager.current.get(transaction.txid)
+  const fetchNote = async (transactionId) => {
+    const note = await transactionNoteManager.current.get(transactionId)
+    console.log('note',note)
     if (note) {
       setNote(note)
       setNewNote(note)
@@ -280,14 +281,15 @@ const TransactionView = ({ navigation, route }) => {
 
   useEffect(() => {
     const fetchTransactionData = async () => {
-      setTransaction(route.params.transaction)
-      const transactionId = route.params.transaction.id
+      const transaction = await pktManager.current.getTransaction(transactionId)
+      setTransaction(transaction)
+      const transactionId = route.params.transactionId
       const extendedTransactionData = await pktManager.current.getTransaction(transactionId)
       setExtendedTransactionData(extendedTransactionData)
-      fetchContacts(route.params.transaction, extendedTransactionData)
-      fetchNote(route.params.transaction)
+      fetchContacts(transaction, extendedTransactionData)
+      fetchNote(transactionId)
     }
-    if (route.params && route.params.transaction) {
+    if (route.params && route.params.transactionId) {
       fetchTransactionData()
     }
   }, [route.params, setTransaction])
@@ -330,10 +332,10 @@ const TransactionView = ({ navigation, route }) => {
       paddingRight: dimensions.verticalSpacingBetweenItems,
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
-      color:colors.alertBanner.color
+      color: colors.alertBanner.color
     },
-    confirmationText:{
-      color:colors.alertBanner.color
+    confirmationText: {
+      color: colors.alertBanner.color
     },
     confirmedStatusIcon: {
       paddingLeft: dimensions.verticalSpacingBetweenItems
@@ -439,6 +441,7 @@ const TransactionView = ({ navigation, route }) => {
             address={transaction.address}
             name={fromName}
             amount={fromAddress.total}
+            local={true}
           />
         </View>
         <View style={styles.addressData}>

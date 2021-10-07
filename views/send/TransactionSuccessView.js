@@ -383,6 +383,7 @@ const TransactionSuccessView = ({ navigation, route }) => {
             address={transaction.address}
             name={fromName}
             amount={fromAddress.total}
+            showAmount={true}
           />
         </View>
         <View style={styles.addressData}>

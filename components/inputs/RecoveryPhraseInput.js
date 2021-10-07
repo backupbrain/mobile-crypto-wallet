@@ -12,7 +12,7 @@ const RecoveryPhraseInput = (props) => {
   const [text, setText] = useState('')
   const [isInvalid, setIsInvalid] = useState(false)
   // const [formattedText, setFormattedText] = useState('')
-  const [, setWordCount] = useState(0)
+  const [wordCount, setWordCount] = useState(0)
   const getNumWordsRemaining = (text) => {
     // FIXME: remove empty words that cause incorrect count.
     if (text === '') {
@@ -113,7 +113,7 @@ const RecoveryPhraseInput = (props) => {
         <Text
           style={styles.helpText}
         >
-          {translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: getNumWordsRemaining(text) })}
+          {translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: DEFAULT_MAX_WORDS - wordCount })}
         </Text>}
       {isInvalid &&
         <Text

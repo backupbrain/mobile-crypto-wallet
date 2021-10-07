@@ -11,7 +11,7 @@ export const getCurrentLocale = () => {
 
 export const setI18nConfig = () => {
   const languageTag = getCurrentLocale()
-  translate.cache.clear()
+  /* translate.cache.clear() */
   i18n.translations = { [languageTag]: translationGetters[languageTag]() }
   i18n.locale = languageTag
 }
@@ -20,21 +20,20 @@ const translationGetters = {
   en: () => require('./en.json')
 }
 
-const translate = memoize(
-  (key, vars) => {
-      if (!vars)
-          return i18n.t(key)
-      else {
-          return replaceVariables(i18n.t(key), vars)
-      }
-
+const translate = (key, vars) => {
+  if (!vars)
+    return i18n.t(key)
+  else {
+    return replaceVariables(i18n.t(key), vars)
   }
-)
+
+}
+
 
 const replaceVariables = (string, variables) => {
 
   Object.keys(variables).forEach((toReplace) => {
-      string = string.replace(new RegExp(`{\\s*${toReplace}\\s*}`, 'g'), variables[toReplace])
+    string = string.replace(new RegExp(`{\\s*${toReplace}\\s*}`, 'g'), variables[toReplace])
   })
 
   return string;

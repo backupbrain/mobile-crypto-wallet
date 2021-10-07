@@ -72,6 +72,7 @@ const GenericTextInput = (props) => {
     <View style={[styles.container, props.style]}>
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <TextInput
+        autoFocus={props?.autoFocus ?? false}
         style={getTextInputStyle()}
         placeholder={placeholder}
         value={text}

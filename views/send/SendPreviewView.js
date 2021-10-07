@@ -45,6 +45,7 @@ const SendFormView = ({ navigation, route }) => {
   const [pin, setPin] = useState("")
 
   useEffect(() => {
+    console.log(route.params)
     /* TwoFactorAuth.getPairingCode().then((value)=>setSecret(value)) */
     Pin_Manager.current.get()
   }, [])
@@ -70,7 +71,7 @@ const SendFormView = ({ navigation, route }) => {
     otpInputContainer: {
       marginTop: '10px',
       marginBottom: '20px',
-      width:'100%'
+      width: '100%'
     },
     walletListItem: {
       width: '100%',
@@ -107,6 +108,7 @@ const SendFormView = ({ navigation, route }) => {
             name={toAddress.name}
             address={toAddress.address}
             showAmount={false}
+            local={pktManager.current.getAddressInfo(toAddress.address) ? true : false}
           />
         </View>
         <View style={styles.addressBlock}>
@@ -115,6 +117,7 @@ const SendFormView = ({ navigation, route }) => {
             name={fromAddress.name}
             address={fromAddress.address}
             amount={fromAddress.total}
+            local={true}
           />
         </View>
         <View style={styles.otpInputContainer}>
@@ -127,7 +130,7 @@ const SendFormView = ({ navigation, route }) => {
           /> */}
           <PasswordInput
             maxLength={4}
-            placeholder ={translate('currentPin')}
+            placeholder={translate('currentPin')}
             help={translate('enterPin')}
             onChangeText={_onPasswordChangeHandler}
             keyboardType='numeric'
