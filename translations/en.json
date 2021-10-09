@@ -73,6 +73,7 @@
 
   "currentPassphrase": "Current Passphrase",
   "enterPassphrase": "Enter Passphrase",
+  "enterPassphraseHelp" :"This will be used to encrypt your wallet",
 
   "previewSend": "Send Preview",
   "estimatedSendingCost": "Estimated Sending Cost",

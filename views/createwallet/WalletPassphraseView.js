@@ -49,6 +49,7 @@ const WalletPassphraseView = ({ navigation, route }) => {
                     <PasswordInput
                         placeholder={translate('enterPassphrase')}
                         onChangeText={_onPasswordChangeHandler}
+                        help={translate('enterPassphraseHelp')}
                     />
                 </View>
                 <ActivityButton
