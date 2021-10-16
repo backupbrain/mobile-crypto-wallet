@@ -18,6 +18,8 @@ const PinLoginView = ({ navigation, route }) => {
   const [pin, setPin] = useState('')
   const [isPinValid, setIsPinValid] = useState(null)
 
+  navigation.setOptions({headerShown:false})
+
   const onKeyPress = (number) => {
     let newPin = pin + number
     if (newPin.length > 4) {

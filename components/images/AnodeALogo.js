@@ -1,7 +1,7 @@
 import React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-function AnodeTextLogo (props) {
+function AnodeALogo (props) {
   const size = props.size || 100
   const color = props.color || '#000'
   return (
@@ -20,4 +20,4 @@ function AnodeTextLogo (props) {
   )
 }
 
-export default AnodeTextLogo
+export default AnodeALogo
