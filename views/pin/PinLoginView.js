@@ -72,16 +72,20 @@ const PinLoginView = ({ navigation, route }) => {
     container: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical,
-      flex: 1
+      flex: 1,
+      justifyContent:'center'
     },
     header: {
+      textAlign:'center',
       paddingBottom: dimensions.paddingVertical
     },
     text: {
+      textAlign:'center',
       paddingBottom: dimensions.paddingVertical
     },
     flexibleTop: {
-      flexGrow: 1
+      /* flexGrow: 1, */
+      justifyContent:'center'
     },
     bottomAlign: {
       justifyContent: 'flex-end'

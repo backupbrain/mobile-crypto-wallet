@@ -233,12 +233,12 @@ export const AnodeDarkTheme = {
       successBackgroundColor: '#1f9145',
       warningBackgroundColor: '#FF8319',
       dangerBackgroundColor: '#A50000',
-      infoBackgroundContainer: '#0B2432',
+      infoBackgroundContainer: '#121212',
       color: '#fff',
       boxShadow: '2px 2px 10px #06151e, -2px -2px 10px #103347'
     },
     screen: {
-      backgroundColor: '#0B2432',
+      backgroundColor: '#121212',
       color: '#fff'
     },
     listItem: {
@@ -250,7 +250,7 @@ export const AnodeDarkTheme = {
     },
     modal: {
       overlayBackgroundColor: 'rgba(0, 0, 0, 0.6)',
-      backgroundColor: '#0B2432',
+      backgroundColor: '#121212',
       titleSeparatorColor: '#A9A9A9'
     },
     bodyText: {
@@ -317,8 +317,8 @@ export const AnodeDarkTheme = {
       confirmedIconColor: '#1f9145',
       unconfirmedIconColor: '#FF8319'
     },
-    background: '#0B2432',
-    border: '#0B2432',
+    background: '#121212',
+    border: '#121212',
     text: '#fff',
     disabledText: '#A9A9A9'
   },
