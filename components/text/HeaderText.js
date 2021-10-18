@@ -11,7 +11,8 @@ const HeaderText = (props) => {
       fontSize: dimensions.headerText.fontSize,
       fontWeight: dimensions.headerText.fontWeight,
       lineHeight: dimensions.headerText.lineHeight,
-      textAlign: dimensions.headerText.textAlign
+      textAlign: dimensions.headerText.textAlign,
+      fontFamily:dimensions.headerText.fontFamily
     }
   })
 

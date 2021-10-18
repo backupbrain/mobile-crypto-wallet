@@ -48,12 +48,14 @@ const AndroidTheme = {
       fontWeight: 'normal',
       lineHeight: '1.3',
       textAlign: 'center',
-      width: '100%'
+      width: '100%',
+      fontFamily:'Archivo-Black'
     },
     headerText: {
       fontSize: '1.5em',
       fontWeight: 'bold',
-      textAlign: 'left'
+      textAlign: 'left',
+      fontFamily:'KeepCalm-Medium'
     },
     button: {
       borderRadius: '50px',

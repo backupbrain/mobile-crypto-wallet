@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   defaultTextLeft: {
     width: '100%',
     marginBottom: '8px',
-    textAlign: 'left'
+    textAlign: 'left',
+    fontFamily:'Archivo-Black'
   }
 })
 
