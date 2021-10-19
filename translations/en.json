@@ -58,6 +58,7 @@
   "pinVerifyError": "PINs do not match",
   "whyPassphrase": "A passphrase is used to encrypt your wallet. If you lose this passphrase, you will not be able to access your money.",
   "numCharsRemaining": "{numCharsRemaining} characters remaining",
+  "passphraseWarningCheckbox" : "I understand that Anode cannot recover this password for me.",
 
   "viewWalletBalance": "View Wallet Balance",
   "walletCreatedIntro1": "Your wallet has been set up.",

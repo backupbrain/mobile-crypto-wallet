@@ -7,6 +7,7 @@ import PktManager from '../../utils/PktManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
 import BodyText from '../../components/text/BodyText'
+import ProgressStepBar from '../../components/ProgressStepBar'
 
 const MAX_WORDS = 15
 
@@ -101,6 +102,7 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
+        {recoveryPhrase && <ProgressStepBar steps={4} activeStep={2} />}
         <View style={styles.textContainer}>
           <BodyText>{recoveryPhrase ? translate('verifyRecoveryPhraseCreateWalletIntro') : translate('verifyRecoveryPhraseLoadWalletIntro')}</BodyText>
         </View>

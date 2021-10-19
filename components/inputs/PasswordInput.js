@@ -3,6 +3,7 @@ import { TextInput, View, TouchableOpacity, StyleSheet, Platform } from 'react-n
 import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
+import EyeOpen from '../images/EyeOpen'
 
 const PasswordInput = (props, ref) => {
   const { colors, dimensions } = useTheme()
@@ -93,6 +94,7 @@ const PasswordInput = (props, ref) => {
       return props.keyboardType
   }
 
+
   return (
     <View style={[styles.container, props.style]}>
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
@@ -118,6 +120,7 @@ const PasswordInput = (props, ref) => {
         <TouchableOpacity
           onPress={_buttonOnPressHandler}
         >
+          {/* <EyeOpen size={24} color={colors.bodyText.color} /> */}
           <BodyText
             style={styles.showHideButton}
           >

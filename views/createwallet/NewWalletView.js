@@ -7,6 +7,7 @@ import BodyText from '../../components/text/BodyText'
 import PktManager from '../../utils/PktManager'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
+import ProgressStepBar from '../../components/ProgressStepBar'
 
 const NewWalletView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -50,6 +51,7 @@ const NewWalletView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
+        <ProgressStepBar steps={4} activeStep={1} />
         <View style={styles.textBlock}>
           <BodyText style={styles.paragraph}>{translate('dontLoseTheseWords')}</BodyText>
           <BodyText>{translate('ifYouLoseTheseWords')}</BodyText>

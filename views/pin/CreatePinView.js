@@ -7,6 +7,7 @@ import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
 import BodyText from '../../components/text/BodyText'
+import ProgressStepBar from '../../components/ProgressStepBar'
 
 const CreatePinView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -60,6 +61,7 @@ const CreatePinView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
+        <ProgressStepBar steps={4} activeStep={3} />
         <BodyText>{translate('createPinIntro')}</BodyText>
         <View style={styles.inputContainer}>
           <CreateNewPasswordInput
