@@ -4,6 +4,7 @@ import BodyText from '../text/BodyText'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 import EyeOpen from '../images/EyeOpen'
+import EyeClosed from '../images/EyeClosed'
 
 const PasswordInput = (props, ref) => {
   const { colors, dimensions } = useTheme()
@@ -62,10 +63,8 @@ const PasswordInput = (props, ref) => {
       paddingHorizontal: dimensions.inputs.supportingTextPaddingHorizontal
     },
     showHideButton: {
-      paddingVertical: dimensions.inputs.paddingVertical,
-      paddingRight: dimensions.inputs.paddingHorizontal,
-      paddingLeft: dimensions.horizontalSpacingBetweenItems,
-      color: colors.primaryButton.backgroundColor
+      paddingHorizontal: dimensions.inputs.paddingVertical,
+      justifyContent: 'center'
     }
   })
 
@@ -119,13 +118,9 @@ const PasswordInput = (props, ref) => {
         />
         <TouchableOpacity
           onPress={_buttonOnPressHandler}
+          style={styles.showHideButton}
         >
-          {/* <EyeOpen size={24} color={colors.bodyText.color} /> */}
-          <BodyText
-            style={styles.showHideButton}
-          >
-            {doHide ? translate('show') : translate('hide')}
-          </BodyText>
+          {doHide ? <EyeClosed color={colors.bodyText.color} /> : <EyeOpen color={colors.bodyText.color} />}
         </TouchableOpacity>
       </View>
       {/* Double negative needed to prevent warning */}

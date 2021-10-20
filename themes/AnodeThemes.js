@@ -220,7 +220,8 @@ export const AnodeLightTheme = {
     background: '#F1F2F6',
     border: '#F1F2F6',
     text: '#000',
-    disabledText: '#A9A9A9'
+    disabledText: '#A9A9A9',
+    securityBackground:'#2E4292'
   },
   dimensions: AndroidTheme.dimensions
 }
@@ -322,7 +323,8 @@ export const AnodeDarkTheme = {
     background: '#121212',
     border: '#121212',
     text: '#fff',
-    disabledText: '#A9A9A9'
+    disabledText: '#A9A9A9',
+    securityBackground:'#121212'
   },
   dimensions: AndroidTheme.dimensions
 }

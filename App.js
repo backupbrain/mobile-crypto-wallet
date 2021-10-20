@@ -126,7 +126,7 @@ export default function App() {
               AdaptiveStorage.set(AppConstants.NAVIGATION_STATE_KEY, JSON.stringify(state))
             }
           } */
-            theme={scheme !== 'dark' ? AnodeDarkTheme : AnodeLightTheme} /* TODO : UNDO   */
+            theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme} /* TODO : UNDO   */
           >
             <AppNavigator state={appStateVisible} />
           </NavigationContainer>

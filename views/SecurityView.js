@@ -6,9 +6,12 @@ import { useTheme } from '@react-navigation/native'
 import AnodeALogo from '../components/images/AnodeALogo'
 import AnodeALogo_test from '../components/images/AnodeALogo_test'
 import AnodeTextLogo_test from '../components/images/AnodeTextLogo_test'
+import RadialGradientDarkSvg from '../components/images/RadialGradientDarkSvg'
+import { useColorScheme } from 'react-native-appearance'
+import RadialGradientLightSvg from '../components/images/RadialGradientLightSvg'
 
 const SecurityView = ({ navigation, route }) => {
-  const { colors } = useTheme()
+  const { colors, dark } = useTheme()
 
   const styles = StyleSheet.create({
     fillScreen: {
@@ -23,10 +26,20 @@ const SecurityView = ({ navigation, route }) => {
       justifyContent: 'center',
       paddingHorizontal: '20px',
       paddingVertical: '20px',
+      backgroundColor: colors.securityBackground
     },
-    textLogo:{
-      position:'absolute',
-      bottom:40
+    textLogo: {
+      position: 'absolute',
+      bottom: 40
+    },
+    logoContainer: {
+      position: 'relative',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    gradient: {
+      position: 'absolute',
+      zIndex: -2
     }
   })
 
@@ -34,7 +47,12 @@ const SecurityView = ({ navigation, route }) => {
     /* <Screen> */
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.screen}>
-        <AnodeALogo_test />
+        <View style={styles.logoContainer}>
+          <AnodeALogo_test />
+          <View style={styles.gradient}>
+            {dark ? <RadialGradientDarkSvg /> : <RadialGradientLightSvg />}
+          </View>
+        </View>
         {/* <AnodeTextLogo
             primaryColor={colors.logo.primaryColor}
             secondaryColor={colors.logo.secondaryColor}

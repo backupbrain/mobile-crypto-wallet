@@ -2,14 +2,14 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
 function EyeOpen(props) {
-    const size = props.size || 21
+    const size = props.size || 20
     const color = props.color || '#000'
 
     return (
         <Svg
             width={size}
             height={size}
-            fill="black"
+            fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
