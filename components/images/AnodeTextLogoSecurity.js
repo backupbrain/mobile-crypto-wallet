@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function AnodeTextLogo_test(props) {
+function AnodeTextLogoSecurity(props) {
   return (
     <Svg
       width={97}
@@ -30,4 +30,4 @@ function AnodeTextLogo_test(props) {
   )
 }
 
-export default AnodeTextLogo_test
+export default AnodeTextLogoSecurity

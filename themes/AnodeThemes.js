@@ -49,13 +49,13 @@ const AndroidTheme = {
       lineHeight: '1.3',
       textAlign: 'center',
       width: '100%',
-      fontFamily:'Archivo-Black'
+      fontFamily: 'Archivo-Black'
     },
     headerText: {
       fontSize: '1.5em',
       fontWeight: 'bold',
       textAlign: 'left',
-      fontFamily:'KeepCalm-Medium'
+      fontFamily: 'KeepCalm-Medium'
     },
     button: {
       borderRadius: '50px',
@@ -226,7 +226,7 @@ export const AnodeLightTheme = {
     border: '#F1F2F6',
     text: '#000',
     disabledText: '#A9A9A9',
-    securityBackground:'#2E4292'
+    securityBackground: '#2E4292'
   },
   dimensions: AndroidTheme.dimensions
 }
@@ -286,14 +286,14 @@ export const AnodeDarkTheme = {
       labelColor: '#fff'
     },
     primaryButton: {
-      backgroundColor: '#2E4292',
-      color: '#D4D7E9',
-      borderColor: '#2E4292'
-    },
-    secondaryButton: {
       backgroundColor: '#4BA7C4',
       color: '#D4D7E9',
       borderColor: '#4BA7C4'
+    },
+    secondaryButton: {
+      backgroundColor: '#2E4292',
+      color: '#D4D7E9',
+      borderColor: '#2E4292'
     },
     unselectedButton: {
       backgroundColor: 'transparent',
@@ -334,7 +334,7 @@ export const AnodeDarkTheme = {
     border: '#121212',
     text: '#fff',
     disabledText: '#A9A9A9',
-    securityBackground:'#121212'
+    securityBackground: '#121212'
   },
   dimensions: AndroidTheme.dimensions
 }

@@ -4,8 +4,8 @@ import Screen from '../components/Screen'
 import AnodeTextLogo from '../components/images/AnodeTextLogo'
 import { useTheme } from '@react-navigation/native'
 import AnodeALogo from '../components/images/AnodeALogo'
-import AnodeALogo_test from '../components/images/AnodeALogo_test'
-import AnodeTextLogo_test from '../components/images/AnodeTextLogo_test'
+import AnodeALogoSecurity from '../components/images/AnodeALogoSecurity'
+import AnodeTextLogoSecurity from '../components/images/AnodeTextLogoSecurity'
 import RadialGradientDarkSvg from '../components/images/RadialGradientDarkSvg'
 import { useColorScheme } from 'react-native-appearance'
 import RadialGradientLightSvg from '../components/images/RadialGradientLightSvg'
@@ -48,18 +48,13 @@ const SecurityView = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.screen}>
         <View style={styles.logoContainer}>
-          <AnodeALogo_test />
+          <AnodeALogoSecurity />
           <View style={styles.gradient}>
             {dark ? <RadialGradientDarkSvg /> : <RadialGradientLightSvg />}
           </View>
         </View>
-        {/* <AnodeTextLogo
-            primaryColor={colors.logo.primaryColor}
-            secondaryColor={colors.logo.secondaryColor}
-            size={100}
-          /> */}
         <View style={styles.textLogo}>
-          <AnodeTextLogo_test />
+          <AnodeTextLogoSecurity />
         </View>
       </View>
     </KeyboardAvoidingView>

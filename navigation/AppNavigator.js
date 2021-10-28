@@ -47,6 +47,7 @@ import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
 import Unpair2FaDeviceView from '../views/2fa/Unpair2FaDeviceView'
 import { useDispatch } from 'react-redux'
 import { securityDisable, securityEnable } from '../store/SecurityAction'
+import NewWalletIntroView2 from '../views/createwallet/NewWalletIntroView2'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -108,7 +109,7 @@ const FirstViewSet = ({ navigation }) => {
         options={{
           title: translate('newWalletIntro')
         }}
-        component={NewWalletIntroView}
+        component={NewWalletIntroView2}
       />
       <Stack.Screen
         name='LoadExistingWalletIntroView'

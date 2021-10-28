@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path, Defs, RadialGradient, Stop } from "react-native-svg"
 
-function AnodeALogo_test(props) {
+function AnodeALogoSecurity(props) {
   return (
     <Svg
       width={128}
@@ -18,4 +18,4 @@ function AnodeALogo_test(props) {
   )
 }
 
-export default AnodeALogo_test
+export default AnodeALogoSecurity

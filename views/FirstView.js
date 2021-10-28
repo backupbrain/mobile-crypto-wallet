@@ -40,7 +40,8 @@ const FirstView = ({ navigation, route }) => {
 
     },
     secondButton: {
-      marginTop: dimensions.paddingVertical
+      marginTop: dimensions.paddingVertical,
+      paddingBottom:dimensions.verticalSpacingBetweenItems
     },
     buttonContainer: {
       width: '100%',
@@ -69,12 +70,12 @@ const FirstView = ({ navigation, route }) => {
             title={translate('createNewWallet')}
             onPress={() => navigation.push('CreatePassphraseView')}
             style={styles.firstButton}
-            variant='secondary'
-          />
+            />
           <ActiveButton
             title={translate('loadFromRecoveryPassphrase')}
             onPress={() => navigation.push('LoadExistingWalletIntroView')}
             style={styles.secondButton}
+            variant='secondary'
           />
         </View>
       </View>
