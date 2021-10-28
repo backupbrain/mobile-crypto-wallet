@@ -42,9 +42,6 @@ const NewWalletIntroView2 = ({ navigation, route }) => {
         bullets: {
             flexDirection: 'row',
             paddingLeft: dimensions.verticalSpacingBetweenItems
-        },
-        button: {
-            paddingBottom: dimensions.verticalSpacingBetweenItems
         }
     })
 
@@ -94,7 +91,6 @@ const NewWalletIntroView2 = ({ navigation, route }) => {
                 <ActivityButton
                     title={translate('next')}
                     onPress={() => navigation.push('CreateNewWalletView')}
-                    style={styles.button}
                 />
             </View>
         </Screen>

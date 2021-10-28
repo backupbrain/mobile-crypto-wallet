@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import RecoveryWordOrdered from './RecoveryWordOrdered'
 import { useTheme } from '@react-navigation/native'
+import translate from '../../translations'
+import BodyText from '../text/BodyText'
 
 const RecoveryWordGrid = (props) => {
-  const { dimensions } = useTheme()
+  const { colors, dimensions } = useTheme()
   const [layoutWidth, setLayoutWidth] = useState(0)
 
   const styles = StyleSheet.create({
@@ -18,10 +20,10 @@ const RecoveryWordGrid = (props) => {
       width: `${(layoutWidth / 2) - parseInt(dimensions.horizontalSpacingBetweenItems.substring(0, 2))}px`
     },
     wordTop: {
-      marginBottom: dimensions.verticalSpacingBetweenItems
+      marginBottom: dimensions.paddingVertical
     },
     wordLeft: {
-      marginRight: dimensions.horizontalSpacingBetweenItems
+      marginRight: dimensions.paddingHorizontal
     },
     wordRight: {
 

@@ -53,6 +53,12 @@
   "tip2":"Store in a safe",
   "tip3":"Store in a multiple secret places",
 
+  "writeDown":"WRITE DOWN ",
+  "writeDownMore":"these 15 words on a piece of paper and keep it in a safe place. You will be asked to re-enter this phrase (in order) on the next step.",
+  "seedPhraseWarning1":"Do not screenshot",
+  "seedPhraseWarning2":"Keep private.Do not share with anyone",
+  "seedCopy":"Copy seed words to clipboard",
+
   "continueToRecoveryPhrase": "Continue to Recovery Phrase",
   "pressAndHoldToReveal": "Press and Hold to Reveal",
 

@@ -44,7 +44,7 @@ const AndroidTheme = {
       paragraphPaddingTop: '16px',
       paragraphPaddingBottom: '16px',
       betweenParagraphPadding: '8px',
-      fontSize: 'normal',
+      fontSize: 16,
       fontWeight: 'normal',
       lineHeight: '1.3',
       textAlign: 'center',
@@ -222,6 +222,10 @@ export const AnodeLightTheme = {
       confirmedIconColor: '#1f9145',
       unconfirmedIconColor: '#F6C79F'
     },
+    recoveryWord:{
+      backgroundColor:'#192140',
+      borderRadius:8
+    },
     background: '#F1F2F6',
     border: '#F1F2F6',
     text: '#000',
@@ -329,6 +333,10 @@ export const AnodeDarkTheme = {
     transactionListItem: {
       confirmedIconColor: '#1f9145',
       unconfirmedIconColor: '#FF8319'
+    },
+    recoveryWord:{
+      backgroundColor:'#192140',
+      borderRadius:8
     },
     background: '#121212',
     border: '#121212',
