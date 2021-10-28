@@ -182,6 +182,11 @@ export const AnodeLightTheme = {
       color: '#E5EFF4',
       borderColor: '#2978A8'
     },
+    secondaryButton: {
+      backgroundColor: '#2978A8',
+      color: '#E5EFF4',
+      borderColor: '#2978A8'
+    },
     unselectedButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
@@ -260,7 +265,7 @@ export const AnodeDarkTheme = {
       color: '#fff'
     },
     headerText: {
-      color: '#fff'
+      color: '#8EBED6'
     },
     inputs: {
       color: '#fff',
@@ -285,6 +290,11 @@ export const AnodeDarkTheme = {
       color: '#D4D7E9',
       borderColor: '#2E4292'
     },
+    secondaryButton: {
+      backgroundColor: '#4BA7C4',
+      color: '#D4D7E9',
+      borderColor: '#4BA7C4'
+    },
     unselectedButton: {
       backgroundColor: 'transparent',
       color: '#A9A9A9',
@@ -307,8 +317,8 @@ export const AnodeDarkTheme = {
       borderColor: '#A9A9A9'
     },
     logo: {
-      primaryColor: '#A1C5D0',
-      secondaryColor: '#A1C5D0'
+      primaryColor: '#4BA7C4',
+      secondaryColor: '#EAF7FA'
     },
     addressCard: {
       backgroundColor: '#fff'

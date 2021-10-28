@@ -27,6 +27,10 @@ const ActiveButton = (props,ref) => {
       backgroundColor: colors.primaryButton.backgroundColor,
       borderColor: colors.primaryButton.borderColor
     },
+    secondaryButton: {
+      backgroundColor: colors.secondaryButton.backgroundColor,
+      borderColor: colors.secondaryButton.borderColor
+    },
     dangerButton: {
       backgroundColor: colors.dangerButton.backgroundColor
     },
@@ -44,6 +48,9 @@ const ActiveButton = (props,ref) => {
   switch (props.variant) {
     case 'danger':
       buttonStyles.push(styles.dangerButton)
+      break
+    case 'secondary':
+      buttonStyles.push(styles.secondaryButton)
       break
     default:
       buttonStyles.push(styles.primaryButton)
