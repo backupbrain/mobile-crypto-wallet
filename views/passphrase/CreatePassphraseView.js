@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, StyleSheet,CheckBox } from 'react-native'
+import { View, StyleSheet, CheckBox } from 'react-native'
 import Screen from '../../components/Screen'
 import BodyText from '../../components/text/BodyText'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
@@ -28,8 +28,11 @@ const CreatePassphraseView = ({ navigation, route }) => {
 
   const styles = StyleSheet.create({
     screen: {
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      paddingHorizontal: dimensions.screens.horizontal,
+      paddingBottom: dimensions.screens.bottomPadding,
+      paddingTop: dimensions.screens.topPadding,
+      justifyContent:'space-between',
+      flex:1
     },
     inputContainer: {
       paddingVertical: dimensions.paddingVertical
@@ -68,32 +71,36 @@ const CreatePassphraseView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
-        <ProgressStepBar steps={4} />
-        <BodyText>{translate('whyPassphrase')}</BodyText>
-        <View style={styles.inputContainer}>
-          <CreateNewPasswordInput
-            passwordPlaceholder={translate('newPassphrase')}
-            passwordHelp={translate('passwordHelpText')}
-            passwordVerifyPlaceholder={translate('verifyPassword')}
-            passwordVerifyHelp={translate('verifyPasswordHelpText')}
-            onPasswordChangeText={_onPasswordChangeHandler}
-            onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
-            onPasswordsMatch={_onPasswordMatchHandler}
+        <View>
+          <ProgressStepBar steps={4} />
+          <BodyText>{translate('whyPassphrase')}</BodyText>
+          <View style={styles.inputContainer}>
+            <CreateNewPasswordInput
+              passwordPlaceholder={translate('newPassphrase')}
+              passwordHelp={translate('passwordHelpText')}
+              passwordVerifyPlaceholder={translate('verifyPassword')}
+              passwordVerifyHelp={translate('verifyPasswordHelpText')}
+              onPasswordChangeText={_onPasswordChangeHandler}
+              onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
+              onPasswordsMatch={_onPasswordMatchHandler}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={isChecked}
+              onValueChange={setIsChecked}
+              style={styles.checkbox}
+            />
+            <BodyText >{translate('passphraseWarningCheckbox')}</BodyText>
+          </View>
+        </View>
+        <View>
+          <ActivityButton
+            title={translate('createPassphrase')}
+            onPress={_onActivityPressHandler}
+            disabled={!isFormFilled}
           />
         </View>
-        <View style={styles.checkboxContainer}>
-          <CheckBox
-            value={isChecked}
-            onValueChange={setIsChecked}
-            style={styles.checkbox}
-          />
-          <BodyText >{translate('passphraseWarningCheckbox')}</BodyText>
-        </View>
-        <ActivityButton
-          title={translate('createPassphrase')}
-          onPress={_onActivityPressHandler}
-          disabled={!isFormFilled}
-        />
       </View>
     </Screen>
   )

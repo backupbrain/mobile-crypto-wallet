@@ -21,9 +21,10 @@ const WalletPassphraseView = ({ navigation, route }) => {
 
     const styles = StyleSheet.create({
         screen: {
-            paddingHorizontal: dimensions.screen.paddingHorizontal,
-            paddingVertical: dimensions.screen.paddingVertical,
-            flex:1,     
+            paddingHorizontal: dimensions.screens.horizontal,
+            paddingBottom: dimensions.screens.bottomPadding,
+            paddingTop: dimensions.screens.topPadding,
+            flex: 1,
             justifyContent: 'space-between'
         },
         inputContainer: {
@@ -42,7 +43,7 @@ const WalletPassphraseView = ({ navigation, route }) => {
             index: 0,
             routes: [{ name: 'FirstViewSet' }],
         }); */
-        navigation.push('CreatePinView',{from:'load'})
+        navigation.push('CreatePinView', { from: 'load' })
     }
 
     return (

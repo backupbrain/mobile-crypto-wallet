@@ -21,9 +21,9 @@ const FirstView = ({ navigation, route }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: '20px',
+      paddingHorizontal: dimensions.screens.horizontal,
       flexGrow: 1,
-      paddingVertical: dimensions.paddingVertical
+      paddingVertical: dimensions.screens.bottomPadding
     },
     pktPalLogo: {
       width: '100%',

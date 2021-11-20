@@ -15,8 +15,9 @@ const NewWalletIntroView2 = ({ navigation, route }) => {
     const styles = StyleSheet.create({
         screen: {
             flex: 1,
-            paddingHorizontal: dimensions.screen.paddingHorizontal,
-            paddingVertical: dimensions.screen.paddingVertical,
+            paddingHorizontal: dimensions.screens.horizontal,
+            paddingBottom: dimensions.screens.bottomPadding,
+            paddingTop: dimensions.screens.topPadding,
             justifyContent: 'space-between'
         },
         paragraph: {

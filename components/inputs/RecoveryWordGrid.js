@@ -17,10 +17,10 @@ const RecoveryWordGrid = (props) => {
       width: '100%'
     },
     wordMap: {
-      width: `${(layoutWidth / 2) - parseInt(dimensions.horizontalSpacingBetweenItems.substring(0, 2))}px`
+      width: (layoutWidth / 2) - dimensions.horizontalSpacingBetweenItems
     },
     wordTop: {
-      marginBottom: dimensions.paddingVertical
+      marginBottom: dimensions.screens.topPadding
     },
     wordLeft: {
       marginRight: dimensions.paddingHorizontal

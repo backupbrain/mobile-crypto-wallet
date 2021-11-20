@@ -1,6 +1,6 @@
 {
   "first": "First View",
-  "loadExistingWalletIntro": "Load Existing Wallet Intro",
+  "loadExistingWalletIntro": "Load Existing Wallet",
   "createNewWallet": "Create New Wallet",
   "loadFromRecoveryPassphrase": "Load From Seed Passphrase",
   "verifyRecoveryPhrase": "Verify Seed Phrase",

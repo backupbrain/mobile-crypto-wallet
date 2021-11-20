@@ -112,9 +112,19 @@ const AndroidTheme = {
       borderRadius: '3px',
       width: '200px'
     },
+    headers:{
+      vertical:41,
+      horizontal:11,
+      headerHeight:105
+    },
+    screens:{
+      topPadding:11,
+      bottomPadding:32,
+      horizontal:20
+    },
     paddingHorizontal: '20px',
     paddingVertical: '16px',
-    horizontalSpacingBetweenItems: '10px',
+    horizontalSpacingBetweenItems: 10,
     verticalSpacingBetweenItems: '8px',
     horizontalSpacingBetweenItemsShort: '5px',
     verticalSpacingBetweenItemsShort: '4px'
@@ -163,9 +173,9 @@ export const AnodeLightTheme = {
       color: '#000',
       borderColor: '#A9A9A9',
       backgroundColor: 'transparent',
-      borderTopColor: 'transparent',
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
+      borderTopColor: '#A9A9A9',
+      borderLeftColor: '#A9A9A9',
+      borderRightColor: '#A9A9A9',
       borderBottomColor: '#A9A9A9',
       borderErrorColor: '#A50000',
       borderTopErrorColor: 'transparent',
@@ -275,10 +285,10 @@ export const AnodeDarkTheme = {
       color: '#fff',
       borderColor: '#323A44',
       backgroundColor: 'transparent',
-      borderTopColor: 'transparent',
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      borderBottomColor: '#A9A9A9',
+      borderTopColor: '#323A44',
+      borderLeftColor: '#323A44',
+      borderRightColor: '#323A44',
+      borderBottomColor: '#323A44',
       borderErrorColor: '#A50000',
       borderTopErrorColor: 'transparent',
       borderLeftErrorColor: 'transparent',

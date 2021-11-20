@@ -53,6 +53,7 @@ const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 const FirstViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   const [initialRoute, setInitialRoute] = useState('')
   const WalletManager = useRef(new PktManager())
   const PassPhraseManager = useRef(new PassphraseManager())
@@ -98,7 +99,11 @@ const FirstViewSet = ({ navigation }) => {
     return <SecurityView />
 
   return (
-    <Stack.Navigator initialRouteName={initialRoute}>
+    <Stack.Navigator initialRouteName={initialRoute}
+      screenOptions={{
+        headerTitleAlign: 'center',
+      }}>
+
       <Stack.Screen
         name='FirstView'
         options={{ title: translate('first'), headerShown: false }}
@@ -114,7 +119,14 @@ const FirstViewSet = ({ navigation }) => {
       <Stack.Screen
         name='LoadExistingWalletIntroView'
         options={{
-          title: translate('loadExistingWalletIntro')
+          title: translate('loadExistingWalletIntro'),
+          headerTitleContainerStyle: {
+            paddingVertical: dimensions.headers.vertical,
+            paddingHorizontal: dimensions.headers.horizontal
+          },
+          headerStyle: {
+            height: 'auto'
+          }
         }}
         component={LoadExistingWalletIntroView}
       />
@@ -172,8 +184,19 @@ const FirstViewSet = ({ navigation }) => {
 }
 
 const WalletHomeViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='WalletHomeView'>
+    <Stack.Navigator initialRouteName='WalletHomeView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='WalletHomeView'
         options={{
@@ -221,8 +244,19 @@ const WalletHomeViewSet = ({ navigation }) => {
 }
 
 const SendCryptoViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='SendFormView'>
+    <Stack.Navigator initialRouteName='SendFormView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='QrCodeScannerView'
         component={QrCodeScannerView}
@@ -267,8 +301,19 @@ const SendCryptoViewSet = ({ navigation }) => {
 }
 
 const ChangePinViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='ChangePinView'>
+    <Stack.Navigator initialRouteName='ChangePinView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='ChangePinView'
         options={{
@@ -282,8 +327,19 @@ const ChangePinViewSet = ({ navigation }) => {
 }
 
 const ChangePassphraseViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='ChangePassphraseView'>
+    <Stack.Navigator initialRouteName='ChangePassphraseView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='ChangePassphraseView'
         options={{
@@ -297,8 +353,9 @@ const ChangePassphraseViewSet = ({ navigation }) => {
 }
 
 const RePair2FaDeviceViewSet = ({ navigation }) => {
+  
   return (
-    <Stack.Navigator initialRouteName='Unpair2FaDeviceView'>
+    <Stack.Navigator initialRouteName='Unpair2FaDeviceView' screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
         name='Unpair2FaDeviceView'
         options={{
@@ -328,8 +385,19 @@ const RePair2FaDeviceViewSet = ({ navigation }) => {
 }
 
 const ContactsViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='ContactBookView'>
+    <Stack.Navigator initialRouteName='ContactBookView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='ContactBookView'
         options={{
@@ -351,8 +419,19 @@ const ContactsViewSet = ({ navigation }) => {
 }
 
 const LogOutViewSet = ({ navigation }) => {
+  const { dimensions } = useTheme()
   return (
-    <Stack.Navigator initialRouteName='LogOutView'>
+    <Stack.Navigator initialRouteName='LogOutView'
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleContainerStyle: {
+          paddingVertical: dimensions.headers.vertical,
+          paddingHorizontal: dimensions.headers.horizontal
+        },
+        headerStyle: {
+          height: 'auto'
+        }
+      }}>
       <Stack.Screen
         name='LogOutView'
         options={{

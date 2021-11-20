@@ -79,8 +79,9 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
 
   const styles = StyleSheet.create({
     screen: {
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical,
+      paddingHorizontal: dimensions.screens.horizontal,
+      paddingBottom: dimensions.screens.bottomPadding,
+      paddingTop: dimensions.screens.topPadding,
       flex: 1,
       justifyContent: 'space-between'
     },

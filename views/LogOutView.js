@@ -46,8 +46,9 @@ const LogOutView = ({ navigation, route }) => {
     screen: {
       flex: 1,
       justifyContent: 'flex-start',
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingHorizontal
+      paddingHorizontal: dimensions.screens.horizontal,
+      paddingBottom: dimensions.screens.bottomPadding,
+      paddingTop: dimensions.screens.topPadding,
     },
     header: {
       paddingBottom: dimensions.paddingVertical

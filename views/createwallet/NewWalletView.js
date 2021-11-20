@@ -35,8 +35,10 @@ const NewWalletView = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical,
+      paddingHorizontal: dimensions.screens.horizontal,
+      paddingBottom: dimensions.screens.bottomPadding,
+      paddingTop: dimensions.screens.topPadding,
+      justifyContent: 'space-between'
     },
     container: {
       justifyContent: 'space-between'
@@ -64,7 +66,8 @@ const NewWalletView = ({ navigation, route }) => {
       height: 40,
       marginTop: dimensions.paddingVertical,
       marginBottom: dimensions.paddingHorizontal,
-      borderRadius: 20
+      borderRadius: 20,
+      alignItems: 'center'
     },
     copy: {
       height: 40,
@@ -72,7 +75,11 @@ const NewWalletView = ({ navigation, route }) => {
       borderRadius: 20,
       flexDirection: 'row',
       justifyContent: 'center',
+      alignItems: 'center',
       alignItems: 'center'
+    },
+    copyIcon:{
+      marginLeft: dimensions.horizontalSpacingBetweenItems,
     },
     text: {
       padding: dimensions.verticalSpacingBetweenItems,
@@ -84,28 +91,34 @@ const NewWalletView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
-        <ProgressStepBar steps={4} activeStep={1} />
-        <View style={styles.container}>
-          <View style={styles.textBlock}>
-            <BodyText style={styles.paragraph}><BodyText style={styles.writeDownText}>{translate('writeDown')}</BodyText>{translate('writeDownMore')} </BodyText>
-            <View style={styles.bullets}>
-              <DotPinFilled color={colors.text} />
-              <BodyText >{translate('seedPhraseWarning1')}</BodyText>
+        <View>
+          <ProgressStepBar steps={4} activeStep={1} />
+          <View style={styles.container}>
+            <View style={styles.textBlock}>
+              <BodyText style={styles.paragraph}><BodyText style={styles.writeDownText}>{translate('writeDown')}</BodyText>{translate('writeDownMore')} </BodyText>
+              <View style={styles.bullets}>
+                <DotPinFilled color={colors.text} />
+                <BodyText >{translate('seedPhraseWarning1')}</BodyText>
+              </View>
+              <View style={styles.bullets}>
+                <DotPinFilled color={colors.text} />
+                <BodyText >{translate('seedPhraseWarning2')}</BodyText>
+              </View>
             </View>
-            <View style={styles.bullets}>
-              <DotPinFilled color={colors.text} />
-              <BodyText >{translate('seedPhraseWarning2')}</BodyText>
+            <View style={styles.recoveryWordGrid}>
+              <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
             </View>
           </View>
-          <View style={styles.recoveryWordGrid}>
-            <RecoveryWordGrid words={recoveryPhrase} visible={isVisible} />
-          </View>
-          <View style={styles.copyContainer}>
-            <TouchableOpacity style={styles.copy} onPress={() => ClipboardManager.set(recoveryPhrase.join(' '))}>
+        </View>
+        <View style={styles.copyContainer}>
+          <TouchableOpacity style={styles.copy} onPress={() => ClipboardManager.set(recoveryPhrase.join(' '))}>
+            <View style={styles.copyIcon}>
               <CopyIcon color={colors.primaryButton.backgroundColor} />
-              <BodyText style={styles.text}>{translate('seedCopy')}</BodyText>
-            </TouchableOpacity>
-          </View>
+            </View>
+            <BodyText style={styles.text}>{translate('seedCopy')}</BodyText>
+          </TouchableOpacity>
+        </View>
+        <View>
           <ActiveButton
             title={translate('next')}
             onPress={() => { navigation.push('VerifyRecoveryPhraseView', { recoveryPhrase }) }}
