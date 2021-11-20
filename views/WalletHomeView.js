@@ -76,6 +76,11 @@ const WalletHomeView = ({ navigation, route }) => {
       paddingVertical: dimensions.screen.paddingHorizontal
     },
     accountBalanceContainer: {
+      justifyContent:'center',
+      alignItems:'center'
+    },
+    balances:{
+      textAlign:'center'
     },
     sendReceiveButtonPanel: {
       mdth: '100%',
@@ -149,15 +154,9 @@ const WalletHomeView = ({ navigation, route }) => {
         <View style={styles.accountBalanceContainer}>
           <MainAccountBalance
             addresses={addresses}
+            style={styles.balances}
           />
         </View>
-        <Chart
-          fillColor={colors.primaryButton.backgroundColor}
-          legendColor={colors.text}
-          lineColor={colors.text}
-          data={[1500, 1000, 3000, 2000, 2500]}
-          style={styles.chart}
-        />
         <View style={styles.sendReceiveButtonPanel}>
           <View style={[styles.sendReceiveButton, styles.leftButton]}>
             <ActivityButton

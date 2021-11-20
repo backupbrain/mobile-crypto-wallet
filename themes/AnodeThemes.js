@@ -92,7 +92,7 @@ const AndroidTheme = {
       labelPaddingBottom: '8px'
     },
     accountBalance: {
-      fontSize: '1.20em',
+      fontSize: 30,
       fontWeight: 'bold',
       textTranform: 'none'
     },
@@ -112,22 +112,26 @@ const AndroidTheme = {
       borderRadius: '3px',
       width: '200px'
     },
-    headers:{
-      vertical:41,
-      horizontal:11,
-      headerHeight:105
+    headers: {
+      vertical: 41,
+      horizontal: 11,
+      headerHeight: 105
     },
-    screens:{
-      topPadding:11,
-      bottomPadding:32,
-      horizontal:20
+    screens: {
+      topPadding: 11,
+      bottomPadding: 32,
+      horizontal: 20
+    },
+    smallButton: {
+      borderRadius: 8
     },
     paddingHorizontal: '20px',
     paddingVertical: '16px',
     horizontalSpacingBetweenItems: 10,
-    verticalSpacingBetweenItems: '8px',
+    verticalSpacingBetweenItems: 8,
     horizontalSpacingBetweenItemsShort: '5px',
-    verticalSpacingBetweenItemsShort: '4px'
+    verticalSpacingBetweenItemsShort: '4px',
+    shortPadding:12
   }
 }
 
@@ -229,12 +233,15 @@ export const AnodeLightTheme = {
       backgroundColor: '#fff'
     },
     transactionListItem: {
-      confirmedIconColor: '#1f9145',
-      unconfirmedIconColor: '#F6C79F'
+      confirmedIconColor: '#37B761',
+      unconfirmedIconColor: '#ED1111'
     },
-    recoveryWord:{
-      backgroundColor:'#192140',
-      borderRadius:8
+    recoveryWord: {
+      backgroundColor: '#192140',
+      borderRadius: 8
+    },
+    smallButton: {
+      backgroundColor: '#192140',
     },
     background: '#F1F2F6',
     border: '#F1F2F6',
@@ -341,12 +348,15 @@ export const AnodeDarkTheme = {
       backgroundColor: '#fff'
     },
     transactionListItem: {
-      confirmedIconColor: '#1f9145',
-      unconfirmedIconColor: '#FF8319'
+      confirmedIconColor: '#37B761',
+      unconfirmedIconColor: '#ED1111'
     },
-    recoveryWord:{
-      backgroundColor:'#192140',
-      borderRadius:8
+    recoveryWord: {
+      backgroundColor: '#192140',
+      borderRadius: 8
+    },
+    smallButton: {
+      backgroundColor: '#192140',
     },
     background: '#121212',
     border: '#121212',

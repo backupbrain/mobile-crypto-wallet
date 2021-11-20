@@ -17,14 +17,8 @@ const TransactionList = (props) => {
       width: '100%'
     },
     listItem: {
-      paddingVertical: dimensions.listItem.paddingVertical,
-      paddingHorizontal: dimensions.listItem.paddingHorizontal,
-      marginHorizontal: dimensions.listItem.marginHorizontal,
-      borderTopWidth: dimensions.listItem.borderTopWidth,
-      borderLeftWidth: dimensions.listItem.borderLeftWidth,
-      borderRightWidth: dimensions.listItem.orderRightWidth,
-      borderBottomWidth: dimensions.listItem.borderBottomWidth,
-      borderRadius: dimensions.listItem.borderRadius,
+      paddingVertical: dimensions.shortPadding,
+      marginHorizontal: dimensions.horizontalSpacingBetweenItems,
       borderColor: colors.listItem.borderColor
     },
     noTransactions: {

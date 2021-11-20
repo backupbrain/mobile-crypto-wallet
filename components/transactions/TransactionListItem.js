@@ -7,6 +7,9 @@ import ConfirmedIcon from '../images/ConfirmedIcon'
 import UnconfirmedIcon from '../images/UnconfirmedIcon'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
+import ReqIconBig from '../images/ReqIconBig'
+import SendIconBig from '../images/SendIconBig'
+import PktPriceTicker from '../../utils/PktPriceTicker'
 
 const truncateAddress = (address) => {
   const MAX_LENGTH = 11
@@ -45,6 +48,7 @@ const TransactionListItem = (props) => {
   const [time, setTime] = useState(null)
   const [note, setNote] = useState(translate('unNotedTransaction'))
   const currentTime = useRef(new Date())
+  const priceTicker = useRef(new PktPriceTicker())
 
   const toUsd = (amount) => {
     // TODO: use actual PKT price
@@ -55,27 +59,15 @@ const TransactionListItem = (props) => {
     // return props.pktPriceTicker.convertCurrency(isConverted, amount)
   }
 
-  const formatDate = (timestamp, now) => {
-    // FIXME: localize the output
-    // console.log(now)
-    let output = ''
-    const targetDate = new Date(parseInt(timestamp) * 1000)
-    // console.log(targetDate)
-    const secondsDiff = Math.round((now - targetDate) / 1000)
-    // console.log(secondsDiff)
-    // if this happened in the last 24 hours AND after midnight,
-    // return the time
-    // otherwis return the date
-    const oneDay = 24 * 60 * 60
-    const hour = targetDate.getHours()
-    if (secondsDiff < oneDay && hour >= 1) {
-      output = targetDate.toLocaleTimeString('en-US')
-    } else {
-      const month = ('0' + (targetDate.getMonth() + 1)).slice(-2)
-      const day = ('0' + targetDate.getDate()).slice(-2)
-      output = `${targetDate.getFullYear()}-${month}-${day}`
-    }
-    return output
+  const formatDate = (timestamp) => {
+
+    const date = new Date(timestamp)
+    const day = date.toLocaleDateString('en-US', { weekday: 'long' }).substring(0, 3)
+    const dayNumber = date.getDate()
+    const hour = date.getHours();
+    const min = date.getMinutes()
+
+    return `${day} ${dayNumber} at ${hour}:${min}`
   }
 
   useEffect(() => {
@@ -100,15 +92,16 @@ const TransactionListItem = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      width: '100%',
-      alignItems: 'center'
+      flex:1,
+    },
+    transactionInfo: {
+      flexDirection: 'row'
     },
     accountInformation: {
       flexGrow: 1
     },
     amountInformation: {
-      textAlign: 'right'
+      textAlign: 'right',
     },
     accountNote: {
       fontWeight: 'bold',
@@ -117,35 +110,65 @@ const TransactionListItem = (props) => {
     address: {
     },
     amount: {
-      paddingBottom: dimensions.verticalSpacingBetweenItemsShort
+      marginBottom: dimensions.verticalSpacingBetweenItems
+    },
+    time: {
+      color: colors.disabledText,
+      fontSize: 12,
+      marginBottom: dimensions.verticalSpacingBetweenItems
+    },
+    confirmColor: {
+      color: colors.transactionListItem.confirmedIconColor
+    },
+    unconfirmColor: {
+      color: colors.transactionListItem.unconfirmedIconColor
+    },
+    mainInfo: {
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      marginHorizontal: dimensions.horizontalSpacingBetweenItems
+    },
+    sendRecTitle: {
+      marginBottom: dimensions.verticalSpacingBetweenItems
+    },
+    bigIcon: {
+      alignSelf: 'center'
     },
     altAmount: {
-      color: colors.disabledText
+      color: colors.disabledText,
+      fontSize: 14,
+      justifyContent: 'center'
     },
-    icon: {
-      width: '30px'
+    infoContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      flex:1
     }
   })
 
   return (
     <View style={[styles.container, props.style]}>
-      <View style={styles.icon}>
-        {isInbound
-          ? <InboundIcon color={colors.text} />
-          : <OutboundIcon color={colors.text} />}
-      </View>
-      <View style={styles.icon}>
-        {(numConfirmations > 0)
-          ? <ConfirmedIcon color={colors.transactionListItem.confirmedIconColor} />
-          : <UnconfirmedIcon color={colors.transactionListItem.unconfirmedIconColor} />}
-      </View>
-      <View style={styles.accountInformation}>
-        <BodyText style={styles.accountNote}>{note}</BodyText>
-        <BodyText style={styles.address}>{truncateAddress(address)}</BodyText>
-      </View>
-      <View style={styles.amountInformation}>
-        <BodyText style={styles.amount}>{formatAmount(amount)} {translate('pkt')}</BodyText>
-        <BodyText style={styles.altAmount}>{formatDate(time, currentTime.current)}</BodyText>
+      <BodyText style={styles.time}>{formatDate(time)}</BodyText>
+      <View style={styles.transactionInfo}>
+        <View style={styles.bigIcon}>
+          {isInbound
+            ? <ReqIconBig />
+            : <SendIconBig />}
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={styles.mainInfo}>
+            <BodyText style={styles.sendRecTitle}>Receive PKT</BodyText>
+            <View >
+              {(numConfirmations > 0)
+                ? <BodyText style={styles.confirmColor} >{translate('confirmed')}</BodyText>
+                : <BodyText style={styles.unconfirmColor}>{translate('unconfirmed')}</BodyText>}
+            </View>
+          </View>
+          <View style={styles.amountInformation}>
+            <BodyText style={styles.amount}>{formatAmount(amount)} {translate('pkt')}</BodyText>
+            <BodyText style={styles.altAmount}>{formatAmount(priceTicker.current.convertCurrency(false, amount))} {translate('usd')}</BodyText>
+          </View>
+        </View>
       </View>
     </View>
   )

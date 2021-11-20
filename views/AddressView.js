@@ -18,6 +18,9 @@ import PktPriceTicker from '../utils/PktPriceTicker'
 import TransactionNoteManager from '../utils/TransactionNoteManager'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import translate from '../translations'
+import SmallButton from '../components/buttons/SmallButton'
+import SendIcon from '../components/images/SendIcon'
+import ReqIcon from '../components/images/ReqIcon'
 
 // TODO: pull address from props
 const dummyAddress = {
@@ -199,10 +202,6 @@ const TransactionTabContent = (props) => {
     initialize()
   }, [])
 
-  useEffect(() => {
-    console.log('refresh')
-  })
-
   const styles = StyleSheet.create({
     loadMoreButton: {
       paddingVertical: dimensions.paddingVertical,
@@ -246,13 +245,21 @@ const TransactionTabContent = (props) => {
 }
 
 const AddressView = ({ navigation, route }) => {
-  const { dimensions } = useTheme()
+  const { dimensions, colors } = useTheme()
   const [address, setAddress] = useState(route?.params?.address ?? dummyAddress.address)
   const [areContactsLoaded, setAreContactsLoaded] = useState(false)
   const [contacts, setContacts] = useState([])
   const [contactLookup, setContactLookup] = useState({})
   const pktPriceTicker = useRef(new PktPriceTicker())
   const contactManager = useRef(new ContactManager())
+  console.log(address)
+  useEffect(() => {
+    if (address.name) {
+      navigation.setOptions({
+        title: address.name
+      })
+    }
+  }, address)
 
   const fetchContacts = async () => {
     // TODO: use the contactManager.current.getByAddress() function
@@ -303,24 +310,68 @@ const AddressView = ({ navigation, route }) => {
     },
     tabs: {
       paddingVertical: dimensions.paddingVertical
+    },
+    sendReceiveButton: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      alignSelf: 'center',
+      marginVertical: dimensions.paddingHorizontal,
+      paddingVertical: dimensions.shortPadding
+    },
+    buttonContent: {
+      flexDirection: 'row',
+    },
+    smallButtonText: {
+      paddingLeft: dimensions.verticalSpacingBetweenItems,
+      textAlign: 'center'
+    },
+    rightMargin: {
+      marginRight: dimensions.horizontalSpacingBetweenItems
+    },
+    transactionTitle: {
+      paddingLeft: dimensions.shortPadding,
+      paddingBottom: dimensions.shortPadding
     }
   })
 
   return (
     <Screen>
       <View style={styles.screen}>
-        <WalletListItem
-          name={address.name}
-          address={address.address}
-          amount={address.total}
-          showAmount={false}
-          style={styles.walletListItem}
-        />
         <AccountBalance
           amount={address.total}
           isVisible
         />
-        <Tabs
+        <View style={styles.sendReceiveButton}>
+          <SmallButton height={40} style={styles.rightMargin}
+            onPress={() => {
+              navigation.navigate('SendView', {
+                screen: 'SendFormView',
+                params: { fromContact: address },
+              })
+            }}>
+            <View style={styles.buttonContent}>
+              <SendIcon color={colors.text} />
+              <BodyText style={styles.smallButtonText}>{translate('send')}</BodyText>
+            </View>
+          </SmallButton>
+          <SmallButton height={40}>
+            <View style={styles.buttonContent}>
+              <ReqIcon color={colors.text} />
+              <BodyText style={styles.smallButtonText}>{translate('request')}</BodyText>
+            </View>
+          </SmallButton>
+        </View>
+        <BodyText style={styles.transactionTitle}>{translate('transactions')}</BodyText>
+        <TransactionTabContent
+          address={address}
+          contacts={contacts}
+          contactLookup={contactLookup}
+          pktPriceTicker={pktPriceTicker}
+          onListItemPress={(transaction) => {
+            navigation.push('TransactionView', { transaction: transaction })
+          }}
+        />
+        {/* <Tabs
           initialTabId={0}
           tabs={[
             {
@@ -353,7 +404,7 @@ const AddressView = ({ navigation, route }) => {
             }
           ]}
           style={styles.tabs}
-        />
+        /> */}
       </View>
     </Screen>
   )

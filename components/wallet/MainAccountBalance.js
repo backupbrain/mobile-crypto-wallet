@@ -65,7 +65,6 @@ const MainAccountBalance = (props) => {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.balanceHeader}>
-        <Text style={styles.balanceHeaderTitle}>{translate('balanceHeader')}</Text>
         {/* {isBalanceVisible ? (
           <LinkButton
             style={styles.balanceHeaderToggle}

@@ -134,6 +134,7 @@
 
   "send": "Send",
   "receive": "Receive",
+  "request": "Request",
   "showBalance": "Show Balance",
   "hideBalance": "Hide Balance",
   "balanceHeader": "Your Balance",

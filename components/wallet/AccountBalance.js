@@ -26,7 +26,7 @@ const WalletListItem = (props) => {
     container: {
       width: '100%',
       alignItems: 'center',
-      textAlign: 'right'
+      textAlign: 'center'
     },
     amount: {
       width: '100%',
@@ -34,18 +34,23 @@ const WalletListItem = (props) => {
       fontSize: dimensions.accountBalance.fontSize,
       fontWeight: dimensions.accountBalance.fontWeight,
       textTranform: dimensions.accountBalance.textTranform,
-      color: colors.text
+      color: colors.text,
     },
     altAmount: {
       color: colors.disabledText,
-      width: '100%'
+      width: '100%',
+      fontSize: 14,
+      justifyContent:'center'
     }
   })
 
   return (
     <View style={[styles.container, props.style]}>
       {isVisible
-        ? <><Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text><Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text></>
+        ? <>
+          <Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
+          <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
+        </>
         : <><Text style={styles.amount}>--- {translate('pkt')}</Text><Text style={styles.altAmount}>--- {translate('usd')}</Text></>}
     </View>
   )
