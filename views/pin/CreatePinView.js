@@ -31,7 +31,9 @@ const CreatePinView = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      paddingVertical: dimensions.screen.paddingVertical,
+      flex: 1,
+      justifyContent: 'space-between'
     },
     inputContainer: {
       paddingVertical: dimensions.paddingVertical,
@@ -61,26 +63,31 @@ const CreatePinView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
-        <ProgressStepBar steps={4} activeStep={3} />
-        <BodyText>{translate('createPinIntro')}</BodyText>
-        <View style={styles.inputContainer}>
-          <CreateNewPasswordInput
-            maxLength={4}
-            passwordPlaceholder={translate('pin')}
-            passwordHelp={translate('pinHelpText')}
-            passwordVerifyPlaceholder={translate('verifyPin')}
-            passwordVerifyHelp={translate('retypeNewPin')}
-            onPasswordChangeText={_onNewPasswordChangeHandler}
-            onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
-            onPasswordsMatch={_onNewPasswordMatchHandler}
-            keyboardType='numeric'
+        <View>
+          {route.params?.from == 'load' && <ProgressStepBar steps={3} activeStep={2} />}
+          {route.params?.from == 'create' && <ProgressStepBar steps={4} activeStep={3} />}
+          <BodyText>{translate('createPinIntro')}</BodyText>
+          <View style={styles.inputContainer}>
+            <CreateNewPasswordInput
+              maxLength={4}
+              passwordPlaceholder={translate('pin')}
+              passwordHelp={translate('pinHelpText')}
+              passwordVerifyPlaceholder={translate('verifyPin')}
+              passwordVerifyHelp={translate('retypeNewPin')}
+              onPasswordChangeText={_onNewPasswordChangeHandler}
+              onPasswordVerifyChangeText={_onNewPasswordVerifyChangeHandler}
+              onPasswordsMatch={_onNewPasswordMatchHandler}
+              keyboardType='numeric'
+            />
+          </View>
+        </View>
+        <View>
+          <ActiveButton
+            title={translate('createAccPin')}
+            disabled={!isFormFilled}
+            onPress={_onActivityPressHandler}
           />
         </View>
-        <ActiveButton
-          title={translate('createPin')}
-          disabled={!isFormFilled}
-          onPress={_onActivityPressHandler}
-        />
       </View>
     </Screen>
   )

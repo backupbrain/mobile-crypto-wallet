@@ -66,8 +66,9 @@ const RecoveryPhraseInput = (props) => {
       color: colors.inputs.color,
       paddingHorizontal: dimensions.button.paddingHorizontal,
       paddingVertical: dimensions.button.paddingVertical,
-      borderRadius: dimensions.inputs.borderRadius,
-      borderWidth: dimensions.inputs.borderWidth
+      borderRadius: 15,
+      borderWidth: dimensions.inputs.borderWidth,
+      borderColor:colors.inputs.borderColor
     },
     textInputRegular: {
       borderColor: colors.inputs.borderColor
@@ -76,7 +77,7 @@ const RecoveryPhraseInput = (props) => {
       borderColor: colors.inputs.borderErrorColor
     },
     helpText: {
-      color: colors.inputs.helpTextColor,
+      color: colors.inputs.color,
       alignItems: 'top',
       flexWrap: 'wrap'
     },

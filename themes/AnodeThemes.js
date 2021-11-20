@@ -78,14 +78,14 @@ const AndroidTheme = {
       paddingVertical: '16px'
     },
     inputs: {
-      borderWidth: '1px',
-      borderTopWidth: '0px',
-      borderLeftWidth: '0px',
-      borderRightWidth: '0px',
-      borderBottomWidth: '1px',
+      borderWidth: 1,
+      borderTopWidth: 1,
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderBottomWidth: 1,
       paddingHorizontal: '0px',
       paddingVertical: '16px',
-      borderRadius: '3px',
+      borderRadius: 7,
       width: '100%',
       supportingTextPaddingTop: '10px',
       supportingTextPaddingHorizontal: '0px',
@@ -273,7 +273,7 @@ export const AnodeDarkTheme = {
     },
     inputs: {
       color: '#fff',
-      borderColor: '#A9A9A9',
+      borderColor: '#323A44',
       backgroundColor: 'transparent',
       borderTopColor: 'transparent',
       borderLeftColor: 'transparent',
@@ -286,7 +286,7 @@ export const AnodeDarkTheme = {
       borderBottomErrorColor: '#A50000',
       placeholderTextColor: '#A9A9A9',
       helpTextColor: '#A9A9A9',
-      errorTextColor: '#A50000',
+      errorTextColor: '#ED1111',
       labelColor: '#fff'
     },
     primaryButton: {

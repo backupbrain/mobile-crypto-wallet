@@ -8,6 +8,7 @@ import translate from '../../translations'
 import PassphraseManager from '../../utils/PassphraseManager'
 import { useTheme } from '@react-navigation/native'
 import PasswordInput from '../../components/inputs/PasswordInput'
+import ProgressStepBar from '../../components/ProgressStepBar'
 
 const WalletPassphraseView = ({ navigation, route }) => {
     const { dimensions } = useTheme()
@@ -21,7 +22,9 @@ const WalletPassphraseView = ({ navigation, route }) => {
     const styles = StyleSheet.create({
         screen: {
             paddingHorizontal: dimensions.screen.paddingHorizontal,
-            paddingVertical: dimensions.screen.paddingVertical
+            paddingVertical: dimensions.screen.paddingVertical,
+            flex:1,     
+            justifyContent: 'space-between'
         },
         inputContainer: {
             paddingVertical: dimensions.paddingVertical
@@ -35,28 +38,34 @@ const WalletPassphraseView = ({ navigation, route }) => {
     const _onActivityPressHandler = () => {
         savePassphrase(passphrase)
         // TODO : load wallet with passphrase
-        navigation.reset({
+        /* navigation.reset({
             index: 0,
             routes: [{ name: 'FirstViewSet' }],
-        });
+        }); */
+        navigation.push('CreatePinView',{from:'load'})
     }
 
     return (
         <Screen>
             <View style={styles.screen}>
-                <BodyText>{translate('walletPassphraseIntro')}</BodyText>
-                <View style={styles.inputContainer}>
-                    <PasswordInput
-                        placeholder={translate('enterPassphrase')}
-                        onChangeText={_onPasswordChangeHandler}
-                        help={translate('enterPassphraseHelp')}
+                <View>
+                    <ProgressStepBar steps={3} activeStep={1} />
+                    <BodyText>{translate('walletPassphraseIntro')}</BodyText>
+                    <View style={styles.inputContainer}>
+                        <PasswordInput
+                            placeholder={translate('enterPassphrase')}
+                            onChangeText={_onPasswordChangeHandler}
+                            help={translate('enterPassphraseHelp')}
+                        />
+                    </View>
+                </View>
+                <View>
+                    <ActivityButton
+                        title={translate('next')}
+                        onPress={_onActivityPressHandler}
+                        disabled={!passphrase}
                     />
                 </View>
-                <ActivityButton
-                    title={translate('next')}
-                    onPress={_onActivityPressHandler}
-                    disabled={!passphrase}
-                />
             </View>
         </Screen>
     )

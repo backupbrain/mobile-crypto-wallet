@@ -12,6 +12,7 @@
   "sendForm": "Send Form",
   "sendPreview": "Send Preview",
   "createPin": "Create PIN",
+  "createAccPin": "Create Account PIN",
   "changePin": "Change PIN",
   "changePinIntro": "Your PIN is used to log into this app.",
   "pair2FaDeviceBackupCodes": "Pair 2FA Device Backup Codes",
@@ -28,6 +29,7 @@
   "pinLogin": "PIN Login",
   "logOut": "Log Out",
   "logIn": "Log In",
+  "confirm": "Confirm",
 
   "show": "Show",
   "hide": "Hide",
@@ -81,7 +83,7 @@
   "walletCreatedIntro2": "Your may now send or receive PKT ash between friends, family, or strangers.",
 
   "verifyRecoveryPhraseCreateWalletIntro": "Enter the 15 words you just saw below. If you lose these words, you may lose access to your money.",
-  "verifyRecoveryPhraseLoadWalletIntro": "Enter the 15 word recovery phrase for your existing wallet below.",
+  "verifyRecoveryPhraseLoadWalletIntro": "Type the seed phrase in the correct order to reload the wallet.",
   "loadExistingWalletIntro1": "You are about to load an existing wallet",
   "loadExistingWalletIntro2": "You will need to enter the 15 word recovery phrase and password to open the wallet.",
   "continueToSecretPassphrase": "Continue to Secret Passphrase",
@@ -113,7 +115,7 @@
   "verifyPin": "Retype PIN",
   "pinVerifyHelpText": "Retype PIN",
   "retypeNewPin": "Retype your new PIN",
-  "createPinIntro": "Add a PIN so you can easily log into this app",
+  "createPinIntro": "Your PIN is used to easily access your wallet.",
 
   "pinLoginIntro1": "Enter your PIN to login",
   "invalidPin": "Invalid PIN",

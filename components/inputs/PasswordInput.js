@@ -29,31 +29,24 @@ const PasswordInput = (props, ref) => {
       width: '100%',
       backgroundColor: colors.inputs.backgroundColor,
       borderRadius: dimensions.inputs.borderRadius,
-      borderTopWidth: dimensions.inputs.borderTopWidth,
-      borderLeftWidth: dimensions.inputs.borderLeftWidth,
-      borderRightWidth: dimensions.inputs.borderRightWidth,
-      borderBottomWidth: dimensions.inputs.borderBottomWidth
+      borderWidth: dimensions.inputs.borderWidth
     },
     textInputRegular: {
-      borderTopColor: colors.inputs.borderTopColor,
-      borderLeftColor: colors.inputs.borderLeftColor,
-      borderRightColor: colors.inputs.borderRightColor,
-      borderBottomColor: colors.inputs.borderBottomColor
+      borderColor: colors.inputs.borderColor,
     },
     textInputError: {
-      borderTopColor: colors.inputs.borderTopErrorColor,
-      borderLeftColor: colors.inputs.borderLeftErrorColor,
-      borderRightColor: colors.inputs.borderRightErrorColor,
-      borderBottomColor: colors.inputs.borderBottomErrorColor
+      borderColor: colors.inputs.errorTextColor,
     },
     input: {
       flexGrow: 1,
       paddingHorizontal: dimensions.inputs.paddingHorizontal,
       paddingVertical: dimensions.inputs.paddingVertical,
-      color: colors.inputs.color
+      color: colors.inputs.color,
+      borderColor:colors.inputs.borderColor,
+      paddingLeft:dimensions.paddingVertical
     },
     helpText: {
-      color: colors.inputs.helpTextColor
+      color: colors.inputs.color
     },
     errorText: {
       color: colors.inputs.errorTextColor

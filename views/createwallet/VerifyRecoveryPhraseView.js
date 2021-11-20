@@ -52,10 +52,11 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const verifyRecoveryPhraseAndProceed = async () => {
     if (recoveryPhrase !== null) {
       if (isValidRecoveryPhrase(text, recoveryPhrase) === true) {
-        navigation.reset({
+        /* navigation.reset({
           index: 0,
           routes: [{ name: 'FirstViewSet' }],
-        });
+        }); */
+        navigation.push('CreatePinView',{from:'create'})
       } else {
         setIsInvalidRecoveryPhrase(true)
       }
@@ -79,17 +80,20 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      paddingVertical: dimensions.screen.paddingVertical,
+      flex: 1,
+      justifyContent: 'space-between'
     },
     inputContainer: {
-      marginBottom: dimensions.screen.paddingVertical
+      marginBottom: dimensions.screen.paddingVertical,
+      marginTop: dimensions.horizontalSpacingBetweenItems
     },
     debugText: {
       color: '#f00',
       marginBottom: dimensions.screen.paddingVertical
     },
     textContainer: {
-      paddingBottom: dimensions.paddingVertical
+      paddingBottom: dimensions.paddingHorizontal
     }
   })
 
@@ -102,27 +106,31 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
-        {recoveryPhrase && <ProgressStepBar steps={4} activeStep={2} />}
-        <View style={styles.textContainer}>
-          <BodyText>{recoveryPhrase ? translate('verifyRecoveryPhraseCreateWalletIntro') : translate('verifyRecoveryPhraseLoadWalletIntro')}</BodyText>
+        <View>
+          {recoveryPhrase ? <ProgressStepBar steps={4} activeStep={2} /> : <ProgressStepBar steps={3} activeStep={0} />}
+          <View style={styles.textContainer}>
+            <BodyText>{recoveryPhrase ? translate('verifyRecoveryPhraseCreateWalletIntro') : translate('verifyRecoveryPhraseLoadWalletIntro')}</BodyText>
+          </View>
+          <View style={styles.inputContainer}>
+            <RecoveryPhraseInput
+              recoveryPhrase={recoveryPhrase}
+              wordCountChanged={(wordCount) => setWordCount(wordCount)}
+              onChangeText={_onRecoveryChangeHandler}
+              maxWords={MAX_WORDS}
+              isInvalid={isInvalidRecoveryPhrase}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <RecoveryPhraseInput
-            recoveryPhrase={recoveryPhrase}
-            wordCountChanged={(wordCount) => setWordCount(wordCount)}
-            onChangeText={_onRecoveryChangeHandler}
-            maxWords={MAX_WORDS}
-            isInvalid={isInvalidRecoveryPhrase}
+        <View>
+          <ActivityButton
+            title={translate('confirm')}
+            onPress={verifyRecoveryPhraseAndProceed}
+            disabled={!isFormFilled}
           />
         </View>
-        <ActivityButton
-          title={translate('next')}
-          onPress={verifyRecoveryPhraseAndProceed}
-          disabled={!isFormFilled}
-        />
         {/* FIXME: remove this when producing */}
-        {route.params &&
-          <Text style={styles.debugText}>{previewRecoveryText(route.params.recoveryPhrase)}</Text>}
+        {/* route.params &&
+          <Text style={styles.debugText}>{previewRecoveryText(route.params.recoveryPhrase)}</Text> */}
       </View>
     </Screen>
   )

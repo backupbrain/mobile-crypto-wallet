@@ -12,13 +12,18 @@ const LoadExistingWalletIntroView = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      paddingVertical: dimensions.screen.paddingVertical,
+      flex: 1,
+      justifyContent:'space-between'
     },
     paragraph: {
       paddingBottom: dimensions.verticalSpacingBetweenItems
     },
     textBlock: {
       paddingBottom: dimensions.paddingVertical
+    },
+    button:{
+      
     }
   })
 
@@ -29,10 +34,12 @@ const LoadExistingWalletIntroView = ({ navigation, route }) => {
           <BodyText style={styles.paragraph}>{translate('loadExistingWalletIntro1')}</BodyText>
           <BodyText>{translate('loadExistingWalletIntro2')}</BodyText>
         </View>
-        <ActivityButton
-          title={translate('continueToRecoveryPhrase')}
-          onPress={() => navigation.push('VerifyRecoveryPhraseView')}
-        />
+        <View style={styles.button}>
+          <ActivityButton
+            title={translate('continueToRecoveryPhrase')}
+            onPress={() => navigation.push('VerifyRecoveryPhraseView')}
+          />
+        </View>
       </View>
     </Screen>
   )
