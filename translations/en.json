@@ -30,6 +30,7 @@
   "logOut": "Log Out",
   "logIn": "Log In",
   "confirm": "Confirm",
+  "progressHeaderText" : "Step {current} of {total}",
 
   "show": "Show",
   "hide": "Hide",

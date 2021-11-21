@@ -7,7 +7,7 @@ import bip39words from './bip39words'
 export default class PktManager {
   constructor () {
     this.myAddresses = [
-      {
+      /* {
         address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
         total: 0,
         stotal: '0',
@@ -54,7 +54,7 @@ export default class PktManager {
         unconfirmed: 0,
         sunconfirmed: '0',
         outputcount: 1
-      }
+      } */
     ]
     this.addressLookup = {}
   }

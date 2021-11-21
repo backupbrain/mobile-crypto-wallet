@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
+import translate from '../translations';
 import BodyText from './text/BodyText';
 
 const DEFAULT_STEP_NUMBER = 4
@@ -74,17 +75,24 @@ const ProgressStepBar = ({ steps, activeStep, style }) => {
                 {
                     Array(StepsNumber).fill(0).map((_, index) =>
                     (
-                        <>
-                            <View style={getCircleStyle(index)} />
+                        <View style={styles.bar} key={index}>
+                            <View  style={getCircleStyle(index)} />
                             {
                                 index !== StepsNumber - 1 && <View style={getLineStyle(index)} />
                             }
-                        </>
+                        </View>
                     )
                     )
                 }
             </View>
-            <BodyText style={styles.text}>Step {currentStep + 1} of {StepsNumber}</BodyText>
+            <BodyText style={styles.text}>
+                {translate('progressHeaderText',
+                    {
+                        current: currentStep + 1,
+                        total: StepsNumber
+                    }
+                )}
+            </BodyText>
         </View>
     )
 };
