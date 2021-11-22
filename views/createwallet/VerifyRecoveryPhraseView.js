@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { Text, View, StyleSheet, FlatList } from 'react-native'
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Screen from '../../components/Screen'
 import ActivityButton from '../../components/buttons/ActiveButton'
 import RecoveryPhraseInput from '../../components/inputs/RecoveryPhraseInput'
@@ -9,6 +9,8 @@ import translate from '../../translations'
 import BodyText from '../../components/text/BodyText'
 import ProgressStepBar from '../../components/ProgressStepBar'
 import SmallButton from '../../components/buttons/SmallButton'
+import { set } from 'lodash'
+
 
 const MAX_WORDS = 15
 
@@ -16,19 +18,19 @@ const previewRecoveryText = (words) => {
   return words.join(' ')
 }
 
-const SeedPhraseWord = ({ chosenWords, word, index, handleClick }) => {
+const SeedPhraseWord = ({ chosenWords, word, index, handleClick, disabled }) => {
 
   const { dimensions, colors } = useTheme()
 
   const styles = StyleSheet.create({
     middleWord: {
-      marginHorizontal: dimensions.shortPadding
+      marginHorizontal: disabled ? dimensions.horizontalSpacingBetweenItems : dimensions.shortPadding
     },
     word: {
-      marginBottom: dimensions.paddingVertical,
+      marginBottom: disabled ? dimensions.shortPadding : dimensions.paddingVertical,
       justifyContent: 'center',
       alignItems: 'center',
-      width: 100,
+      width: disabled ? 90 : 100,
       borderRadius: 8
     },
     activeWord: {
@@ -42,7 +44,7 @@ const SeedPhraseWord = ({ chosenWords, word, index, handleClick }) => {
     if (index % 3 == 1) {
       style.push(styles.middleWord)
     }
-    if (chosenWords.find(word => word == item)) {
+    if (!disabled && chosenWords.find(word => word == item)) {
       style.push(styles.activeWord)
     }
     return style
@@ -50,7 +52,7 @@ const SeedPhraseWord = ({ chosenWords, word, index, handleClick }) => {
 
   return (
     <SmallButton
-      height={30}
+      height={disabled ? 25 : 30}
       style={wordStyle(index, word)}
       onPress={handleClick}
     >
@@ -66,8 +68,9 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const [isFormFilled, setIsFormFilled] = useState(false)
   const [isInvalidRecoveryPhrase, setIsInvalidRecoveryPhrase] = useState(false)
   const [recoveryPhrase] = useState(route?.params?.recoveryPhrase ?? null)
-  const [shuffledSeedPhrase] = useState(route?.params?.recoveryPhrase ? recoveryPhrase.sort(() => 0.5 - Math.random()) : null)
+  const shuffledSeedPhrase = useMemo(() => route?.params?.recoveryPhrase ? [...recoveryPhrase].sort(() => 0.5 - Math.random()) : null, [])
   const [chosenWords, setChosenWords] = useState([])
+  const [error, setError] = useState(false)
   const pktManager = useRef(new PktManager())
   const setWordCount = (numWords) => {
     _setWordCount(numWords)
@@ -141,21 +144,33 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     textContainer: {
       paddingBottom: dimensions.paddingHorizontal
     },
-    middleWord: {
-      marginHorizontal: dimensions.shortPadding
+    seedPhraseBox: {
+      height: 200,
+      borderRadius: 15,
+      borderColor: colors.inputs.borderColor,
+      borderWidth: dimensions.inputs.borderWidth,
+      padding: dimensions.horizontalSpacingBetweenItems
     },
-    word: {
-      marginBottom: dimensions.paddingVertical,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 100,
-      borderRadius: 8
+    errorSeedBox: {
+      borderColor: colors.inputs.errorTextColor
     },
-    activeWord: {
-      backgroundColor: colors.primaryButton.backgroundColor
+    helpText: {
+      color: error ? colors.inputs.errorTextColor : colors.inputs.color,
+      alignItems: 'top',
+      flexWrap: 'wrap',
+      marginTop: dimensions.horizontalSpacingBetweenItems
     }
 
   })
+
+  const seedBoxStyle = () => {
+    const style = [styles.seedPhraseBox]
+    if (chosenWords.length == MAX_WORDS && !isValidRecoveryPhrase(text, recoveryPhrase)) {
+      style.push(styles.errorSeedBox)
+    }
+
+    return style
+  }
 
   const _onRecoveryChangeHandler = (text) => {
     setIsInvalidRecoveryPhrase(false)
@@ -163,7 +178,17 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
     setText(text)
   }
 
+  useEffect(() => {
+    setIsInvalidRecoveryPhrase(false)
+    const text = chosenWords.join(' ')
+    setIsFormFilled(isValidRecoveryPhrase(text, recoveryPhrase))
+    setText(text)
+    if (chosenWords.length == MAX_WORDS && !isValidRecoveryPhrase(text, recoveryPhrase)) {
+      setError(true)
+    } else
+      setError(false)
 
+  }, [chosenWords])
 
   return (
     <Screen>
@@ -174,13 +199,41 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
             <BodyText>{recoveryPhrase ? translate('verifyRecoveryPhraseCreateWalletIntro') : translate('verifyRecoveryPhraseLoadWalletIntro')}</BodyText>
           </View>
           <View style={styles.inputContainer}>
-            <RecoveryPhraseInput
-              recoveryPhrase={recoveryPhrase}
-              wordCountChanged={(wordCount) => setWordCount(wordCount)}
-              onChangeText={_onRecoveryChangeHandler}
-              maxWords={MAX_WORDS}
-              isInvalid={isInvalidRecoveryPhrase}
-            />
+            {recoveryPhrase ?
+              <>
+                <View style={seedBoxStyle()}>
+                  <FlatList
+                    contentContainerStyle={{ alignSelf: 'center' }}
+                    numColumns={3}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    data={chosenWords}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) =>
+                      <SeedPhraseWord word={(index + 1) + '.' + item} index={index} chosenWords={chosenWords} disabled
+                        handleClick={() => {
+                          let array = [...chosenWords]
+                          setChosenWords(array.filter(word => word != item))
+                        }}
+                      />
+                    }
+                  />
+                </View>
+                <Text
+                  style={styles.helpText}
+                >
+                  {error ? translate('seedPhraseNotMatch') : translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: MAX_WORDS - chosenWords.length })}
+                </Text>
+              </>
+              :
+              <RecoveryPhraseInput
+                recoveryPhrase={recoveryPhrase}
+                wordCountChanged={(wordCount) => setWordCount(wordCount)}
+                onChangeText={_onRecoveryChangeHandler}
+                maxWords={MAX_WORDS}
+                isInvalid={isInvalidRecoveryPhrase}
+              />
+            }
           </View>
           {recoveryPhrase &&
             <FlatList
@@ -189,10 +242,12 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               data={shuffledSeedPhrase}
+              keyExtractor={(_, index) => index.toString()}
               renderItem={({ item, index }) =>
-                <SeedPhraseWord key={index} word={item} index={index} chosenWords={chosenWords}
+                <SeedPhraseWord word={item} index={index} chosenWords={chosenWords}
                   handleClick={() => {
-                    let array = chosenWords
+                    if (chosenWords.find(word => word == item)) return
+                    let array = [...chosenWords]
                     array.push(item)
                     setChosenWords(array)
                   }}

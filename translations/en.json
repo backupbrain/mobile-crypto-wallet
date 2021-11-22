@@ -61,6 +61,7 @@
   "seedPhraseWarning1":"Do not screenshot",
   "seedPhraseWarning2":"Keep private.Do not share with anyone",
   "seedCopy":"Copy seed words to clipboard",
+  "seedPhraseNotMatch":"Seed phrase do not match",
 
   "continueToRecoveryPhrase": "Continue to Seed Phrase",
   "pressAndHoldToReveal": "Press and Hold to Reveal",
