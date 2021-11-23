@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
+import BodyText from '../text/BodyText'
 
 const ActiveButton = (props,ref) => {
   const { colors, dimensions } = useTheme()
@@ -60,7 +61,7 @@ const ActiveButton = (props,ref) => {
     <View style={[styles.container, props.style]} ref={ref}>
       {isDisabled ? (
         <View style={[styles.button, styles.disabledButton]} onPress={props.onPress}>
-          <Text style={styles.disabledButtonText}>{props.title}</Text>
+          <BodyText style={styles.disabledButtonText}>{props.title}</BodyText>
         </View>
       ) : (
         <TouchableOpacity
@@ -70,7 +71,7 @@ const ActiveButton = (props,ref) => {
           onPressOut={props.onPressOut}
           onLongPress={props.onLongPress}
         >
-          <Text style={styles.buttonText}>{props.title}</Text>
+          <BodyText style={styles.buttonText}>{props.title}</BodyText>
         </TouchableOpacity>
       )}
     </View>

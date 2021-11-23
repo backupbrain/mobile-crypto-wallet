@@ -101,8 +101,8 @@ const AndroidTheme = {
       lineHeight: '1.6',
       fontSize: '1.2em',
       textAlign: 'left',
-      borderRadius: '3px',
-      width: '200px'
+      borderRadius: 8,
+      width: 230
     },
     transactionCard: {
       fontFamily: 'monospace',
@@ -125,13 +125,13 @@ const AndroidTheme = {
     smallButton: {
       borderRadius: 8
     },
-    paddingHorizontal: '20px',
+    paddingHorizontal: 20,
     paddingVertical: '16px',
     horizontalSpacingBetweenItems: 10,
     verticalSpacingBetweenItems: 8,
     horizontalSpacingBetweenItemsShort: '5px',
     verticalSpacingBetweenItemsShort: '4px',
-    shortPadding:12
+    shortPadding: 12
   }
 }
 
@@ -193,12 +193,12 @@ export const AnodeLightTheme = {
     },
     primaryButton: {
       backgroundColor: '#2978A8',
-      color: '#E5EFF4',
+      color: '#fff',
       borderColor: '#2978A8'
     },
     secondaryButton: {
       backgroundColor: '#2978A8',
-      color: '#E5EFF4',
+      color: '#fff',
       borderColor: '#2978A8'
     },
     unselectedButton: {
@@ -308,12 +308,12 @@ export const AnodeDarkTheme = {
     },
     primaryButton: {
       backgroundColor: '#4BA7C4',
-      color: '#D4D7E9',
+      color: '#fff',
       borderColor: '#4BA7C4'
     },
     secondaryButton: {
       backgroundColor: '#2E4292',
-      color: '#D4D7E9',
+      color: '#fff',
       borderColor: '#2E4292'
     },
     unselectedButton: {

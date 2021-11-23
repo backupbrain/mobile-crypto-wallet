@@ -8,7 +8,7 @@ const AddressQrCode = (props) => {
   const [cardDimensions, setCardDimensions] = useState({ width: 0, height: 0 })
   const [isReady, _setIsReady] = useState(false)
 
-  const padding = parseInt(dimensions.paddingHorizontal.substr(0, dimensions.paddingHorizontal.length - 2))
+  const padding = dimensions.paddingHorizontal
 
   const styles = StyleSheet.create({
     container: {

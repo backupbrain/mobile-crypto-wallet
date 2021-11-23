@@ -72,6 +72,15 @@ const VerifyRecoveryPhraseView = ({ navigation, route }) => {
   const [chosenWords, setChosenWords] = useState([])
   const [error, setError] = useState(false)
   const pktManager = useRef(new PktManager())
+
+  useEffect(()=>{
+    if(!recoveryPhrase){
+      navigation.setOptions({
+        title:translate('enterSeedPhrase')
+      })
+    }
+  },[])
+
   const setWordCount = (numWords) => {
     _setWordCount(numWords)
     /* setIsFormFilled(numWords == MAX_WORDS) */

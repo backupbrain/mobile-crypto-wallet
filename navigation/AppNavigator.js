@@ -48,6 +48,7 @@ import Unpair2FaDeviceView from '../views/2fa/Unpair2FaDeviceView'
 import { useDispatch } from 'react-redux'
 import { securityDisable, securityEnable } from '../store/SecurityAction'
 import NewWalletIntroView2 from '../views/createwallet/NewWalletIntroView2'
+import RequestView from '../views/RequestView'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -214,6 +215,14 @@ const WalletHomeViewSet = ({ navigation }) => {
         component={AddressView}
       />
       <Stack.Screen
+        name='RequestView'
+        options={{
+          title: translate('request'),
+          headerRight: () => <HamburgerMenuButon navigation={navigation} />
+        }}
+        component={RequestView}
+      />
+      <Stack.Screen
         name='TransactionView'
         options={{
           title: translate('transaction'),
@@ -353,7 +362,7 @@ const ChangePassphraseViewSet = ({ navigation }) => {
 }
 
 const RePair2FaDeviceViewSet = ({ navigation }) => {
-  
+
   return (
     <Stack.Navigator initialRouteName='Unpair2FaDeviceView' screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen

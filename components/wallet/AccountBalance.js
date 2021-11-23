@@ -40,7 +40,7 @@ const WalletListItem = (props) => {
       color: colors.disabledText,
       width: '100%',
       fontSize: 14,
-      justifyContent:'center'
+      justifyContent: 'center'
     }
   })
 
@@ -48,8 +48,17 @@ const WalletListItem = (props) => {
     <View style={[styles.container, props.style]}>
       {isVisible
         ? <>
-          <Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
-          <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
+          {props.inverted ?
+            <>
+              <Text style={styles.amount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
+              <Text style={styles.altAmount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
+            </>
+            :
+            <>
+              <Text style={styles.amount}>{formatAmount(props.amount)} {translate('pkt')}</Text>
+              <Text style={styles.altAmount}>{formatAmount(toUsd(props.amount))} {translate('usd')}</Text>
+            </>
+          }
         </>
         : <><Text style={styles.amount}>--- {translate('pkt')}</Text><Text style={styles.altAmount}>--- {translate('usd')}</Text></>}
     </View>

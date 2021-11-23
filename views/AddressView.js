@@ -259,7 +259,7 @@ const AddressView = ({ navigation, route }) => {
         title: address.name
       })
     }
-  }, address)
+  }, [address])
 
   const fetchContacts = async () => {
     // TODO: use the contactManager.current.getByAddress() function
@@ -354,7 +354,12 @@ const AddressView = ({ navigation, route }) => {
               <BodyText style={styles.smallButtonText}>{translate('send')}</BodyText>
             </View>
           </SmallButton>
-          <SmallButton height={40}>
+          <SmallButton height={40}
+            onPress={() => {
+              navigation.navigate('RequestView', {
+                address
+              })
+            }} >
             <View style={styles.buttonContent}>
               <ReqIcon color={colors.text} />
               <BodyText style={styles.smallButtonText}>{translate('request')}</BodyText>
@@ -406,7 +411,7 @@ const AddressView = ({ navigation, route }) => {
           style={styles.tabs}
         /> */}
       </View>
-    </Screen>
+    </Screen >
   )
 }
 
