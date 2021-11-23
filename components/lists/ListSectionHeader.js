@@ -11,7 +11,7 @@ const ListSectionHeader = (props) => {
     sectionHeader: {
       flexDirection: 'row',
       backgroundColor: colors.listSectionHeader.backgroundColor,
-      paddingVertical: dimensions.listSectionHeader.paddingVertical,
+      paddingTop: dimensions.listSectionHeader.paddingVertical,
       paddingHorizontal: dimensions.listSectionHeader.paddingHorizontal,
       alignItems: 'flex-end'
     },

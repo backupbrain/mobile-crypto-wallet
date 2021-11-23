@@ -126,11 +126,11 @@ const AndroidTheme = {
       borderRadius: 8
     },
     paddingHorizontal: 20,
-    paddingVertical: '16px',
+    paddingVertical: 16,
     horizontalSpacingBetweenItems: 10,
     verticalSpacingBetweenItems: 8,
-    horizontalSpacingBetweenItemsShort: '5px',
-    verticalSpacingBetweenItemsShort: '4px',
+    horizontalSpacingBetweenItemsShort: 5,
+    verticalSpacingBetweenItemsShort: 4,
     shortPadding: 12
   }
 }

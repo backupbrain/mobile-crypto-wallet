@@ -23,9 +23,10 @@ const SearchInput = (props) => {
       flexGrow: 1,
       paddingHorizontal: 0,
       paddingVertical: dimensions.inputs.paddingVertical,
-      color: colors.inputs.color
+      color: colors.inputs.color,
     },
     textInput: {
+      paddingHorizontal: dimensions.shortPadding,
       width: '100%',
       flexDirection: 'row',
       justifyContent: 'center',
@@ -34,7 +35,8 @@ const SearchInput = (props) => {
       borderTopWidth: dimensions.inputs.borderTopWidth,
       borderLeftWidth: dimensions.inputs.borderLeftWidth,
       borderRightWidth: dimensions.inputs.borderRightWidth,
-      borderBottomWidth: dimensions.inputs.borderBottomWidth
+      borderBottomWidth: dimensions.inputs.borderBottomWidth,
+      alignItems:'center'
     },
     textInputRegular: {
       borderTopColor: colors.inputs.borderTopColor,

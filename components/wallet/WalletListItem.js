@@ -6,6 +6,7 @@ import PersonIcon from '../images/PersonIcon'
 import QrCodeIcon from '../images/QrCodeIcon'
 import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
+import PersonAvatar from '../images/PersonAvatar'
 
 const truncateAddress = (address) => {
   const MAX_LENGTH = 11
@@ -56,7 +57,8 @@ const WalletListItem = (props) => {
       overflow: 'hidden'
     },
     icon: {
-      paddingRight: dimensions.horizontalSpacingBetweenItems
+      paddingRight: dimensions.paddingHorizontal,
+      marginRight: dimensions.shortPadding
     },
     accountInformation: {
       flexGrow: 1,
@@ -85,7 +87,7 @@ const WalletListItem = (props) => {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.icon}>
-        {isLocalAddress ? <QrCodeIcon color={colors.text} /> : <PersonIcon color={colors.text} />}
+        {isLocalAddress ? <QrCodeIcon color={colors.text} /> : <PersonAvatar />}
       </View>
       <View style={styles.accountInformation}>
         <BodyText style={styles.accountName}>{displayedName}</BodyText>

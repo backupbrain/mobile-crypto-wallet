@@ -90,7 +90,9 @@ const ContactBookView = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     screen: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingHorizontal
+      paddingBottom: dimensions.screen.paddingHorizontal,
+      flex: 1,
+      justifyContent: 'space-between'
     },
     searchBar: {
       width: '100%',
@@ -103,11 +105,14 @@ const ContactBookView = ({ navigation, route }) => {
     },
     searchInput: {
     },
-    addContactButtonContainer: {},
+    addContactButtonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: dimensions.paddingHorizontal
+    },
     addButton: {
       flexShrink: 1,
-      paddingVertical: '10px',
-      paddingLeft: dimensions.button.paddingHorizontal
+      flexDirection: 'row'
     },
     noResult: {
       width: '100%',
@@ -115,6 +120,10 @@ const ContactBookView = ({ navigation, route }) => {
       alignItems: 'center'
     },
     contactListContainer: {
+      paddingHorizontal: dimensions.horizontalSpacingBetweenItemsShort
+    },
+    newAddressText: {
+
     }
   })
 
@@ -173,50 +182,58 @@ const ContactBookView = ({ navigation, route }) => {
   return (
     <Screen>
       <View style={styles.screen}>
-        <View style={styles.searchBar}>
-          <View style={styles.searchInputContainer}>
-            <SearchInput
-              placeholder={translate('searchAddresses')}
-              style={styles.searchInput}
-              onChangeText={_onChangeTextHandler}
-            />
-          </View>
-          <View style={styles.addContactButtonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => {
-                navigation.push('EditContactView')
-              }}
-            >
-              <PlusIcon fill={colors.link.color} size={28} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.contactListContainer}>
-          {noSearchResults ? (
-            <View style={styles.noResult}>
-              <BodyText>No results</BodyText>
+        <View>
+          <View style={styles.searchBar}>
+            <View style={styles.searchInputContainer}>
+              <SearchInput
+                placeholder={translate('searchAddresses')}
+                style={styles.searchInput}
+                onChangeText={_onChangeTextHandler}
+              />
             </View>
-          ) : (
-            <ContactList
-              addresses={filter(addresses)}
-              onListItemPress={(address) => {
-                if (isInSelectorMode) {
-                  route.params.onContactSelected(address)
-                  navigation.goBack()
-                } else {
-                  navigation.push(
-                    'EditContactView', {
+          </View>
+          <View style={styles.contactListContainer}>
+            {noSearchResults ? (
+              <View style={styles.noResult}>
+                <BodyText>No results</BodyText>
+              </View>
+            ) : (
+              <ContactList
+                addresses={filter(addresses)}
+                onListItemPress={(address) => {
+                  if (isInSelectorMode) {
+                    route.params.onContactSelected(address)
+                    navigation.goBack()
+                  } else {
+                    navigation.push(
+                      'EditContactView', {
                       address: address.address,
                       name: address.name,
                       isLocal: address.isLocal
                     }
-                  )
-                }
-              }}
-              navigation={navigation}
-            />
-          )}
+                    )
+                  }
+                }}
+                navigation={navigation}
+              />
+            )}
+          </View>
+        </View>
+        <View>
+          {
+            searchFilter ||
+            <View style={styles.addContactButtonContainer}>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => {
+                  navigation.push('EditContactView')
+                }}
+              >
+                {/* <PlusIcon fill={colors.link.color} size={25} /> */}
+                <BodyText style={styles.newAddressText}>{'+ ' + translate('newContacts')}</BodyText>
+              </TouchableOpacity>
+            </View>
+          }
         </View>
       </View>
     </Screen>
