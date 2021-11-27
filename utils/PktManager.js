@@ -92,7 +92,7 @@ export default class PktManager {
       sunconfirmed: '0',
       outputcount: 1
     }
-    this.myAddresses.push(address)
+    /* this.myAddresses.push(address) */
     return new Promise((resolve, reject) => {
       resolve(address)
     }, 10)

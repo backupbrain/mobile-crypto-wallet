@@ -34,10 +34,10 @@ const AndroidTheme = {
       tabMarginHorizontal: '20px'
     },
     modal: {
-      borderRadius: '30px',
+      borderRadius: 12,
       titleSeparatorWidth: '1px',
-      titleFontWeight: 'bold',
-      titleFontSize: 'normal',
+      titleFontWeight: 500,
+      titleFontSize: 24,
       titleTextAlign: 'center'
     },
     bodyText: {
@@ -267,7 +267,7 @@ export const AnodeDarkTheme = {
       boxShadow: '2px 2px 10px #06151e, -2px -2px 10px #103347'
     },
     screen: {
-      backgroundColor: '#121212',
+      backgroundColor: '#141528',
       color: '#fff'
     },
     listItem: {
@@ -279,7 +279,7 @@ export const AnodeDarkTheme = {
     },
     modal: {
       overlayBackgroundColor: 'rgba(0, 0, 0, 0.6)',
-      backgroundColor: '#121212',
+      backgroundColor: '#222531',
       titleSeparatorColor: '#A9A9A9'
     },
     bodyText: {
@@ -358,11 +358,11 @@ export const AnodeDarkTheme = {
     smallButton: {
       backgroundColor: '#192140',
     },
-    background: '#121212',
-    border: '#121212',
+    background: '#141528',
+    border: '#141528',
     text: '#fff',
     disabledText: '#A9A9A9',
-    securityBackground: '#121212'
+    securityBackground: '#141528'
   },
   dimensions: AndroidTheme.dimensions
 }

@@ -74,7 +74,8 @@ const WalletListItem = (props) => {
 
     },
     amount: {
-      paddingBottom: dimensions.verticalSpacingBetweenItemsShort
+      paddingBottom: dimensions.verticalSpacingBetweenItemsShort,
+      fontSize: 18
     },
     altAmount: {
       color: colors.disabledText

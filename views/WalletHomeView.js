@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native'
 import Screen from '../components/Screen'
 import ActivityButton from '../components/buttons/ActiveButton'
 import WalletList from '../components/wallet/WalletList'
@@ -15,6 +15,10 @@ import WalletListItem from '../components/wallet/WalletListItem'
 import GenericTextInput from '../components/inputs/GenericTextInput'
 import TwoFactorAuth from '../utils/TwoFactorAuth'
 import AlertBanner from '../components/AlertBanner'
+import SmallButton from '../components/buttons/SmallButton'
+import SendIcon from '../components/images/SendIcon'
+import BodyText from '../components/text/BodyText'
+import ReqIcon from '../components/images/ReqIcon'
 
 const WalletHomeView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
@@ -29,11 +33,15 @@ const WalletHomeView = ({ navigation, route }) => {
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
   const modal = useRef(null)
+  const alertModal = useRef(null)
 
   useEffect(() => {
     setVariant(route.params?.variant)
     setLabel(route.params?.label)
     setShowAlert(route.params?.showAlert ?? false)
+    if (route.params?.showAlert) {
+      alertModal.current.open()
+    }
   }, [route.params?.showAlert])
 
   const fetchMyAddresses = async () => {
@@ -76,11 +84,11 @@ const WalletHomeView = ({ navigation, route }) => {
       paddingVertical: dimensions.screen.paddingHorizontal
     },
     accountBalanceContainer: {
-      justifyContent:'center',
-      alignItems:'center'
+      justifyContent: 'center',
+      alignItems: 'center'
     },
-    balances:{
-      textAlign:'center'
+    balances: {
+      textAlign: 'center'
     },
     sendReceiveButtonPanel: {
       mdth: '100%',
@@ -102,54 +110,97 @@ const WalletHomeView = ({ navigation, route }) => {
     pair2faText: {
       textAlign: 'center',
       color: colors.inputs.helpTextColor
+    },
+    sendReceiveButton: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      alignSelf: 'center',
+      marginTop: dimensions.paddingVertical,
+      paddingTop: dimensions.shortPadding,
+      paddingBottom: dimensions.paddingVertical
+    },
+    buttonContent: {
+      flexDirection: 'row',
+    },
+    smallButtonText: {
+      paddingLeft: dimensions.verticalSpacingBetweenItems,
+      textAlign: 'center'
+    },
+    rightMargin: {
+      marginRight: dimensions.horizontalSpacingBetweenItems
+    },
+    addContactButtonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: dimensions.paddingHorizontal
+    },
+    addButton: {
+      flexShrink: 1,
+      flexDirection: 'row'
+    },
+    addressInput: {
+      paddingVertical: dimensions.paddingHorizontal
+    },
+    alertText: {
+      width: '100%',
+      textAlign: 'center',
+      paddingVertical: dimensions.paddingHorizontal
     }
   })
 
   return (
     <Screen>
-      <AlertBanner
+      {/* <AlertBanner
         variant={variant}
         label={label}
         visible={showAlert}
         onClose={() => {
           setShowAlert(false)
         }}
-      />
+      /> */}
+      <Modal ref={alertModal}>
+        <BodyText style={styles.alertText}>{label}</BodyText>
+        <ActivityButton
+          title={translate('confirm')}
+          style={styles.addressInput}
+          onPress={() => {
+            alertModal.current.close()
+            navigation.setParams({
+              showAlert: false
+            })
+          }}
+        />
+      </Modal>
       <Modal
         ref={modal}
-        title={translate('createAddress')}
-        content={() =>
-          <View style={{ paddingTop: dimensions.paddingVertical }}>
-            <WalletListItem
-              name={newAddress.name}
-              address={newAddress.address}
-              amount={newAddress.total}
-              showAmount={false}
-            /* style={styles.listItem} */
-            />
-            <GenericTextInput
-              placeholder={translate('addressName')}
-              help={translate('newAddressHelp')}
-              onChangeText={(text) => newAddressName.current = text}
-            />
-
-          </View>
-        }
-        footer={() =>
-          <ActivityButton
-            title={translate('createAddress')}
-            onPress={async () => {
-              await contactBook.current.add(newAddressName.current, newAddress.address)
-              newAddressName.current = ""
-              await fetchMyAddresses()
-              modal.current.close()
-              setVariant('success')
-              setLabel(translate('newAddressAlert'))
-              setShowAlert(true)
-            }}
+        title={translate('newAddress')}
+      >
+        <View>
+          <GenericTextInput
+            placeholder={translate('addressName')}
+            onChangeText={(text) => setNewAddress({ ...newAddress, name: text })}
           />
-        }
-      />
+          <PktAddressInput
+            style={styles.addressInput}
+            placeholder={translate('pktAddress')}
+            onChangeText={(text) => setNewAddress({ ...newAddress, address: text })}
+            address={newAddress.address}
+          />
+        </View>
+        <ActivityButton
+          title={translate('saveAddress')}
+          style={styles.addressInput}
+          onPress={async () => {
+            await contactBook.current.add(newAddress.name, newAddress.address)
+            setNewAddress({})
+            await fetchMyAddresses()
+            modal.current.close()
+            setVariant('success')
+            setLabel(translate('newAddressAlert'))
+            setShowAlert(true)
+          }}
+        />
+      </Modal>
       <View style={styles.screen}>
         <View style={styles.accountBalanceContainer}>
           <MainAccountBalance
@@ -157,40 +208,39 @@ const WalletHomeView = ({ navigation, route }) => {
             style={styles.balances}
           />
         </View>
-        <View style={styles.sendReceiveButtonPanel}>
-          <View style={[styles.sendReceiveButton, styles.leftButton]}>
+        <View style={styles.sendReceiveButton}>
+          <SmallButton height={40} style={styles.rightMargin}
+            onPress={() => navigation.push('SendView')}>
+            <View style={styles.buttonContent}>
+              <SendIcon color={colors.text} />
+              <BodyText style={styles.smallButtonText}>{translate('send')}</BodyText>
+            </View>
+          </SmallButton>
+          <SmallButton height={40}
+            onPress={() => {
+              navigation.push('AddressView', { address: addresses[0] })
+            }} >
+            <View style={styles.buttonContent}>
+              <ReqIcon color={colors.text} />
+              <BodyText style={styles.smallButtonText}>{translate('request')}</BodyText>
+            </View>
+          </SmallButton>
+        </View>
+        {
+          /* twoFactorExists ?
             <ActivityButton
               title={translate('send')}
               onPress={() => navigation.push('SendView')}
               disabled={!sendActivated}
             />
-            {
-              /* twoFactorExists ?
-                <ActivityButton
-                  title={translate('send')}
-                  onPress={() => navigation.push('SendView')}
-                  disabled={!sendActivated}
-                />
-                :
-                <ActivityButton
-                  title={translate('pair2FaDevice')}
-                  onPress={() => navigation.push('RePair2FaDeviceViewSet',{
-                    screen:'Pair2FaDeviceView'
-                  })}
-                /> */
-            }
-          </View>
-          <View style={[styles.sendReceiveButton, styles.rightButton]}>
+            :
             <ActivityButton
-              title={translate('receive')}
-              onPress={() => {
-                navigation.push('AddressView', { address: addresses[0] })
-              }}
-            />
-          </View>
-        </View>
-        {
-          /* !twoFactorExists && 
+              title={translate('pair2FaDevice')}
+              onPress={() => navigation.push('RePair2FaDeviceViewSet',{
+                screen:'Pair2FaDeviceView'
+              })}
+            /> 
+           !twoFactorExists && 
           <Text style={styles.pair2faText}>{translate('whyPair2FaDevice')}</Text> */
         }
         <View style={styles.walletListContainer}>
@@ -203,10 +253,22 @@ const WalletHomeView = ({ navigation, route }) => {
             }}
             onLinkPress={() => {
               // TODO: create new address, bring up modal editor
-              pktManager.current.createAddress().then(address => setNewAddress(address))
-              modal.current.open()
+              /* pktManager.current.createAddress().then(address => setNewAddress(address))
+              modal.current.open() */
             }}
           />
+          <View style={styles.addContactButtonContainer}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => {
+                pktManager.current.createAddress().then(addr => setNewAddress(addr))
+                modal.current.open()
+              }}
+            >
+              {/* <PlusIcon fill={colors.link.color} size={25} /> */}
+              <BodyText >{'+ ' + translate('newContacts')}</BodyText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Screen>

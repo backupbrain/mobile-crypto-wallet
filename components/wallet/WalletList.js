@@ -18,13 +18,7 @@ const WalletList = (props) => {
     listItem: {
       paddingVertical: dimensions.listItem.paddingVertical,
       paddingHorizontal: dimensions.listItem.paddingHorizontal,
-      marginHorizontal: dimensions.listItem.marginHorizontal,
-      borderTopWidth: dimensions.listItem.borderTopWidth,
-      borderLeftWidth: dimensions.listItem.borderLeftWidth,
-      borderRightWidth: dimensions.listItem.orderRightWidth,
-      borderBottomWidth: dimensions.listItem.borderBottomWidth,
-      borderRadius: dimensions.listItem.borderRadius,
-      borderColor: colors.listItem.borderColor
+      marginHorizontal: dimensions.listItem.marginHorizontal
     },
     noAddresses: {
       color: colors.disabledText,
@@ -52,7 +46,7 @@ const WalletList = (props) => {
         renderSectionHeader={({ section }) => (
           <ListSectionHeader
             title={translate('myAddresses')}
-            linkText={translate('createAddress')}
+            /* linkText={translate('createAddress')} */
             onLinkPress={props.onLinkPress}
           />
         )}

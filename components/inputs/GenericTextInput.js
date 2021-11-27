@@ -26,7 +26,7 @@ const GenericTextInput = (props) => {
       width: '100%',
       backgroundColor: colors.inputs.backgroundColor,
       color: colors.inputs.color,
-      paddingHorizontal: dimensions.inputs.paddingHorizontal,
+      paddingHorizontal: dimensions.paddingHorizontal,
       paddingVertical: dimensions.inputs.paddingVertical,
       borderRadius: dimensions.inputs.borderRadius,
       borderTopWidth: dimensions.inputs.borderTopWidth,

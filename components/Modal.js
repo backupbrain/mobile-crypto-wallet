@@ -69,8 +69,8 @@ const Modal = (props, ref) => {
       width: '100%',
       flex: 1,
       justifyContent: 'center',
-      paddingVertical: '16px',
-      paddingHorizontal: '20px'
+      paddingVertical: 16,
+      paddingHorizontal: 20
     },
     modal: {
       backgroundColor: colors.modal.backgroundColor,
@@ -81,8 +81,7 @@ const Modal = (props, ref) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
-      borderBottomWidth: dimensions.modal.titleSeparatorWidth,
-      borderBottomColor: colors.modal.titleSeparatorColor
+      paddingTop: dimensions.paddingVertical
     },
     modalText: {
       width: '100%',
@@ -107,35 +106,34 @@ const Modal = (props, ref) => {
     }
   })
 
-  let Content = props.content
-  let Footer = props.footer
- 
   return (
     <>
       {isVisible &&
         <View style={[styles.container, props.style]}>
           <Animated.View style={[styles.background, props.backgroundStyle, { opacity: fadeAnim }]}>
             <Animated.View style={[styles.modal, props.modalStyle, { opacity: fadeAnim }]}>
-              <View style={styles.modalTitle}>
-                <Text style={styles.modalText}>{props.title}</Text>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onLayout={onCloseButtonLayout}
-                  onPress={close}
-                >
-                  <Close color={colors.text} size='16' />
-                </TouchableOpacity>
-              </View>
+              {
+                props.title &&
+                <View style={styles.modalTitle}>
+                  <Text style={styles.modalText}>{props.title}</Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onLayout={onCloseButtonLayout}
+                    onPress={close}
+                  >
+                    <Close color={colors.text} size='16' />
+                  </TouchableOpacity>
+                </View>
+              }
               <View style={styles.modalContainer}>
-                <Content />
+                {
+                  props.children
+                }
               </View>
-              {props.footer &&
-                <View style={styles.footerContainer}>
-                  <Footer />
-                </View>}
             </Animated.View>
           </Animated.View>
-        </View>}
+        </View>
+      }
     </>
   )
 }

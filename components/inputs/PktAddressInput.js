@@ -82,7 +82,7 @@ const PktAddressInput = (props) => {
       color: colors.inputs.labelColor
     },
     button: {
-      paddingLeft: dimensions.horizontalSpacingBetweenItems
+      paddingRight: dimensions.paddingVertical
     },
     buttonFirst: {
       paddingBottom: dimensions.verticalSpacingBetweenItems
@@ -98,17 +98,11 @@ const PktAddressInput = (props) => {
       flexDirection: 'row',
       width: '100%',
       backgroundColor: colors.inputs.backgroundColor,
-      borderRadius: dimensions.inputs.borderRadius,
       borderTopWidth: dimensions.inputs.borderTopWidth,
-      borderLeftWidth: dimensions.inputs.borderLeftWidth,
-      borderRightWidth: dimensions.inputs.borderRightWidth,
       borderBottomWidth: dimensions.inputs.borderBottomWidth
     },
     textInputRegular: {
-      borderTopColor: colors.inputs.borderTopColor,
-      borderLeftColor: colors.inputs.borderLeftColor,
-      borderRightColor: colors.inputs.borderRightColor,
-      borderBottomColor: colors.inputs.borderBottomColor
+      borderColor: colors.primaryButton.backgroundColor
     },
     textInputError: {
       borderTopColor: colors.inputs.borderTopErrorColor,
@@ -122,11 +116,11 @@ const PktAddressInput = (props) => {
       fontFamily: 'monospace',
       color: colors.inputs.color,
       paddingVertical: dimensions.inputs.paddingVertical,
-      paddingLeft: dimensions.inputs.paddingHorizontal,
-      paddingRight: dimensions.horizontalSpacingBetweenItemsShort
+      paddingHorizontal: dimensions.horizontalSpacingBetweenItemsShort
     },
     buttonPanel: {
-
+      justifyContent: 'flex-end',
+      alignItems: 'center'
     },
     helpText: {
       color: '#666',
@@ -163,7 +157,7 @@ const PktAddressInput = (props) => {
         />
         <View style={styles.buttonPanel}>
           <TouchableOpacity
-            style={[styles.button, styles.buttonFirst]}
+            style={[styles.button, styles.buttonLast]}
             onPress={pasteAddressFromClipboard}
           >
             <PasteIcon color={colors.text} />
@@ -174,16 +168,16 @@ const PktAddressInput = (props) => {
           >
             <PersonIcon color={colors.text} />
           </TouchableOpacity> */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[styles.button, styles.buttonLast]}
             onPress={props.onQrCodeIconPress}
           >
             <ScanQrCodeIcon color={colors.text} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
-      {!isInvalid &&
-        <BodyText style={styles.helpText}>{translate('numCharsRemaining', { numCharsRemaining: numCharsLeft(address) })}</BodyText>}
+      {/* !isInvalid &&
+        <BodyText style={styles.helpText}>{translate('numCharsRemaining', { numCharsRemaining: numCharsLeft(address) })}</BodyText> */}
       {isInvalid &&
         <BodyText style={styles.errorText}>{translate('invalidAddress')}</BodyText>}
     </View>
