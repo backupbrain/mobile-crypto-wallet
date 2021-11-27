@@ -73,9 +73,10 @@ const GenericTextInput = (props) => {
       {props.label && <BodyText style={styles.label}>{props.label}</BodyText>}
       <TextInput
         autoFocus={props?.autoFocus ?? false}
-        style={getTextInputStyle()}
+        style={[getTextInputStyle(), props.inputStyle]}
         placeholder={placeholder}
         value={text}
+        multiline={props.multiline}
         onChangeText={(text) => {
           setText(text)
           if (props.onChangeText) {

@@ -234,7 +234,8 @@ export const AnodeLightTheme = {
     },
     transactionListItem: {
       confirmedIconColor: '#37B761',
-      unconfirmedIconColor: '#ED1111'
+      unconfirmedIconColor: '#ED1111',
+      pendingIconColor:'#D9B455'
     },
     recoveryWord: {
       backgroundColor: '#192140',
@@ -349,7 +350,8 @@ export const AnodeDarkTheme = {
     },
     transactionListItem: {
       confirmedIconColor: '#37B761',
-      unconfirmedIconColor: '#ED1111'
+      unconfirmedIconColor: '#ED1111',
+      pendingIconColor:'#D9B455'
     },
     recoveryWord: {
       backgroundColor: '#192140',

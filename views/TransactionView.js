@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, StyleSheet, Linking } from 'react-native'
+import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import Screen from '../components/Screen'
 import ActiveButton from '../components/buttons/ActiveButton'
@@ -21,6 +21,9 @@ import ContactManager from '../utils/ContactManager'
 import PktManager from '../utils/PktManager'
 import TransactionNoteManager from '../utils/TransactionNoteManager'
 import translate from '../translations'
+import PktPriceTicker from '../utils/PktPriceTicker'
+import NoteIcon from '../components/images/NoteIcon'
+import PendingIcon from '../components/images/PendingIcon'
 
 const TransactionQrCode = (props) => {
   const { dimensions } = useTheme()
@@ -136,7 +139,8 @@ const TransactionTextCode = (props) => {
 
 const TransactionView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
-  const modalRef = useRef()
+  const modalRef = useRef(null)
+  const detailsModalRef = useRef(null)
   const [transaction, setTransaction] = useState({})
   const [, setExtendedTransactionData] = useState({})
   const [fromName, setFromName] = useState(translate('unnamedAddress'))
@@ -150,6 +154,7 @@ const TransactionView = ({ navigation, route }) => {
   const transactionNoteManager = useRef(new TransactionNoteManager())
   const contactManager = useRef(new ContactManager())
   const pktManager = useRef(new PktManager())
+  const priceTicker = useRef(new PktPriceTicker())
 
   const isSpend = (transaction) => {
     return (transaction.category === 'send')
@@ -250,19 +255,8 @@ const TransactionView = ({ navigation, route }) => {
     /* */
   }
 
-  const openInBlockExplorer = (transaction) => {
-    /* const url = `https://explorer.pkt.cash/tx/${transaction.txid}` */
-    // TODO : Change this demo address
-    const url = `https://explorer.pkt.cash/address/pkt1q6hqsqhqdgqfd8t3xwgceulu7k9d9w5t2amath0qxyfjlvl3s3u4sjza2g2`
-    Linking.openURL(url).catch((err) => {
-      console.log('error occurred trying to open in browser')
-      console.log(err)
-    })
-  }
-
   const fetchNote = async (transactionId) => {
     const note = await transactionNoteManager.current.get(transactionId)
-    console.log('note',note)
     if (note) {
       setNote(note)
       setNewNote(note)
@@ -271,11 +265,19 @@ const TransactionView = ({ navigation, route }) => {
       setHasNote(false)
     }
   }
+  const formatDate = (timestamp) => {
+
+    const date = new Date(timestamp)
+    const day = date.toLocaleDateString('en-US', { weekday: 'long' }).substring(0, 3)
+    const dayNumber = date.getDate()
+    const hour = date.getHours();
+    const min = date.getMinutes()
+
+    return `${day} ${dayNumber} at ${hour}:${min}`
+  }
 
   const getTransactionDateTime = (transaction) => {
-    console.log(transaction)
-    const date = new Date(parseInt(transaction.time) * 1000)
-    console.log(date)
+    const date = formatDate(parseInt(transaction.time) * 1000)
     return date.toLocaleString()
   }
 
@@ -335,7 +337,10 @@ const TransactionView = ({ navigation, route }) => {
       color: colors.alertBanner.color
     },
     confirmationText: {
-      color: colors.alertBanner.color
+      color: colors.transactionListItem.confirmedIconColor
+    },
+    unconfirmedText: {
+      color: colors.transactionListItem.pendingIconColor
     },
     confirmedStatusIcon: {
       paddingLeft: dimensions.verticalSpacingBetweenItems
@@ -348,12 +353,6 @@ const TransactionView = ({ navigation, route }) => {
       flexDirection: 'row',
       paddingVertical: dimensions.screen.paddingVertical,
       paddingHorizontal: dimensions.screen.paddingHorizontal,
-    },
-    bannerConfirmed: {
-      backgroundColor: colors.alertBanner.successBackgroundColor
-    },
-    bannerUnconfirmed: {
-      backgroundColor: colors.alertBanner.warningBackgroundColor
     },
     tabs: {
       paddingVertical: dimensions.verticalSpacingBetweenItems
@@ -368,20 +367,56 @@ const TransactionView = ({ navigation, route }) => {
     noNote: {
       color: colors.disabledText
     },
-    modalBackgronud: {
+    disabledText: {
+      color: colors.disabledText
+    },
+    modalBackground: {
       justifyContent: 'flex-end'
+    },
+    recipient: {
+      paddingVertical: dimensions.verticalSpacingBetweenItems
+    },
+    flexRow: {
+      flexDirection: 'row'
+    },
+    borderBox: {
+      borderColor: colors.inputs.borderColor,
+      borderTopWidth: dimensions.inputs.borderTopWidth,
+      borderBottomWidth: dimensions.inputs.borderBottomWidth,
+      height: 64,
+      padding: dimensions.horizontalSpacingBetweenItemsShort,
+      marginVertical: dimensions.verticalSpacingBetweenItems,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    justify: {
+      height: '100%',
+      justifyContent: 'space-between'
+    },
+    noteContainer: {
+      flex: 1,
+    },
+    noteHeader: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      width: '100%'
+    },
+    date: {
+      textAlign: 'center',
+    },
+    addContactButtonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: dimensions.paddingVertical,
+    },
+    button: {
+      marginVertical: dimensions.paddingHorizontal
+    },
+    modalNoteInput: {
+      height: 230,
+      justifyContent: 'flex-start'
     }
   })
-
-  const getBannerStyle = () => {
-    const bannerStyles = [styles.banner]
-    if (transaction.confirmations) {
-      bannerStyles.push(styles.bannerConfirmed)
-    } else {
-      bannerStyles.push(styles.bannerUnconfirmed)
-    }
-    return bannerStyles
-  }
 
   const _onActiveButtonPressHandler = () => {
     transactionNoteManager.current.set(
@@ -393,148 +428,132 @@ const TransactionView = ({ navigation, route }) => {
     modalRef.current.close()
   }
 
+  const openInBlockExplorer = (transaction) => {
+    /* const url = `https://explorer.pkt.cash/tx/${transaction.txid}` */
+    // TODO : Change this demo address
+    const url = `https://explorer.pkt.cash/address/pkt1q6hqsqhqdgqfd8t3xwgceulu7k9d9w5t2amath0qxyfjlvl3s3u4sjza2g2`
+    Linking.openURL(url).catch((err) => {
+      console.log('error occurred trying to open in browser')
+      console.log(err)
+    })
+  }
+
   return (
     <Screen>
+      <BodyText style={styles.date}>{getTransactionDateTime(transaction)}</BodyText>
       <View style={styles.container}>
-        {isSpend(transaction)
-          ? <BodyText>{translate('amountSent')}</BodyText>
-          : <BodyText>{translate('amountReceived')}</BodyText>}
-        <AccountBalance
-          style={styles.accountBalance}
-          amount={transaction.amount}
-          isVisible
+        <BodyText style={styles.disabledText}>{translate('recipient')}</BodyText>
+        <WalletListItem
+          name={toAddresses.name}
+          address={toAddresses.address}
+          style={styles.recipient}
         />
-      </View>
-      <View style={[getBannerStyle()]}>
-        <BodyText
-          style={styles.bannerLabel}
-        >
-          {translate('status')}
-        </BodyText>
-        {transaction.confirmations
-          ? <BodyText style={styles.confirmationText}>{translate('confirmed')}</BodyText>
-          : <BodyText style={styles.confirmationText}>{translate('unconfirmed')}</BodyText>}
-        <View style={styles.confirmedStatusIcon}>
-          {transaction.confirmations
-            ? <ConfirmedIcon
-              color={colors.alertBanner.color}
-            />
-            : <UnconfirmedIcon
-              color={colors.alertBanner.color}
-            />}
+        <View style={styles.borderBox}>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('status')}</BodyText>
+            <View style={styles.flexRow}>
+              {transaction.confirmations
+                ? <BodyText style={styles.confirmationText}>{translate('confirmed')}</BodyText>
+                : <BodyText style={styles.unconfirmedText}>{translate('unconfirmed')}</BodyText>}
+              <View style={styles.confirmedStatusIcon}>
+                {transaction.confirmations
+                  ? <ConfirmedIcon />
+                  : <PendingIcon />}
+              </View>
+            </View>
+          </View>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('category')}</BodyText>
+            <View style={styles.flexRow}>
+              {isSpend(transaction)
+                ? <BodyText >{translate('expense')}</BodyText>
+                : <BodyText >{translate('income')}</BodyText>}
+            </View>
+          </View>
         </View>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.tableRow}>
-          <BodyText style={styles.statusLabel}>
-            {translate('transactionType')}
-          </BodyText>
-          <BodyText>
-            {getTransactionTypeText(transaction)}
-          </BodyText>
+        <View style={styles.borderBox}>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('pktAmount')}</BodyText>
+            <BodyText >{priceTicker.current.formatAmount(transaction.amount) + ' ' + translate('pkt')}</BodyText>
+          </View>
         </View>
-        <View style={styles.addressData}>
-          <BodyText style={styles.fromLabel}>
-            {translate('from')}
-          </BodyText>
-          <WalletListItem
-            address={transaction.address}
-            name={fromName}
-            amount={fromAddress.total}
-            local={true}
-          />
+        <View style={styles.borderBox}>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('amountInUsd')}</BodyText>
+            <BodyText >{priceTicker.current.convertCurrency(false, transaction.amount) + ' ' + translate('usd')}</BodyText>
+          </View>
         </View>
-        <View style={styles.addressData}>
-          <BodyText style={styles.toLabel}>
-            {translate('to')}
-          </BodyText>
-          {/* TODO use a FlatList for this list of addresses */}
-          {toAddresses.map((toAddress, index) => (
-            <WalletListItem
-              style={styles.toAddress}
-              key={index.toString()}
-              address={toAddress.address}
-              name={toAddress.name}
-              amount={toAddress.total}
-            />
-          ))}
+        <View style={styles.borderBox}>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('currentPriceIn', { currency: priceTicker.current.getUserFiatCurrency() })}</BodyText>
+            <BodyText >{priceTicker.current.formatAmount(priceTicker.current.getCurrentSpotPrice(priceTicker.current.getUserFiatCurrency())) + ' ' + translate('usd')}</BodyText>
+          </View>
         </View>
-        <View style={styles.tableRow}>
-          <BodyText style={styles.statusLabel}>
-            {translate('date')}
-          </BodyText>
-          <BodyText>
-            {getTransactionDateTime(transaction)}
-          </BodyText>
+        <View style={styles.borderBox}>
+          <View style={styles.justify}>
+            <BodyText style={styles.disabledText}>{translate('recipientAddress')}</BodyText>
+            <BodyText >(Under construction)</BodyText>
+          </View>
         </View>
-        <View style={styles.tableRow}>
-          <BodyText style={styles.statusLabel}>{translate('numConfirmations')}</BodyText>
-          <BodyText style={styles.transactionId}>{transaction.confirmations}</BodyText>
+        <TouchableOpacity style={styles.borderBox} onPress={() => modalRef.current.open()}>
+          <View style={styles.noteContainer}>
+            <View style={styles.noteHeader}>
+              <BodyText style={styles.disabledText}>{translate('notes')}</BodyText>
+              <NoteIcon color={colors.text} />
+            </View>
+            {hasNote
+              ? <BodyText>{note}</BodyText>
+              : <BodyText style={styles.noNote}>{translate('noNote')}</BodyText>}
+          </View>
+        </TouchableOpacity>
+        <View style={styles.addContactButtonContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              detailsModalRef.current.open()
+            }}
+          >
+            <BodyText >{translate('advancedDetails')}</BodyText>
+          </TouchableOpacity>
         </View>
-        <Tabs
-          style={styles.tabs}
-          tabs={[
-            {
-              title: translate('qrCode'),
-              content: <TransactionQrCode transaction={transaction} />
-            },
-            {
-              title: translate('transactionId'),
-              content: <TransactionTextCode transaction={transaction} />
-            }
-          ]}
-        />
-        <View style={styles.noteBlock}>
-          <BodyText style={styles.statusLabel}>
-            {translate('note')}
-          </BodyText>
-          {hasNote
-            ? <BodyText>{note}</BodyText>
-            : <BodyText style={styles.noNote}>{translate('noNote')}</BodyText>}
-        </View>
-        <ActiveButton
-          style={styles.topButton}
-          title={translate('addNote')}
-          onPress={editNote}
-        />
-        {/* <ActiveButton
-          style={styles.topButton}
-          title={translate('walletHome')}
-          onPress={() => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'WalletHomeViewSet' }],
-            })
-          }}
-        /> */}
         <ActiveButton
           title={translate('openInBlockExplorer')}
-          onPress={openInBlockExplorer.bind(this, transaction)}
+          onPress={openInBlockExplorer.bind(this)}
         />
       </View>
       <Modal
-        backgroundStyle={styles.modalBackgronud}
         ref={modalRef}
-        title={translate('editNote')}
-        content={
-          <View>
-            <GenericTextInput
-              placeholder={translate('notePlaceholder')}
-              help={translate('noteHelpText')}
-              initialValue={note}
-              onChangeText={(text) => {
-                setNewNote(text)
-              }}
-            />
-          </View>
-        }
-        footer={
-          <ActiveButton
-            title={translate('saveNote')}
-            onPress={_onActiveButtonPressHandler}
+        title={translate('notes')}>
+        <View>
+          <GenericTextInput
+            multiline={true}
+            inputStyle={styles.modalNoteInput}
+            placeholder={translate('notePlaceholder')}
+            help={translate('noteHelpText')}
+            initialValue={note}
+            onChangeText={(text) => {
+              setNewNote(text)
+            }}
           />
-        }
-      />
+        </View>
+        <ActiveButton
+          title={translate('save')}
+          onPress={_onActiveButtonPressHandler}
+          style={styles.button}
+        />
+      </Modal>
+      <Modal
+        ref={detailsModalRef}
+        title={translate('advancedDetailsTitle')}>
+        <View>
+          <BodyText style={styles.disabledText}>{translate('transactionID')}</BodyText>
+          <BodyText style={styles.button}>{transaction.txid}</BodyText>
+        </View>
+        <ActiveButton
+          title={translate('openInBlockExplorer')}
+          onPress={openInBlockExplorer.bind(this)}
+          style={styles.button}
+        />
+      </Modal>
     </Screen>
   )
 }

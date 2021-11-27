@@ -1,18 +1,21 @@
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-function ConfirmedIcon (props) {
+function ConfirmedIcon(props) {
   const size = props.size || 21
-  const color = props.color || '#000'
+  const color = props.color || '#37B761'
   return (
     <Svg
-      height={size}
       width={size}
-      xmlns='http://www.w3.org/2000/Svg'
-      viewBox='0 0 139 139'
+      height={size}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <Path d='M69.5 11.666c-31.941 0-57.834 25.893-57.834 57.834 0 31.941 25.893 57.834 57.834 57.834 31.941 0 57.834-25.893 57.834-57.834 0-31.941-25.893-57.834-57.834-57.834zm28.305 49.677L68.234 88.114a5.861 5.861 0 01-2.455 1.331 5.9 5.9 0 01-6.478-1.11L41.094 71.052a5.917 5.917 0 018.148-8.583l14.492 13.756 26.127-23.656a5.918 5.918 0 017.944 8.774z' fill={color} />
+      <Path
+        d="M10.267 0C4.597 0 0 4.6 0 10.273s4.596 10.272 10.267 10.272c5.67 0 10.266-4.6 10.266-10.273S15.937 0 10.267 0zm5.024 8.824l-5.25 4.755a1.04 1.04 0 01-.435.236 1.047 1.047 0 01-1.15-.197l-3.232-3.07A1.051 1.051 0 016.67 9.024l2.573 2.443 4.638-4.202a1.05 1.05 0 011.41 1.559z"
+        fill="#37B761"
+      />
     </Svg>
   )
 }

@@ -15,11 +15,11 @@ function RadialGradientDarkSvg(props) {
         >
             <Path
                 d="M149.583 380.37c105.023 0 190.161-85.138 190.161-190.161S254.606.048 149.583.048-40.578 85.186-40.578 190.209 44.56 380.37 149.583 380.37z"
-                fill="url(#prefix__paint0_radial_141:8385)"
+                fill="url(#prefix__paint0_radial_141_8385)"
             />
             <Defs>
                 <RadialGradient
-                    id="prefix__paint0_radial_141:8385"
+                    id="prefix__paint0_radial_141_8385"
                     cx={0}
                     cy={0}
                     r={1}
@@ -31,8 +31,8 @@ function RadialGradientDarkSvg(props) {
                     <Stop offset={0.13} stopColor="#6D9CAE" />
                     <Stop offset={0.365} stopColor="#5C8290" stopOpacity={0.85} />
                     <Stop offset={0.505} stopColor="#52737F" stopOpacity={0.7} />
-                    <Stop offset={0.786} stopColor="#121212" stopOpacity={0.66} />
-                    <Stop offset={0.854} stopColor="#121212" />
+                    <Stop offset={0.786} stopColor="#141528" stopOpacity={0.66} />
+                    <Stop offset={0.854} stopColor="#141528" />
                 </RadialGradient>
             </Defs>
         </Svg>

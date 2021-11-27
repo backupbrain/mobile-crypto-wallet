@@ -31,7 +31,7 @@
   "pinLogin": "PIN Login",
   "logOut": "Log Out",
   "logIn": "Log In",
-  "confirm": "Confirm",
+  "confirm": "F",
   "progressHeaderText" : "Step {current} of {total}",
 
   "show": "Show",
@@ -107,9 +107,15 @@
   "amount": "Amount:",
   "mypkt": "My PKT",
   "pkt": "PKT",
+  "pktAmount": "PKT Amount",
+  "amountInUsd": "Amount in USD",
+  "currentPriceIn": "Current Price in {currency}",
   "usd": "USD",
   "notePlaceholder": "Note",
+  "notes": "Notes",
   "noteHelpText": "Note will be saved securely on your device",
+  "advancedDetails": "View Advanced Details",
+  "advancedDetailsTitle": "Advanced Details",
 
   "localAddressSelectorPlaceholder": "Select address...",
   "currentPin": "Current PIN",
@@ -177,6 +183,7 @@
 
   "qr": "QR",
   "transactions": "Transactions",
+  "transactionID": "Transaction ID",
   "whatIsAddressCode1": "This code is your account number",
   "whatIsAddressCode2": "Share it with people to receive payments",
   "copyAddress": "Copy address to clipboard",
@@ -204,7 +211,10 @@
   "to": "To:",
   "confirmed": "Confirmed",
   "unconfirmed": "Unconfirmed",
+  "expense": "Expense",
+  "income": "Income",
   "status": "Status",
+  "category": "Category",
   "note": "Note:",
   "noNote": "(None)",
   "unNotedTransaction": "(No note)",
@@ -218,6 +228,7 @@
   "whatIsTransactionId2": "Share it anyone who needs proof of payment",
   "editNote": "Edit note",
   "saveNote": "Save note",
+  "save": "Save",
   "shareTransactionId": "Share transaction ID",
   "copyTransactionId": "Copy transaction ID",
 
@@ -228,6 +239,7 @@
   "pair":"Pair",
 
   "recipientAddress": "Recipient Address",
+  "recipient": "Recipient",
   "useAddress": "Use Address",
 
   "transactionSucceeded": "Transaction Succeeded",

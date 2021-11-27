@@ -60,7 +60,8 @@ const WalletListItem = (props) => {
             </>
           }
         </>
-        : <><Text style={styles.amount}>--- {translate('pkt')}</Text><Text style={styles.altAmount}>--- {translate('usd')}</Text></>}
+        : <><Text style={styles.amount}>--- {translate('pkt')}</Text><Text style={styles.altAmount}>--- {translate('usd')}</Text></>
+      }
     </View>
   )
 }
