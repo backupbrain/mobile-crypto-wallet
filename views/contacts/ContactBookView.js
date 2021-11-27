@@ -13,6 +13,11 @@ import PlusIcon from '../../components/images/PlusIcon'
 import BodyText from '../../components/text/BodyText'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
+import Modal from '../../components/Modal'
+import PktAddressInput from '../../components/inputs/PktAddressInput'
+import GenericTextInput from '../../components/inputs/GenericTextInput'
+import ActivityButton from '../../components/buttons/ActiveButton'
+import ActiveButton from '../../components/buttons/ActiveButton'
 
 const ContactBookView = ({ navigation, route }) => {
   const { colors, dimensions } = useTheme()
@@ -24,6 +29,8 @@ const ContactBookView = ({ navigation, route }) => {
   const [, setAreContactsLoaded] = useState(false)
   const [noSearchResults, setNoSearchResults] = useState(false)
   const [isLocalOnly, setIsLocalOnly] = useState(route.params?.localOnly)
+  const [editAddress, setEditAddress] = useState({})
+  const modal = useRef(null)
   /* const fetchMyAddress = async () => {
     // TODO: load this list from the pkd gRPC
     return new Promise((resolve) => {
@@ -124,8 +131,31 @@ const ContactBookView = ({ navigation, route }) => {
     },
     newAddressText: {
 
+    },
+    addressInput: {
+      paddingVertical: dimensions.paddingHorizontal
+    },
+    lastButton: {
+      paddingBottom: dimensions.paddingVertical
     }
   })
+
+  const loadContacts = async () => {
+    await contactManager.current.initialize()
+    const myAddresses = await pktManager.current.getAddresses()
+    // REMOVE: DUMMY DATA ------------
+    /* if (contactManager.current.contacts.length === 0) {
+      await contactManager.current.clearAll()
+      await contactManager.current.set(
+        new Contact('John', 'pktdkgutlaktigstoskthsfgtpourhgtksdfhgtksfa')
+      )
+      await contactManager.current.set(
+        new Contact('Natasha', 'pktikgutlaktigstoskhfgfgtpouogitksdfhgortb')
+      )
+    } */
+    // --------------------------------
+    buildContactList(myAddresses, contactManager.current)
+  }
 
   useEffect(() => {
     if (route.params && route.params.selectorMode) {
@@ -133,22 +163,6 @@ const ContactBookView = ({ navigation, route }) => {
     }
     if (route.params && route.params.localOnly) {
       setIsLocalOnly(true)
-    }
-    const loadContacts = async () => {
-      await contactManager.current.initialize()
-      const myAddresses = await pktManager.current.getAddresses()
-      // REMOVE: DUMMY DATA ------------
-      /* if (contactManager.current.contacts.length === 0) {
-        await contactManager.current.clearAll()
-        await contactManager.current.set(
-          new Contact('John', 'pktdkgutlaktigstoskthsfgtpourhgtksdfhgtksfa')
-        )
-        await contactManager.current.set(
-          new Contact('Natasha', 'pktikgutlaktigstoskhfgfgtpouogitksdfhgortb')
-        )
-      } */
-      // --------------------------------
-      buildContactList(myAddresses, contactManager.current)
     }
     loadContacts()
   }, [route, setIsInSelectorMode, contactManager, navigation])
@@ -181,6 +195,49 @@ const ContactBookView = ({ navigation, route }) => {
 
   return (
     <Screen>
+      <Modal
+        ref={modal}
+        title={translate('editContact')}
+      >
+        <View>
+          <GenericTextInput
+            initialValue={editAddress.name}
+            placeholder={translate('addressName')}
+            onChangeText={(text) => setEditAddress({ ...editAddress, name: text })}
+          />
+          <PktAddressInput
+            address={editAddress.address}
+            style={styles.addressInput}
+            placeholder={translate('pktAddress')}
+            onChangeText={(text) => setEditAddress({ ...editAddress, address: text })}
+            address={editAddress.address}
+          />
+        </View>
+        <ActivityButton
+          title={translate('saveAddress')}
+          style={styles.addressInput}
+          onPress={async () => {
+            await contactManager.current.remove(editAddress.startingAddress)
+            await contactManager.current.add(editAddress.name, editAddress.address)
+            await contactManager.current.save()
+            setEditAddress({})
+            loadContacts()
+            modal.current.close()
+          }}
+        />
+        {!editAddress.isLocal &&
+          <ActiveButton
+            style={styles.lastButton}
+            title={translate('deleteAddress')}
+            variant='danger'
+            onPress={async () => {
+              await contactManager.current.remove(editAddress.startingAddress)
+              await contactManager.current.save()
+              modal.current.close()
+            }}
+          />
+        }
+      </Modal>
       <View style={styles.screen}>
         <View>
           <View style={styles.searchBar}>
@@ -205,13 +262,15 @@ const ContactBookView = ({ navigation, route }) => {
                     route.params.onContactSelected(address)
                     navigation.goBack()
                   } else {
-                    navigation.push(
+                    setEditAddress({ ...address, startingAddress: address.address })
+                    modal.current.open()
+                    /* navigation.push(
                       'EditContactView', {
                       address: address.address,
                       name: address.name,
                       isLocal: address.isLocal
                     }
-                    )
+                    ) */
                   }
                 }}
                 navigation={navigation}
