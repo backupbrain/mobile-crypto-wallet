@@ -9,6 +9,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation, useNavigationState, useTheme } from '@react-navigation/native'
 
 // import HamburgerMenuButton from '../components/buttons/HamburgerMenuButton'
@@ -49,9 +50,43 @@ import { useDispatch } from 'react-redux'
 import { securityDisable, securityEnable } from '../store/SecurityAction'
 import NewWalletIntroView2 from '../views/createwallet/NewWalletIntroView2'
 import RequestView from '../views/RequestView'
+import TabNavigatorButtons from '../components/Tabs/TabNavigatorButtons'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
+
+const Tab = createBottomTabNavigator();
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      tabBar={props => <TabNavigatorButtons {...props} />}
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={WalletHomeViewSet}
+        options={{
+        }}
+      />
+      <Tab.Screen
+        name="Contacts"
+        component={ContactsViewSet}
+        options={{
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={WalletHomeViewSet}
+        options={{
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 const FirstViewSet = ({ navigation }) => {
   const { dimensions } = useTheme()
@@ -482,6 +517,11 @@ const CustomDrawerContent = (props) => {
     <DrawerContentScrollView {...props}  >
       <DrawerItem
         {...props}
+        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>Tabs Preview</Text>}
+        onPress={() => props.navigation.navigate('Tabs')}
+      />
+      <DrawerItem
+        {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('walletHome')}</Text>}
         onPress={() => props.navigation.navigate('WalletHomeViewSet', { screen: 'WalletHomeView' })}
       />
@@ -560,6 +600,7 @@ const DrawerNavigator = (props) => {
     >
       <Drawer.Screen name='FirstViewSet' component={FirstViewSet} />
       <Drawer.Screen name='WalletHomeViewSet' component={WalletHomeViewSet} />
+      <Drawer.Screen name='Tabs' component={TabNavigator} />
 
       <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
       {/* <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} /> */}

@@ -125,6 +125,12 @@ const AndroidTheme = {
     smallButton: {
       borderRadius: 8
     },
+    tabs:{
+      height:82,
+      tabWidth:125,
+      topPadding:6,
+      bottomPadding:34,
+    },
     paddingHorizontal: 20,
     paddingVertical: 16,
     horizontalSpacingBetweenItems: 10,

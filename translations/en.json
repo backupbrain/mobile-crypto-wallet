@@ -34,6 +34,10 @@
   "confirm": "F",
   "progressHeaderText" : "Step {current} of {total}",
 
+  "wallet":"Wallet",
+  "contacts":"Contacts",
+  "settings":"Settings",
+
   "show": "Show",
   "hide": "Hide",
 
