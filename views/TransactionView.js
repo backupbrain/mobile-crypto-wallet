@@ -360,8 +360,8 @@ const TransactionView = ({ navigation, route }) => {
     transactionId: {
       flex: 1,
       flexWrap: 'wrap',
-      overflowWrap: 'break-word',
-      wordBreak: 'break-all',
+      // overflowWrap: 'break-word', // not supported
+      // wordBreak: 'break-all', // not supported
       textAlign: 'right'
     },
     noNote: {

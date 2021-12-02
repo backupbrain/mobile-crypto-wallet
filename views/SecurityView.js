@@ -24,8 +24,8 @@ const SecurityView = ({ navigation, route }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingHorizontal: '20px',
-      paddingVertical: '20px',
+      paddingHorizontal: 20,
+      paddingVertical: 20,
       backgroundColor: colors.securityBackground
     },
     textLogo: {

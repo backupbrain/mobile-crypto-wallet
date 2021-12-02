@@ -8,7 +8,6 @@ import HeaderText from '../components/text/HeaderText'
 import BodyText from '../components/text/BodyText'
 import translate from '../translations'
 import { useTheme } from '@react-navigation/native'
-import TwoFactorAuth from '../utils/TwoFactorAuth'
 import ContactManager from '../utils/ContactManager'
 import TransactionNoteManager from '../utils/TransactionNoteManager'
 import AdaptiveStorage from '../utils/AdaptiveStorage'
@@ -19,7 +18,6 @@ const LogOutView = ({ navigation, route }) => {
   const [isChecked, setIsChecked] = useState(false)
   const pinManager = useRef(new PinManager())
   const passphraseManager = useRef(new PassphraseManager())
-  const twoFactorAuth = useRef(new TwoFactorAuth())
   const contactManager = useRef(new ContactManager())
   const transactionNoteManager = useRef(new TransactionNoteManager())
   const logout = () => {
@@ -27,12 +25,11 @@ const LogOutView = ({ navigation, route }) => {
     pinManager.current.clear()
     passphraseManager.current.clear()
     AdaptiveStorage.remove(AppConstants.NAVIGATION_STATE_KEY)
-    /* twoFactorAuth.current.clear() */
     if (isChecked) {
       contactManager.current.clearAll()
       transactionNoteManager.current.clearAll()
     }
-    // QUEStION; clear wallet history?
+    // QUESTION; clear wallet history?
   }
 
   const navigateToFirstView = () => {

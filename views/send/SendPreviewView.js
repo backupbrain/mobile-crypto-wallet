@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
 import AccountBalance from '../../components/wallet/AccountBalance'
-import OtpInput from '../../components/inputs/OtpInput'
 import WalletListItem from '../../components/wallet/WalletListItem'
 import SlideToConfirm from '../../components/inputs/SlideToConfirmInput'
 import BodyText from '../../components/text/BodyText'
@@ -10,7 +9,6 @@ import PktManager from '../../utils/PktManager'
 import TransactionNoteManager from '../../utils/TransactionNoteManager'
 import { useTheme } from '@react-navigation/native'
 import translate from '../../translations'
-import TwoFactorAuth from '../../utils/TwoFactorAuth'
 import PinManager from '../../utils/PinManager'
 import PasswordInput from '../../components/inputs/PasswordInput'
 
@@ -33,7 +31,6 @@ const SendFormView = ({ navigation, route }) => {
   // TODO: expect fromAddress, toAddress, amount from route.params
   const { colors, dimensions } = useTheme()
   const pktManager = useRef(new PktManager())
-  const TwoFactorManager = useRef(new TwoFactorAuth())
   const Pin_Manager = useRef(new PinManager())
   const transactionNoteManager = useRef(new TransactionNoteManager())
   const [fromAddress] = useState(route.params?.fromAddress)
@@ -46,7 +43,6 @@ const SendFormView = ({ navigation, route }) => {
 
   useEffect(() => {
     console.log(route.params)
-    /* TwoFactorAuth.getPairingCode().then((value)=>setSecret(value)) */
     Pin_Manager.current.get()
   }, [])
 
@@ -68,14 +64,10 @@ const SendFormView = ({ navigation, route }) => {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical
     },
-    otpInputContainer: {
-      marginTop: '10px',
-      marginBottom: '20px',
-      width: '100%'
-    },
     walletListItem: {
       width: '100%',
-      border: '1px solid #000'
+      borderColor: '#f00',
+      borderWidth: 1,
     },
     label: {
       width: '100%',
@@ -120,14 +112,7 @@ const SendFormView = ({ navigation, route }) => {
             local={true}
           />
         </View>
-        <View style={styles.otpInputContainer}>
-          {/* <OtpInput
-            label={translate('2faCode')}
-            help={translate('2faCodeHelpText')}
-            onValidPin={() => setisPinValid(true)}
-            secret ={secret}
-            error = {translate('invalidPin')}
-          /> */}
+        <View style={styles.pinInputContainer}>
           <PasswordInput
             maxLength={4}
             placeholder={translate('currentPin')}

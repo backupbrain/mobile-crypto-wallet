@@ -54,14 +54,14 @@ const RecoveryPhraseInput = (props) => {
   const styles = StyleSheet.create({
     container: {
       width: dimensions.inputs.width,
-      marginBottom: '20px'
+      marginBottom: 20
     },
     textInput: {
       letterSpacing: '1.2',
-      fontSize: '1.50em',
-      height: '200px',
-      marginBottom: '8px',
-      lineHeight: '1.5',
+      fontSize: 20,
+      height: 200,
+      marginBottom: 8,
+      lineHeight: 1.5,
       backgroundColor: colors.inputs.backgroundColor,
       color: colors.inputs.color,
       paddingHorizontal: dimensions.button.paddingHorizontal,

@@ -13,7 +13,6 @@ import Modal from '../components/Modal'
 import PktAddressInput from '../components/inputs/PktAddressInput'
 import WalletListItem from '../components/wallet/WalletListItem'
 import GenericTextInput from '../components/inputs/GenericTextInput'
-import TwoFactorAuth from '../utils/TwoFactorAuth'
 import AlertBanner from '../components/AlertBanner'
 import SmallButton from '../components/buttons/SmallButton'
 import SendIcon from '../components/images/SendIcon'
@@ -28,7 +27,6 @@ const WalletHomeView = ({ navigation, route }) => {
   const [showAlert, setShowAlert] = useState(false)
   const [sendActivated, setSendActivated] = useState(false)
   const [newAddress, setNewAddress] = useState({})
-  /* const [twoFactorExists, setTwoFactorExists] = useState(false) */
   const newAddressName = useRef("")
   const pktManager = useRef(new PktManager())
   const contactBook = useRef(new ContactManager())
@@ -71,11 +69,6 @@ const WalletHomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchMyAddresses()
-    /* TwoFactorAuth.getPairingCode().then(secret => {
-      if (secret) {
-        setTwoFactorExists(true)
-      }
-    }) */
   }, [fetchMyAddresses])
 
   const styles = StyleSheet.create({
@@ -91,7 +84,7 @@ const WalletHomeView = ({ navigation, route }) => {
       textAlign: 'center'
     },
     sendReceiveButtonPanel: {
-      mdth: '100%',
+      width: '100%',
       paddingVertical: dimensions.screen.paddingVertical,
       flexDirection: 'row'
     },
@@ -99,17 +92,13 @@ const WalletHomeView = ({ navigation, route }) => {
       width: '50%'
     },
     leftButton: {
-      marginRight: '4px'
+      marginRight: 4
     },
     rightButton: {
-      marginLeft: '4px'
+      marginLeft: 4
     },
     walletListContainer: {
       width: '100%'
-    },
-    pair2faText: {
-      textAlign: 'center',
-      color: colors.inputs.helpTextColor
     },
     sendReceiveButton: {
       alignItems: 'center',
@@ -226,23 +215,6 @@ const WalletHomeView = ({ navigation, route }) => {
             </View>
           </SmallButton>
         </View>
-        {
-          /* twoFactorExists ?
-            <ActivityButton
-              title={translate('send')}
-              onPress={() => navigation.push('SendView')}
-              disabled={!sendActivated}
-            />
-            :
-            <ActivityButton
-              title={translate('pair2FaDevice')}
-              onPress={() => navigation.push('RePair2FaDeviceViewSet',{
-                screen:'Pair2FaDeviceView'
-              })}
-            /> 
-           !twoFactorExists && 
-          <Text style={styles.pair2faText}>{translate('whyPair2FaDevice')}</Text> */
-        }
         <View style={styles.walletListContainer}>
           <WalletList
             style={styles.walletList}

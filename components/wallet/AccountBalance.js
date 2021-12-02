@@ -33,7 +33,7 @@ const WalletListItem = (props) => {
       paddingBottom: dimensions.verticalSpacingBetweenItems,
       fontSize: dimensions.accountBalance.fontSize,
       fontWeight: dimensions.accountBalance.fontWeight,
-      textTranform: dimensions.accountBalance.textTranform,
+      textTransform: dimensions.accountBalance.textTranform,
       color: colors.text,
     },
     altAmount: {

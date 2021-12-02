@@ -10,49 +10,49 @@ export default class PktManager {
       {
         address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
         total: 0,
-        stotal: '0',
+        stotal: 0,
         spendable: 0,
-        sspendable: '0',
+        sspendable: 0,
         immaturereward: 0,
-        simmaturereward: '0',
+        simmaturereward: 0,
         unconfirmed: 0,
-        sunconfirmed: '0',
+        sunconfirmed: 0,
         outputcount: 1
       },
       {
         address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
         total: 98001,
-        stotal: '105227772493824',
+        stotal: 105227772493824,
         spendable: 98001,
-        sspendable: '105227772493824',
+        sspendable: 105227772493824,
         immaturereward: 0,
-        simmaturereward: '0',
+        simmaturereward: 0,
         unconfirmed: 0,
-        sunconfirmed: '0',
+        sunconfirmed: 0,
         outputcount: 1
       },
       {
         address: 'pkt1qtnc7c8sj7w3ncehz0a33xuqhlxm0msmykrp2g6',
         total: 49500,
-        stotal: '53150220288000',
+        stotal: 53150220288000,
         spendable: 49500,
-        sspendable: '53150220288000',
+        sspendable: 53150220288000,
         immaturereward: 0,
-        simmaturereward: '0',
+        simmaturereward: 0,
         unconfirmed: 0,
-        sunconfirmed: '0',
+        sunconfirmed: 0,
         outputcount: 1
       },
       {
         address: 'pkt1qjmdr45cpxu9kyw43ax0k6kcu8l70vezeeedjtq',
         total: 1990000,
-        stotal: '2136746229760000',
+        stotal: 2136746229760000,
         spendable: 1990000,
-        sspendable: '2136746229760000',
+        sspendable: 2136746229760000,
         immaturereward: 0,
-        simmaturereward: '0',
+        simmaturereward: 0,
         unconfirmed: 0,
-        sunconfirmed: '0',
+        sunconfirmed: 0,
         outputcount: 1
       }
     ]
@@ -83,13 +83,13 @@ export default class PktManager {
     const address = {
       address: 'pkt1q6mtyeymmdmc2the87psvlu9h6k0wywm8za0m83',
       total: 0.00,
-      stotal: '1073741405',
+      stotal: 1073741405,
       spendable: 0.9999996097758412,
-      sspendable: '1073741405',
+      sspendable: 1073741405,
       immaturereward: 0,
-      simmaturereward: '0',
+      simmaturereward: 0,
       unconfirmed: 0,
-      sunconfirmed: '0',
+      sunconfirmed: 0,
       outputcount: 1
     }
     /* this.myAddresses.push(address) */

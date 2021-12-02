@@ -61,13 +61,13 @@ const SearchInput = (props) => {
     },
     helpText: {
       color: '#666',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      paddingTop: 10,
+      paddingHorizontal: 6
     },
     errorText: {
       color: '#600',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      paddingTop: 10,
+      paddingHorizontal: 6
     }
   })
 

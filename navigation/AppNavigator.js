@@ -32,8 +32,6 @@ import SendPreviewView from '../views/send/SendPreviewView'
 import TransactionSuccessView from '../views/send/TransactionSuccessView'
 import ContactBookView from '../views/contacts/ContactBookView'
 import EditContactView from '../views/contacts/EditContactView'
-import Verify2FaDeviceView from '../views/2fa/Verify2FaDeviceView'
-import Pair2FaDeviceView from '../views/2fa/Pair2FaDeviceView'
 import ChangePinView from '../views/pin/ChangePinView'
 import CreatePinView from '../views/pin/CreatePinView'
 import LogOutView from '../views/LogOutView'
@@ -42,10 +40,8 @@ import TransactionView from '../views/TransactionView'
 import PktManager from '../utils/PktManager'
 import PassphraseManager from '../utils/PassphraseManager'
 import PinManager from '../utils/PinManager'
-import TwoFactorAuth from '../utils/TwoFactorAuth'
 import { Text } from 'react-native'
 import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
-import Unpair2FaDeviceView from '../views/2fa/Unpair2FaDeviceView'
 import { useDispatch } from 'react-redux'
 import { securityDisable, securityEnable } from '../store/SecurityAction'
 import NewWalletIntroView2 from '../views/createwallet/NewWalletIntroView2'
@@ -274,15 +270,6 @@ const WalletHomeViewSet = ({ navigation }) => {
         }}
         component={SendCryptoViewSet}
       />
-      {/* <Stack.Screen
-        name='RePair2FaDeviceViewSet'
-        options={{
-          title: translate('transaction'),
-          headerRight: () => <HamburgerMenuButon navigation={navigation} />,
-          headerShown: false
-        }}
-        component={RePair2FaDeviceViewSet}
-      /> */}
     </Stack.Navigator>
   )
 }
@@ -396,38 +383,6 @@ const ChangePassphraseViewSet = ({ navigation }) => {
   )
 }
 
-const RePair2FaDeviceViewSet = ({ navigation }) => {
-
-  return (
-    <Stack.Navigator initialRouteName='Unpair2FaDeviceView' screenOptions={{ headerTitleAlign: 'center' }}>
-      <Stack.Screen
-        name='Unpair2FaDeviceView'
-        options={{
-          title: translate('unpair2FaDevice'),
-          headerRight: () => <HamburgerMenuButon navigation={navigation} />
-        }}
-        component={Unpair2FaDeviceView}
-      />
-      <Stack.Screen
-        name='Pair2FaDeviceView'
-        options={{
-          title: translate('pair2FaDevice'),
-          headerRight: () => <HamburgerMenuButon navigation={navigation} />
-        }}
-        component={Pair2FaDeviceView}
-      />
-      <Stack.Screen
-        name='Verify2FaDeviceView'
-        options={{
-          title: translate('verify2FaDevice'),
-          headerRight: () => <HamburgerMenuButon navigation={navigation} />
-        }}
-        component={Verify2FaDeviceView}
-      />
-    </Stack.Navigator>
-  )
-}
-
 const ContactsViewSet = ({ navigation }) => {
   const { dimensions } = useTheme()
   return (
@@ -535,11 +490,6 @@ const CustomDrawerContent = (props) => {
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('changePassphrase')}</Text>}
         onPress={() => props.navigation.navigate('ChangePassphraseViewSet')}
       />
-      {/* <DrawerItem
-        {...props}
-        label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('pair2FaDevice')}</Text>}
-        onPress={() => props.navigation.navigate('RePair2FaDeviceViewSet', { screen: 'Unpair2FaDeviceView' })}
-      /> */}
       <DrawerItem
         {...props}
         label={({ focused, color }) => <Text style={{ color: colors.bodyText.color }}>{translate('contactBook')}</Text>}
@@ -603,7 +553,6 @@ const DrawerNavigator = (props) => {
       <Drawer.Screen name='Tabs' component={TabNavigator} />
 
       <Drawer.Screen name='ChangePinViewSet' component={ChangePinViewSet} />
-      {/* <Drawer.Screen name='RePair2FaDeviceViewSet' component={RePair2FaDeviceViewSet} /> */}
       <Drawer.Screen name='ChangePassphraseViewSet' component={ChangePassphraseViewSet} />
       <Drawer.Screen name='ContactsViewSet' component={ContactsViewSet} />
       <Drawer.Screen name='LogOutViewSet' component={LogOutViewSet} />

@@ -8,7 +8,6 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@otplib/plugin-crypto": "^12.0.1",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^6.0.9",
@@ -33,7 +32,6 @@
     "fs": "0.0.1-security",
     "i18n-js": "^3.8.0",
     "lodash.memoize": "^4.1.2",
-    "otplib": "^12.0.1",
     "randombytes": "^2.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",

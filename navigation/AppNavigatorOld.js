@@ -20,9 +20,6 @@ import SendFormView from '../views/send/SendFormView'
 import SendPreviewView from '../views/send/SendPreviewView'
 import ContactBookView from '../views/contacts/ContactBookView'
 import EditContactView from '../views/contacts/EditContactView'
-import Verify2FaDeviceView from '../views/2fa/Verify2FaDeviceView'
-import Pair2FaDeviceView from '../views/2fa/Pair2FaDeviceView'
-import Pair2FaDeviceBackupCodesView from '../views/2fa/Pair2FaDeviceBackupCodesView'
 import ChangePinView from '../views/pin/ChangePinView'
 import CreatePinView from '../views/pin/CreatePinView'
 import LogOutView from '../views/LogOutView'
@@ -107,21 +104,6 @@ const DrawerNavigator = () => {
         name='ChangePinView'
         options={{ title: translate('changePin') }}
         component={ChangePinView}
-      />
-      <MainNavigator.Screen
-        name='Pair2FaDeviceBackupCodesView'
-        options={{ title: translate('pair2FaDeviceBackupCode') }}
-        component={Pair2FaDeviceBackupCodesView}
-      />
-      <MainNavigator.Screen
-        name='Pair2FaDeviceView'
-        options={{ title: translate('pair2FaDevice') }}
-        component={Pair2FaDeviceView}
-      />
-      <MainNavigator.Screen
-        name='Verify2FaDeviceView'
-        options={{ title: translate('verify2FaDevice') }}
-        component={Verify2FaDeviceView}
       />
       <MainNavigator.Screen
         name='EditContactView'

@@ -21,8 +21,6 @@ import SendFormView from './views/send/SendFormView'
 import SendPreviewView from './views/send/SendPreviewView'
 import ContactBookView from './views/contacts/ContactBookView'
 import EditContactView from './views/contacts/EditContactView'
-import Verify2FaDeviceView from './views/2fa/Verify2FaDeviceView'
-import Pair2FaDeviceView from './views/2fa/Pair2FaDeviceView'
 import ChangePinView from './views/pin/ChangePinView'
 import CreatePinView from './views/pin/CreatePinView'
 import LogOutView from './views/LogOutView'
@@ -60,16 +58,6 @@ export default function App () {
       <SafeAreaProvider>
         <NavigationContainer theme={scheme === 'dark' ? AnodeDarkTheme : AnodeLightTheme}>
           <Stack.Navigator>
-            <Stack.Screen
-              name='Pair2FaDeviceView'
-              options={{ title: translate('pair2FaDevice'), headerRight: () => <NavMenuButton /> }}
-              component={Pair2FaDeviceView}
-            />
-            <Stack.Screen
-              name='Verify2FaDeviceView'
-              options={{ title: translate('verify2FaDevice'), headerRight: () => <NavMenuButton /> }}
-              component={Verify2FaDeviceView}
-            />
 
             <Stack.Screen
               name='FirstView'

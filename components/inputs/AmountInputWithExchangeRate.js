@@ -56,7 +56,7 @@ const AmountInputWithExchangeRate = (props) => {
   const styles = StyleSheet.create({
     container: {
       width: '100%',
-      paddingBottom: '16px'
+      paddingBottom: 16
     },
     label: {
       paddingBottom: dimensions.inputs.labelPaddingBottom,

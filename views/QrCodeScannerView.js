@@ -191,7 +191,7 @@ const BarcodeScannnerScreen = ({ route }) => {
               flex: 1,
               flexDirection: 'column',
               justifyContent: 'flex-end',
-              backgroundColor: '000'
+              backgroundColor: '#000'
             }}
           >
             <Camera

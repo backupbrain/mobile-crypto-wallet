@@ -50,8 +50,8 @@ const MainAccountBalance = (props) => {
     },
     balanceHeader: {
       flexDirection: 'row',
-      width: '100',
-      justifyContent: 'between',
+      width: 100,
+      justifyContent: 'space-between',
       alignItems: 'flex-end',
       paddingBottom: dimensions.verticalSpacingBetweenItems
     },

@@ -35,9 +35,9 @@ const PinPad = (props) => {
       borderRadius: '50%'
     },
     buttonText: {
-      fontSize: '120%',
-      padding: '20px',
-      marginTop: '16px',
+      fontSize: 20,
+      padding: 20,
+      marginTop: 16,
       color: colors.bodyText.color
     }
   })

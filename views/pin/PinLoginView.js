@@ -8,12 +8,10 @@ import PinPad from '../../components/buttons/PinPad'
 import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
-import TwoFactorAuth from '../../utils/TwoFactorAuth'
 
 const PinLoginView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const pinManager = useRef(new PinManager())
-  const TwoFactorSecret = useRef(new TwoFactorAuth())
   const [activeView, setActiveView] = useState('WalletHomeView')
   const [pin, setPin] = useState('')
   const [isPinValid, setIsPinValid] = useState(null)
@@ -36,13 +34,6 @@ const PinLoginView = ({ navigation, route }) => {
         }
         else
           navigation.navigate(activeView)
-        /* TwoFactorAuth.getPairingCode().then(secret => {
-          if(!secret){
-            navigation.navigate('RePair2FaDeviceViewSet')
-          }else{
-            navigation.navigate(activeView)
-          }
-        }) */
       } else {
         setPin('')
       }
@@ -69,7 +60,9 @@ const PinLoginView = ({ navigation, route }) => {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical,
       flex: 1,
-      border: '1px solid #fff'
+      // FIXME: Colors should be defined in the themes/AnodeTheme.js
+      borderColor: '#fff',
+      borderWidth: 1
     },
     container: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,

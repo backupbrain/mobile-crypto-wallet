@@ -74,7 +74,7 @@ const PktAddressInput = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      paddingBottom: '16px',
+      paddingBottom: 16,
       width: '100%'
     },
     label: {
@@ -111,8 +111,8 @@ const PktAddressInput = (props) => {
       borderBottomColor: colors.inputs.borderBottomErrorColor
     },
     input: {
-      height: '200px',
-      fontSize: '180%',
+      height: 200,
+      fontSize: 25,
       fontFamily: 'monospace',
       color: colors.inputs.color,
       paddingVertical: dimensions.inputs.paddingVertical,
@@ -124,13 +124,13 @@ const PktAddressInput = (props) => {
     },
     helpText: {
       color: '#666',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      paddingTop: 10,
+      paddingHorizontal: 6
     },
     errorText: {
       color: '#600',
-      paddingTop: '10px',
-      paddingHorizontal: '6px'
+      paddingTop: 10,
+      paddingHorizontal: 6
     }
   })
 

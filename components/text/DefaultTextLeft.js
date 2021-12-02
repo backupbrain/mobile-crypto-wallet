@@ -10,9 +10,10 @@ const DefaultTextLeft = ({ children }) => {
 const styles = StyleSheet.create({
   defaultTextLeft: {
     width: '100%',
-    marginBottom: '8px',
+    marginBottom: 8,
     textAlign: 'left',
-    fontFamily:'Archivo-Black'
+    // FIXME: fonts should be defined in the themes/AndroidThemes.js
+    // fontFamily:'Archivo-Black'
   }
 })
 

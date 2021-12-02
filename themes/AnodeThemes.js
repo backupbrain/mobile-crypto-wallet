@@ -2,70 +2,72 @@
 const AndroidTheme = {
   dimensions: {
     chart: {
-      yAxisMarginLeft: '10px',
-      xAxisMarginTop: '8px',
+      yAxisMarginLeft: 10,
+      xAxisMarginTop: 8,
       fontWeight: 'normal',
-      fontSize: '0.8em',
+      fontSize: 16,
       fontFamily: 'Arial, Helvetica, sans'
     },
     alertBanner: {
       width: 'auto',
-      borderRadius: '30px',
-      marginHorizontal: '20px',
+      borderRadius: 30,
+      marginHorizontal: 20,
       textAlign: 'center'
     },
     listItem: {
-      paddingVertical: '16px',
-      paddingHorizontal: '0px',
-      marginHorizontal: '0px',
-      borderTopWidth: '0px',
-      borderLeftWidth: '0px',
-      borderRightWidth: '0px',
-      borderBottomWidth: '1px',
-      borderRadius: '0px'
+      paddingVertical: 16,
+      paddingHorizontal: 0,
+      marginHorizontal: 0,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      borderBottomWidth: 1,
+      borderRadius: 0
     },
     listSectionHeader: {
-      paddingVertical: '16px',
-      paddingHorizontal: '0px',
+      paddingVertical: 16,
+      paddingHorizontal: 0,
       fontWeight: 'bold',
       textTransform: 'none'
     },
     tabs: {
-      tabMarginHorizontal: '20px'
+      tabMarginHorizontal: 20
     },
     modal: {
       borderRadius: 12,
-      titleSeparatorWidth: '1px',
-      titleFontWeight: 500,
+      titleSeparatorWidth: 1,
+      titleFontWeight: "500",
       titleFontSize: 24,
       titleTextAlign: 'center'
     },
     bodyText: {
-      paragraphPaddingTop: '16px',
-      paragraphPaddingBottom: '16px',
-      betweenParagraphPadding: '8px',
+      paragraphPaddingTop: 16,
+      paragraphPaddingBottom: 16,
+      betweenParagraphPadding: 8,
       fontSize: 16,
       fontWeight: 'normal',
-      lineHeight: '1.3',
+      lineHeight: 1.3,
       textAlign: 'center',
       width: '100%',
-      fontFamily: 'Archivo-Black'
+      // FIXME: add fonts: https://stackoverflow.com/a/52916277/5671180
+      // fontFamily: 'Archivo-Black'
     },
     headerText: {
-      fontSize: '1.5em',
+      fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'left',
-      fontFamily: 'KeepCalm-Medium'
+      // FIXME: add fonts: https://stackoverflow.com/a/52916277/5671180
+      // fontFamily: 'KeepCalm-Medium'
     },
     button: {
-      borderRadius: '50px',
+      borderRadius: 50,
       textAlign: 'center',
-      paddingHorizontal: '20px',
-      paddingVertical: '16px',
+      paddingHorizontal: 20,
+      paddingVertical: 16,
       width: '100%',
       textTransform: 'none',
       fontWeight: 'normal',
-      borderWidth: '1px'
+      borderWidth: 1
     },
     link: {
       fontWeight: 'normal',
@@ -74,8 +76,8 @@ const AndroidTheme = {
       textDecorationLine: 'underline'
     },
     screen: {
-      paddingHorizontal: '20px',
-      paddingVertical: '16px'
+      paddingHorizontal: 20,
+      paddingVertical: 16
     },
     inputs: {
       borderWidth: 1,
@@ -83,34 +85,34 @@ const AndroidTheme = {
       borderLeftWidth: 1,
       borderRightWidth: 1,
       borderBottomWidth: 1,
-      paddingHorizontal: '0px',
-      paddingVertical: '16px',
+      paddingHorizontal: 0,
+      paddingVertical: 16,
       borderRadius: 7,
       width: '100%',
-      supportingTextPaddingTop: '10px',
-      supportingTextPaddingHorizontal: '0px',
-      labelPaddingBottom: '8px'
+      supportingTextPaddingTop: 10,
+      supportingTextPaddingHorizontal: 0,
+      labelPaddingBottom: 8
     },
     accountBalance: {
       fontSize: 30,
       fontWeight: 'bold',
-      textTranform: 'none'
+      textTransform: 'none'
     },
     addressCard: {
       fontFamily: 'monospace',
-      lineHeight: '1.6',
-      fontSize: '1.2em',
+      lineHeight: 1.6,
+      fontSize: 20,
       textAlign: 'left',
       borderRadius: 8,
       width: 230
     },
     transactionCard: {
       fontFamily: 'monospace',
-      lineHeight: '1.6',
-      fontSize: '1.2em',
+      lineHeight: 1.6,
+      fontSize: 20,
       textAlign: 'left',
-      borderRadius: '3px',
-      width: '200px'
+      borderRadius: 3,
+      width: 200
     },
     headers: {
       vertical: 41,
@@ -158,8 +160,8 @@ export const AnodeLightTheme = {
     screen: {
       backgroundColor: '#F1F2F6',
       color: '#fff',
-      paddingVertical: '20px',
-      paddingHorizontal: '20px'
+      paddingVertical: 20,
+      paddingHorizontal: 20
     },
     listItem: {
       borderColor: '#E6E6E6'
@@ -251,7 +253,7 @@ export const AnodeLightTheme = {
       backgroundColor: '#192140',
     },
     background: '#F1F2F6',
-    border: '#F1F2F6',
+    borderColor: '#F1F2F6',
     text: '#000',
     disabledText: '#A9A9A9',
     securityBackground: '#2E4292'
@@ -367,7 +369,7 @@ export const AnodeDarkTheme = {
       backgroundColor: '#192140',
     },
     background: '#141528',
-    border: '#141528',
+    borderColor: '#141528',
     text: '#fff',
     disabledText: '#A9A9A9',
     securityBackground: '#141528'

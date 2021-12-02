@@ -81,9 +81,9 @@ const RemoteAddressWidget = (props, ref) => {
       paddingVertical: dimensions.inputs.paddingVertical,
       width: inputWidth,
       overflow: 'hidden',
-      overflowWrap: 'normal',
-      wordBreak: 'none',
-      whiteSpace: 'normal'
+      flexWrap: 'wrap',
+      // wordBreak: 'none', // not supported
+      // whiteSpace: 'normal' // not supported
     },
     inputText: {
       color: colors.inputs.color

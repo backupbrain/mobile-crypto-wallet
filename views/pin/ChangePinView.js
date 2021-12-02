@@ -63,7 +63,8 @@ const ChangePinView = ({ navigation, route }) => {
       marginBottom: dimensions.screen.paddingVertical
     },
     developer: {
-      border: '1px solid #f00',
+      borderColor: '#f00',
+      borderWidth: 1,
       marginBottom: dimensions.screen.paddingVertical,
       paddingHorizontal: dimensions.screen.paddingHorizontal,
       paddingVertical: dimensions.screen.paddingVertical
