@@ -43,6 +43,8 @@ How to [Compile GoLang as a Mobile Library](https://gaitatzis.medium.com/compile
 
 [How to fix the React Native Version Mismatch](https://blog.waldo.io/react-native-version-mismatch/) error
 
+XCode and React Native both compile and deploy the wrong project (Solution appears to be to restart computer)
+
 # Crazy things I haven't figured out how to solve yet
 
 How to fix the [Native module cannot be null](https://stackoverflow.com/questions/38698657/react-native-native-module-cannot-be-null) error ([#2](https://github.com/react-native-push-notification/ios/issues/43)) ([#3](https://johnnn.tech/q/reactnative-swift-nativemodule-for-ios-is-always-null/)) ([#4](https://stackoverflow.com/questions/68376713/swift-nativemodule-for-ios-is-always-null))
@@ -53,3 +55,4 @@ How to fix the [Native module cannot be null](https://stackoverflow.com/question
 ["RNLocalize is null" error](https://stackoverflow.com/questions/61045191/how-to-resolve-a-nativemodule-rnlocalize-is-null-error-in-test)
 
 ["Application main has not been registered" error](https://stackoverflow.com/questions/49410115/application-main-has-not-been-registered)
+
