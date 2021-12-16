@@ -289,7 +289,7 @@ const ContactBookView = ({ navigation, route }) => {
                 }}
               >
                 {/* <PlusIcon fill={colors.link.color} size={25} /> */}
-                <BodyText style={styles.newAddressText}>{'+ ' + translate('newContacts')}</BodyText>
+                <BodyText style={styles.newAddressText}>{'+ ' + translate('newContact')}</BodyText>
               </TouchableOpacity>
             </View>
           }

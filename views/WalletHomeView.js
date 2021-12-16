@@ -266,7 +266,7 @@ const WalletHomeView = ({ navigation, route }) => {
               }}
             >
               {/* <PlusIcon fill={colors.link.color} size={25} /> */}
-              <BodyText >{'+ ' + translate('newContacts')}</BodyText>
+              <BodyText >{'+ ' + translate('newAddress')}</BodyText>
             </TouchableOpacity>
           </View>
         </View>
