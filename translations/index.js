@@ -1,6 +1,6 @@
 import * as RNLocalize from 'react-native-localize'
 import i18n from 'i18n-js'
-import memoize from 'lodash.memoize'
+// import memoize from 'lodash.memoize'
 import AppConstants from '../utils/AppConstants'
 
 export const getCurrentLocale = () => {
@@ -21,22 +21,23 @@ const translationGetters = {
 }
 
 const translate = (key, vars) => {
-  if (!vars)
-    return i18n.t(key)
-  else {
-    return replaceVariables(i18n.t(key), vars)
+  let response = null
+  if (!vars || vars === undefined) {
+    // response = i18n.t(key)
+    response = translationGetters.en()[key]
+  } else {
+    // response = replaceVariables(i18n.t(key), vars)
+    response = replaceVariables(translationGetters.en()[key], vars)
   }
-
+  return response
 }
 
-
 const replaceVariables = (string, variables) => {
-
   Object.keys(variables).forEach((toReplace) => {
     string = string.replace(new RegExp(`{\\s*${toReplace}\\s*}`, 'g'), variables[toReplace])
   })
 
-  return string;
+  return string
 }
 
 /* const translate = memoize(

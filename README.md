@@ -12,6 +12,10 @@ https://stackoverflow.com/a/52663626/5671180
 
 ```console
 $ expo start --web
+
+# or
+
+$ npx react-native run-ios
 ```
 
 ## Migrating over to React Native with XCode
@@ -45,9 +49,17 @@ How to [Compile GoLang as a Mobile Library](https://gaitatzis.medium.com/compile
 
 XCode and React Native both compile and deploy the wrong project (Solution appears to be to restart computer)
 
+[RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks](https://stackoverflow.com/a/48903673/5671180)
+
+[Including files into the App Bundle](https://www.wired-cat.com/entry/2020/04/24/230903) and [Copy files from Bundle to Documments folder](https://stackoverflow.com/a/54013269/5671180)
+
+[error: use of undeclared type RCTPromiseResolveBlock](https://stackoverflow.com/questions/42577511/how-to-bridge-react-native-promise-to-swift)
+
+[Not enough space to install Xcode](https://medium.com/geekculture/installing-xcode-with-not-enough-disk-space-available-b96c8f17115b)
+
 # Crazy things I haven't figured out how to solve yet
 
-How to fix the [Native module cannot be null](https://stackoverflow.com/questions/38698657/react-native-native-module-cannot-be-null) error ([#2](https://github.com/react-native-push-notification/ios/issues/43)) ([#3](https://johnnn.tech/q/reactnative-swift-nativemodule-for-ios-is-always-null/)) ([#4](https://stackoverflow.com/questions/68376713/swift-nativemodule-for-ios-is-always-null))
+How to fix the [Native module cannot be null](https://stackoverflow.com/questions/38698657/react-native-native-module-cannot-be-null) error ([#2](https://github.com/react-native-push-notification/ios/issues/43)) ([#3](https://johnnn.tech/q/reactnative-swift-nativemodule-for-ios-is-always-null/)) ([#4](https://stackoverflow.com/questions/68376713/swift-nativemodule-for-ios-is-always-null)) - solution is not not instantiate the object, but to call it's methods as static.
 
 
 [How to get rid of Xcode's "Cannot launch app because device is locked" error](https://code2care.org/tutorial/unlock-your-iphone-to-continue-xcode-cannot-launch-app-on-iphone-because-the-device-is-locked)
@@ -56,3 +68,9 @@ How to fix the [Native module cannot be null](https://stackoverflow.com/question
 
 ["Application main has not been registered" error](https://stackoverflow.com/questions/49410115/application-main-has-not-been-registered)
 
+[Xcode error: could not reparse object file in bitcode bundle: 'Invalid bitcode version (Producer: '1300.0.29.3.0_0' Reader: '1205.0.22.11_0')', using libLTO version 'LLVM version 12.0.5, (clang-1205.0.22.11)' for architecture arm64](https://stackoverflow.com/questions/63802570/invalid-bitcode-version-for-archiving-ios-app) ([#2](https://stackoverflow.com/questions/43215407/xcode-invalid-bitcode)) ([#3](https://stackoverflow.com/questions/53830088/could-not-reparse-object-file-in-bitcode-bundle-invalid-bitcode-version))
+
+fatal error: memory reservation exceeds address space limit
+
+
+[No component found for view with name "RNSVGPath"](https://github.com/react-native-svg/react-native-svg/issues/470)

@@ -1,109 +1,116 @@
 import React, { useState, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Screen from '../../components/Screen'
-import PasswordInput from '../../components/inputs/PasswordInput'
+import BodyText from '../../components/text/BodyText'
 import CreateNewPasswordInput from '../../components/inputs/CreateNewPasswordInput'
 import ActivityButton from '../../components/buttons/ActiveButton'
-import BodyText from '../../components/text/BodyText'
+import Checkbox from '../../components/buttons/Checkbox'
 import translate from '../../translations'
-import AdaptiveStorage from '../../utils/AdaptiveStorage'
 import PassphraseManager from '../../utils/PassphraseManager'
-import AppConstants from '../../utils/AppConstants'
 import { useTheme } from '@react-navigation/native'
-import AlertBanner from '../../components/AlertBanner'
 
-const ChangePassphraseView = ({ navigation, route }) => {
+const CreatePassphraseView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
   const passphraseManager = useRef(new PassphraseManager())
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassphrase, setnewPassphrase] = useState('')
-  const [_doPassphrasesMatch, setdoPassphrasesMatch] = useState(null)
+  const [passphrase, setPassphrase] = useState('')
+  const [doPassphrasesMatch, setDoPassphrasesMatch] = useState(null)
   const [isFormFilled, setIsFormFilled] = useState(false)
-  const getCurrentPassword = async () => {
-    const password = await AdaptiveStorage.get(AppConstants.PASSPHRASE_KEY)
-    return password
+  const [isPasswordRecoveryCertifyChecked, _setIsPasswordRecoveryCertifyChecked] = useState(false)
+  const [isPasswordStoredChecked, _setIsPasswordStoredChecked] = useState(false)
+  const verifyFormFilled = (password, doPassphrasesMatch, isPasswordRecoveryCertifyChecked, isPasswordStoredChecked) => {
+    if (password.length > 0 && doPassphrasesMatch && isPasswordRecoveryCertifyChecked && isPasswordStoredChecked) {
+      setIsFormFilled(true)
+    } else {
+      setIsFormFilled(false)
+    }
   }
-  const verifyFormFilled = (currentPassword, newPassphrase, doPassphrasesMatch) => {
-    getCurrentPassword().then((currentPass) => {
-      if (currentPassword === currentPass && newPassphrase.length > 0 && currentPassword.length > 0 && doPassphrasesMatch) {
-        setIsFormFilled(true)
-      } else {
-        setIsFormFilled(false)
-      }
-    })
-  }
-  const saveNewPassphrase = (passphrase) => {
+  const savePassphrase = (passphrase) => {
     passphraseManager.current.set(passphrase)
   }
 
   const styles = StyleSheet.create({
     screen: {
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      justifyContent: 'space-between',
+      flex: 1
     },
-    createPassphraseBlock: {
+    inputContainer: {
       paddingVertical: dimensions.paddingVertical
     },
-    textContainer: {
-      paddingBottom: dimensions.paddingVertical
+    checkbox: {
+      marginRight: dimensions.horizontalSpacingBetweenItems,
+      marginTop: 2
     }
   })
 
+  const setIsPasswordStoredChecked = (isPasswordStoredChecked) => {
+    _setIsPasswordStoredChecked(isPasswordStoredChecked)
+    verifyFormFilled(passphrase, doPassphrasesMatch, isPasswordRecoveryCertifyChecked, isPasswordStoredChecked)
+    console.log(`setIsPasswordStoredChecked(${isPasswordStoredChecked})`)
+  }
+
+  const setIsPasswordRecoveryCertifyChecked = (isPasswordRecoveryCertifyChecked) => {
+    _setIsPasswordRecoveryCertifyChecked(isPasswordRecoveryCertifyChecked)
+    verifyFormFilled(passphrase, doPassphrasesMatch, isPasswordRecoveryCertifyChecked, isPasswordStoredChecked)
+    console.log(`setIsPasswordRecoveryCertifyChecked(${isPasswordRecoveryCertifyChecked})`)
+  }
+
   const _onPasswordChangeHandler = (text) => {
-    setCurrentPassword(text)
-    verifyFormFilled(text, newPassphrase, _doPassphrasesMatch)
-  }
-
-  const _onNewPasswordChangeHandler = (passphrase) => {
-    setnewPassphrase(passphrase)
-  }
-
-  const _onPasswordMatchHandler = (doPassphrasesMatch, newPassphrase) => {
-    setdoPassphrasesMatch(doPassphrasesMatch)
-    verifyFormFilled(currentPassword, newPassphrase, doPassphrasesMatch)
+    setPassphrase(text)
   }
 
   const _onPasswordVerifyChangeHandler = (text) => { }
 
+  const _onPasswordMatchHandler = (doPassphrasesMatch, password) => {
+    setDoPassphrasesMatch(doPassphrasesMatch)
+    verifyFormFilled(password, doPassphrasesMatch, isPasswordStoredChecked, isPasswordStoredChecked)
+  }
+
   const _onActivityPressHandler = () => {
-    saveNewPassphrase(newPassphrase)
-    // TODO: create alert and reset all password inputs
-    navigation.navigate('WalletHomeView',{
-      showAlert:true,
-      variant:'success',
-      label:translate('passphraseChangedAlert')
-    })
-    // navigation.push('ChangePasswordView')
+    savePassphrase(passphrase)
+    if (route.params?.firstScreen) {
+      navigation.push('CreatePinView') // TODO: push route.params
+    } else {
+      navigation.push('WalletHomeViewSet')
+    }
   }
 
   return (
     <Screen>
       <View style={styles.screen}>
-        <View style={styles.textContainer}>
+        <View>
           <BodyText>{translate('whyPassphrase')}</BodyText>
+          <View style={styles.inputContainer}>
+            <CreateNewPasswordInput
+              passwordPlaceholder={translate('newPassphrase')}
+              passwordHelp={translate('passwordHelpText')}
+              passwordVerifyPlaceholder={translate('verifyPassword')}
+              passwordVerifyHelp={translate('verifyPasswordHelpText')}
+              onPasswordChangeText={_onPasswordChangeHandler}
+              onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
+              onPasswordsMatch={_onPasswordMatchHandler}
+            />
+          </View>
+          <View>
+            <Checkbox
+              onValueChange={(value) => setIsPasswordRecoveryCertifyChecked(value)}
+              label={translate('passphraseWarningCheckbox')}
+            />
+            <Checkbox
+              onValueChange={(value) => setIsPasswordStoredChecked(value)}
+              label={translate('iHaveSavedMyPassword')}
+            />
+          </View>
         </View>
-        <PasswordInput
-          placeholder={translate('currentPassphrase')}
-          onChangeText={_onPasswordChangeHandler}
-        />
-        <CreateNewPasswordInput
-          passwordPlaceholder={translate('newPassphrase')}
-          passwordHelp={translate('passwordHelpText')}
-          passwordVerifyPlaceholder={translate('verifyPassword')}
-          passwordVerifyHelp={translate('verifyPasswordHelpText')}
-          onPasswordChangeText={_onNewPasswordChangeHandler}
-          onPasswordVerifyChangeText={_onPasswordVerifyChangeHandler}
-          onPasswordsMatch={_onPasswordMatchHandler}
-          style={styles.createPassphraseBlock}
-        />
-        <ActivityButton
-          title={translate('changePassphrase')}
-          onPress={_onActivityPressHandler}
-          disabled={!isFormFilled}
-        />
+        <View>
+          <ActivityButton
+            title={translate('createPassphrase')}
+            onPress={_onActivityPressHandler}
+            disabled={!isFormFilled}
+          />
+        </View>
       </View>
     </Screen>
   )
 }
 
-export default ChangePassphraseView
+export default CreatePassphraseView

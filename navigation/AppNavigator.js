@@ -134,11 +134,12 @@ const FirstViewSet = ({ navigation }) => {
     <Stack.Navigator initialRouteName={initialRoute}
       screenOptions={{
         headerTitleAlign: 'center',
+        header: (props) => <Header {...props} />,
       }}>
 
       <Stack.Screen
         name='FirstView'
-        options={{ title: translate('first'), headerShown: false }}
+        options={{ title: translate('first') }}
         component={FirstView}
       />
       <Stack.Screen
@@ -179,7 +180,10 @@ const FirstViewSet = ({ navigation }) => {
       <Stack.Screen
         name='CreatePassphraseView'
         options={{
-          title: translate('createPassphrase')
+          title: translate('createPassphrase'),
+          progressShown: true,
+          progressActiveStep: 0,
+          progressSteps: 4
         }}
         component={CreatePassphraseView}
         initialParams={{ firstScreen: true }}
@@ -201,7 +205,10 @@ const FirstViewSet = ({ navigation }) => {
       <Stack.Screen
         name='CreatePinView'
         options={{
-          title: translate('createPin')
+          title: translate('createPin'),
+          progressShown: true,
+          progressActiveStep: 1,
+          progressSteps: 4
         }}
         component={CreatePinView}
         initialParams={{ firstScreen: true }}

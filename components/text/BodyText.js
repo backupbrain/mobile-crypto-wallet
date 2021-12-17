@@ -10,8 +10,8 @@ const BodyText = (props) => {
       color: colors.bodyText.color,
       fontSize: dimensions.bodyText.fontSize,
       fontWeight: dimensions.bodyText.fontWeight,
-      lineHeight: dimensions.bodyText.lineHeight,
-      fontFamily:dimensions.bodyText.fontFamily
+      fontFamily: dimensions.bodyText.fontFamily,
+      textAlign: props.align || dimensions.bodyText.textAlign
     }
   })
 

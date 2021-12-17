@@ -7,7 +7,11 @@ import translate from '../../translations'
 import PinManager from '../../utils/PinManager'
 import { useTheme } from '@react-navigation/native'
 import BodyText from '../../components/text/BodyText'
-import ProgressStepBar from '../../components/ProgressStepBar'
+
+/*
+  {route.params?.from == 'load' && <ProgressStepBar steps={3} activeStep={2} />}
+  {route.params?.from == 'create' && <ProgressStepBar steps={4} activeStep={3} />}
+*/
 
 const CreatePinView = ({ navigation, route }) => {
   const { dimensions } = useTheme()
@@ -27,12 +31,8 @@ const CreatePinView = ({ navigation, route }) => {
     pinManager.current.set(pin1)
   }
 
-
   const styles = StyleSheet.create({
     screen: {
-      paddingHorizontal: dimensions.screens.horizontal,
-      paddingBottom: dimensions.screens.bottomPadding,
-      paddingTop: dimensions.screens.topPadding,
       flex: 1,
       justifyContent: 'space-between'
     },
@@ -41,7 +41,6 @@ const CreatePinView = ({ navigation, route }) => {
       paddingBottom: dimensions.paddingVertical
     }
   })
-
 
   const _onNewPasswordChangeHandler = (text) => {
     setPin1(text)
@@ -57,16 +56,17 @@ const CreatePinView = ({ navigation, route }) => {
 
   const _onActivityPressHandler = () => {
     savePin()
-    navigation.navigate('WalletHomeViewSet')
-
+    if (route.params?.firstScreen) {
+      navigation.push('CreateWalletIntroView') // TODO: push route.params
+    } else {
+      navigation.push('WalletHomeViewSet')
+    }
   }
 
   return (
     <Screen>
       <View style={styles.screen}>
         <View>
-          {route.params?.from == 'load' && <ProgressStepBar steps={3} activeStep={2} />}
-          {route.params?.from == 'create' && <ProgressStepBar steps={4} activeStep={3} />}
           <BodyText>{translate('createPinIntro')}</BodyText>
           <View style={styles.inputContainer}>
             <CreateNewPasswordInput

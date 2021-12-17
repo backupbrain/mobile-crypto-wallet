@@ -5,34 +5,38 @@ import { useSelector } from 'react-redux'
 import SecurityView from '../views/SecurityView'
 
 const Screen = (props) => {
-  const { colors } = useTheme()
+  const { colors, dimensions } = useTheme()
   const security = useSelector(state => state.security.securityScreen)
 
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      backgroundColor: colors.screen.backgroundColor
+      backgroundColor: colors.screen.backgroundColor,
+      paddingTop: dimensions.screen.underHeaderPaddingTop,
+      paddingBottom: dimensions.screen.paddingBottom,
+      paddingHorizontal: dimensions.screen.paddingHorizontal
     },
     security: {
       flex: 1,
-      height:'100%',
-      width:'100%',
-      position:'absolute',
+      height: '100%',
+      width: '100%',
+      position: 'absolute'
     }
   })
 
   return (
     <View style={styles.screen}>
-      {
-        security ?
+      {security
+        ? (
           <View style={styles.security}>
             <SecurityView />
           </View>
-          :
+        )
+        : (
           <>
             {props.children}
           </>
-      }
+        )}
     </View>
   )
 }

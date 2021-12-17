@@ -1,7 +1,6 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react'
 import { TextInput, View, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import BodyText from '../text/BodyText'
-import translate from '../../translations'
 import { useTheme } from '@react-navigation/native'
 import EyeOpen from '../images/EyeOpen'
 import EyeClosed from '../images/EyeClosed'
@@ -18,7 +17,8 @@ const PasswordInput = (props, ref) => {
 
   const styles = StyleSheet.create({
     container: {
-      width: dimensions.inputs.width
+      width: dimensions.inputs.width,
+      marginBottom: dimensions.inputs.marginBottom
     },
     label: {
       paddingBottom: dimensions.inputs.labelPaddingBottom,
@@ -32,18 +32,18 @@ const PasswordInput = (props, ref) => {
       borderWidth: dimensions.inputs.borderWidth
     },
     textInputRegular: {
-      borderColor: colors.inputs.borderColor,
+      borderColor: colors.inputs.borderColor
     },
     textInputError: {
-      borderColor: colors.inputs.errorTextColor,
+      borderColor: colors.inputs.errorTextColor
     },
     input: {
       flexGrow: 1,
       paddingHorizontal: dimensions.inputs.paddingHorizontal,
       paddingVertical: dimensions.inputs.paddingVertical,
       color: colors.inputs.color,
-      borderColor:colors.inputs.borderColor,
-      paddingLeft:dimensions.paddingVertical
+      borderColor: colors.inputs.borderColor,
+      paddingLeft: dimensions.paddingVertical
     },
     helpText: {
       color: colors.inputs.color
@@ -56,7 +56,8 @@ const PasswordInput = (props, ref) => {
       paddingHorizontal: dimensions.inputs.supportingTextPaddingHorizontal
     },
     showHideButton: {
-      paddingHorizontal: dimensions.inputs.paddingVertical,
+      paddingHorizontal: dimensions.inputs.paddingHorizontal,
+      paddingTop: dimensions.inputs.iconPaddingTop,
       justifyContent: 'center'
     }
   })
@@ -77,15 +78,15 @@ const PasswordInput = (props, ref) => {
   }
 
   const getKeyboardType = () => {
-
-    if (!props.keyboardType)
+    if (!props.keyboardType) {
       return 'default'
-    if (props.keyboardType === 'numeric')
+    }
+    if (props.keyboardType === 'numeric') {
       return Platform.OS === 'android' ? 'numeric' : 'number-pad'
-    else
+    } else {
       return props.keyboardType
+    }
   }
-
 
   return (
     <View style={[styles.container, props.style]}>
@@ -99,6 +100,7 @@ const PasswordInput = (props, ref) => {
           value={text}
           autoCapitalize='none'
           keyboardType={getKeyboardType()}
+          placeholderTextColor={colors.inputs.placeholderTextColor}
           onChangeText={(text) => {
             if (props.maxLength && props.maxLength > 0) {
               text = text.substr(0, props.maxLength)

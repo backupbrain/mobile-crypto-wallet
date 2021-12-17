@@ -4,7 +4,6 @@ import Screen from '../components/Screen'
 import ActiveButton from '../components/buttons/ActiveButton'
 import AlertBanner from '../components/AlertBanner'
 import AnodeTextLogo from '../components/images/AnodeTextLogo'
-import HeaderText from '../components/text/HeaderText'
 import translate from '../translations'
 import { useTheme } from '@react-navigation/native'
 
@@ -15,21 +14,20 @@ const FirstView = ({ navigation, route }) => {
     isResetAlertVisible = route.params.showResetAlert
   }
 
-
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: dimensions.screens.horizontal,
-      flexGrow: 1,
-      paddingVertical: dimensions.screens.bottomPadding
+      flexGrow: 1
     },
     pktPalLogo: {
       width: '100%',
       paddingBottom: dimensions.paddingVertical,
       marginBottom: dimensions.paddingVertical,
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexGrow: 1
     },
     pktPalText: {
       paddingBottom: dimensions.paddingVertical,
@@ -37,11 +35,10 @@ const FirstView = ({ navigation, route }) => {
       color: colors.headerText.color
     },
     firstButton: {
-
     },
     secondButton: {
       marginTop: dimensions.paddingVertical,
-      paddingBottom:dimensions.verticalSpacingBetweenItems
+      paddingBottom: dimensions.verticalSpacingBetweenItems
     },
     buttonContainer: {
       width: '100%',
@@ -57,7 +54,6 @@ const FirstView = ({ navigation, route }) => {
         visible={isResetAlertVisible}
       />
       <View style={styles.screen}>
-        <HeaderText style={styles.pktPalText}>{translate('pktWallet')}</HeaderText>
         <View style={styles.pktPalLogo}>
           <AnodeTextLogo
             primaryColor={colors.logo.primaryColor}
@@ -70,7 +66,7 @@ const FirstView = ({ navigation, route }) => {
             title={translate('createNewWallet')}
             onPress={() => navigation.push('CreatePassphraseView')}
             style={styles.firstButton}
-            />
+          />
           <ActiveButton
             title={translate('loadFromRecoveryPassphrase')}
             onPress={() => navigation.push('LoadExistingWalletIntroView')}

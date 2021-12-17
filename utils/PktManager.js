@@ -3,9 +3,16 @@
 // import Bech32 from 'bech32'
 import AppConstants from '../utils/AppConstants'
 import bip39words from './bip39words'
+// import fs from 'fs'
 
 export default class PktManager {
   constructor () {
+    // try to open '/assets/certs/tls.cert'
+    // this.certData = fs.readFileSync('../assets/certs/tls.cert')
+    // console.log("certData:")
+    // console.log(certData)
+    this.myAddresses = []
+    /*
     this.myAddresses = [
       {
         address: 'pkt1qnzwh7fuw6yrxyphn5r5fcutr5fnqueeh7penc0',
@@ -56,10 +63,12 @@ export default class PktManager {
         outputcount: 1
       }
     ]
+    */
     this.addressLookup = {}
   }
 
-  async createWallet () {
+  async createWallet (passphrase) {
+    /*
     return new Promise((resolve, reject) => {
       const phrase = []
       const totalBip39Words = bip39words.length
@@ -71,6 +80,25 @@ export default class PktManager {
       }
       resolve(phrase)
     }, 10)
+    */
+    const seedResponse = await fetch(
+      'https://localhost:8080/v1/genseed'
+    )
+    const seedPhrase = await seedResponse.json()
+    var b64Passphrase = Buffer.from(passphrase, 'utf-8').toString('base64')
+    let data = {
+      "wallet_password": b64Passphrase,
+      "cipher_seed_mnemonic": seedPhrase
+    }
+    const initWalletResponse = await fetch(
+      'https://localhost:8080/v1/initwallet', {
+          method: 'POST',
+          body: JSON.stringify(data)
+      }
+    )
+    if (initWalletResponse.status != 200) {
+      throw new Error('Error initializing error')
+    }
   }
 
   async openWallet (passphrase) {
@@ -79,7 +107,24 @@ export default class PktManager {
     }, 10)
   }
 
+  async unlockWallet (passphrase) {
+    var b64Passphrase = Buffer.from(passphrase, 'utf-8').toString('base64')
+    let data = {
+      "wallet_password": b64Passphrase
+    }
+    const response = await fetch(
+      'https://localhost:8080/v1/unlockwallet', {
+          method: 'POST',
+          body: JSON.stringify(data)
+      }
+    )
+    if (response.code !== 200) {
+      throw new Error("Could not unlock wallet")
+    }
+  }
+
   async createAddress () {
+    /*
     const address = {
       address: 'pkt1q6mtyeymmdmc2the87psvlu9h6k0wywm8za0m83',
       total: 0.00,
@@ -92,13 +137,20 @@ export default class PktManager {
       sunconfirmed: 0,
       outputcount: 1
     }
-    /* this.myAddresses.push(address) */
+    this.myAddresses.push(address)
     return new Promise((resolve, reject) => {
       resolve(address)
     }, 10)
+    */
+    const response = await fetch(
+      'https://localhost:8080/v1/newaddress'
+    )
+    const newAddress = await response.json()
+    return newAddress.address
   }
 
-  async getAddresses () {
+  async getAddresses (showZeroBalance) {
+    /*
     const myAddresses = this.myAddresses
     const addressLookup = {}
     for (let i = 0; i < myAddresses.length; i++) {
@@ -110,11 +162,32 @@ export default class PktManager {
       resolve(myAddresses)
     }, 10)
     // return myAddresses
+    */
+    let url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
+    let params = { showzerobalance: showZeroBalance }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    const response = await fetch(url)
+    const balances = await response.json()
+    return balances.addrs
   }
 
   async getAddressInfo (address) {
+    /*
     await this.getAddresses()
     return this.addressLookup[address]
+    */
+    let url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
+    let params = { showzerobalance: showZeroBalance }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    const response = await fetch(url)
+    const balances = await response.json()
+    for (let i = 0; i < balances.length; i++) {
+      addressInfo = balances[i]
+      if (addressInfo.address == address) {
+        return addressInfo
+      }
+    }
+    throw new Error('Address not found')
   }
 
   async isAmountLessThanWalletBalance (amount, address) {
@@ -143,6 +216,7 @@ export default class PktManager {
   }
 
   async getTotalBalance () {
+    /*
     // sub the balances in the addresses
     const addresses = await this.getAddresses()
     let total = 0
@@ -151,6 +225,14 @@ export default class PktManager {
       total += address.total
     }
     return total
+    */
+    const response = await fetch(
+      'https://localhost:8080/v1/balance/blockchain'
+    )
+    const balances = await response.json()
+    // for now, return total_balance
+    // {"total_balance":"0","confirmed_balance":"0","unconfirmed_balance":"0"}
+    return balances.total_balance
   }
 
   async sendCoins (fromAddress, toAddress, amount) {
@@ -1414,6 +1496,7 @@ export default class PktManager {
   }
 
   async getTransaction (transactionId) {
+    /*
     const transaction = {
       amount: 599.9999998686835,
       fee: 1.3131648302078247e-07,
@@ -1446,6 +1529,12 @@ export default class PktManager {
     return new Promise((resolve, reject) => {
       resolve(transaction)
     }, 100)
+    */
+    const response = await fetch(
+      `https://localhost:8080/pkt/v1/gettransaction/${transactionId}`
+    )
+    const transactionData = await response.json()
+    return transactionData
   }
 
   /*

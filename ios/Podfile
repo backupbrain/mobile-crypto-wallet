@@ -20,4 +20,6 @@ target 'pktwallet' do
   # end
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
+  pod 'RNTextGradientView', :path => '../node_modules/react-native-text-gradient'
+
 end
