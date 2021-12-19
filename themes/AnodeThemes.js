@@ -1,5 +1,5 @@
 
-const AndroidTheme = {
+const AnodeTheme = {
   dimensions: {
     chart: {
       yAxisMarginLeft: 10,
@@ -31,14 +31,19 @@ const AndroidTheme = {
       textTransform: 'none'
     },
     tabs: {
-      tabMarginHorizontal: 20
+      tabMarginHorizontal: 20,
+      height: 82,
+      tabWidth: 125,
+      topPadding: 6,
+      bottomPadding: 34
     },
     modal: {
       borderRadius: 12,
       titleSeparatorWidth: 1,
-      titleFontWeight: "500",
+      titleFontWeight: '500',
       titleFontSize: 24,
-      titleTextAlign: 'center'
+      titleTextAlign: 'center',
+      headerPaddingTop: 20
     },
     bodyText: {
       paragraphPaddingTop: 16,
@@ -47,17 +52,29 @@ const AndroidTheme = {
       fontSize: 16,
       fontWeight: 'normal',
       lineHeight: 1.3,
-      textAlign: 'center',
-      width: '100%',
+      textAlign: 'left',
+      width: '100%'
       // FIXME: add fonts: https://stackoverflow.com/a/52916277/5671180
       // fontFamily: 'Archivo-Black'
+    },
+    navHeader: {
+      paddingBottom: 12,
+      textPaddingTop: 12
+    },
+    infoScreen: {
+      bodyText: {
+        textAlign: 'center'
+      }
     },
     headerText: {
       fontSize: 20,
       fontWeight: 'bold',
-      textAlign: 'left',
+      textAlign: 'left'
       // FIXME: add fonts: https://stackoverflow.com/a/52916277/5671180
       // fontFamily: 'KeepCalm-Medium'
+    },
+    headerBackButton: {
+      height: 21
     },
     button: {
       borderRadius: 50,
@@ -66,7 +83,7 @@ const AndroidTheme = {
       paddingVertical: 16,
       width: '100%',
       textTransform: 'none',
-      fontWeight: 'normal',
+      fontWeight: 'bold',
       borderWidth: 1
     },
     link: {
@@ -77,7 +94,9 @@ const AndroidTheme = {
     },
     screen: {
       paddingHorizontal: 20,
-      paddingVertical: 16
+      paddingBottom: 32,
+      paddingTop: 42,
+      underHeaderPaddingTop: 20
     },
     inputs: {
       borderWidth: 1,
@@ -85,13 +104,23 @@ const AndroidTheme = {
       borderLeftWidth: 1,
       borderRightWidth: 1,
       borderBottomWidth: 1,
-      paddingHorizontal: 0,
+      paddingHorizontal: 16,
       paddingVertical: 16,
+      iconPaddingTop: 5,
       borderRadius: 7,
       width: '100%',
-      supportingTextPaddingTop: 10,
+      supportingTextPaddingTop: 12,
       supportingTextPaddingHorizontal: 0,
-      labelPaddingBottom: 8
+      labelPaddingBottom: 8,
+      marginBottom: 12
+    },
+    seedPhraseInput: {
+      borderRadius: 15,
+      fontWeight: 'bold'
+    },
+    checkbox: {
+      labelPaddingLeft: 8,
+      marginBottom: 20
     },
     accountBalance: {
       fontSize: 30,
@@ -117,21 +146,35 @@ const AndroidTheme = {
     headers: {
       vertical: 41,
       horizontal: 11,
-      headerHeight: 105
-    },
-    screens: {
-      topPadding: 11,
-      bottomPadding: 32,
-      horizontal: 20
+      headerHeight: 105,
+      textAlign: 'center'
     },
     smallButton: {
-      borderRadius: 8
+      borderRadius: 8,
+      textAlign: 'center'
     },
-    tabs:{
-      height:82,
-      tabWidth:125,
-      topPadding:6,
-      bottomPadding:34,
+    recoveryWord: {
+      borderRadius: 8,
+      marginBottom: 16,
+      marginCenter: 16
+    },
+    progressStepBar: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      path: {
+        width: 60,
+        height: 2
+      },
+      step: {
+        width: 10,
+        height: 10,
+        borderRadius: 5
+      },
+      text: {
+        fontSize: 14,
+        marginTop: 10
+      }
     },
     paddingHorizontal: 20,
     paddingVertical: 16,
@@ -155,13 +198,15 @@ export const AnodeLightTheme = {
       dangerBackgroundColor: '#C15B5C',
       infoBackgroundContainer: '#F1F2F6',
       color: '#fff',
-      boxShadow: '2px 2px 10px #e7e8ec, -2px -2px 10px #fbfcff'
+      // boxShadow: '2px 2px 10px #e7e8ec, -2px -2px 10px #fbfcff'
+      shadowColor: '#e7e8ec',
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3
     },
     screen: {
       backgroundColor: '#F1F2F6',
-      color: '#fff',
-      paddingVertical: 20,
-      paddingHorizontal: 20
+      color: '#fff'
     },
     listItem: {
       borderColor: '#E6E6E6'
@@ -181,6 +226,9 @@ export const AnodeLightTheme = {
     headerText: {
       color: '#1F1F1F'
     },
+    headerBackButton: {
+      color: '#fff'
+    },
     inputs: {
       color: '#000',
       borderColor: '#A9A9A9',
@@ -198,6 +246,21 @@ export const AnodeLightTheme = {
       helpTextColor: '#A9A9A9',
       errorTextColor: '#A50000',
       labelColor: '#000'
+    },
+    seedPhraseInput: {
+      color: '#FFFFFF'
+    },
+    checkbox: {
+      checked: {
+        checkColor: '#fff',
+        fillColor: '#4BA7C4',
+        lineColor: '#4BA7C4'
+      },
+      unchecked: {
+        checkColor: 'transparent',
+        fillColor: 'transparent',
+        lineColor: '#4BA7C4'
+      }
     },
     primaryButton: {
       backgroundColor: '#2978A8',
@@ -243,14 +306,22 @@ export const AnodeLightTheme = {
     transactionListItem: {
       confirmedIconColor: '#37B761',
       unconfirmedIconColor: '#ED1111',
-      pendingIconColor:'#D9B455'
+      pendingIconColor: '#D9B455'
     },
     recoveryWord: {
-      backgroundColor: '#192140',
-      borderRadius: 8
+      backgroundColor: '#192140'
     },
     smallButton: {
-      backgroundColor: '#192140',
+      backgroundColor: '#192140'
+    },
+    progressStepBar: {
+      path: {
+        color: '#fff'
+      },
+      step: {
+        activeBackgroundColor: '#fff',
+        inactiveBackgroundColor: '#202832'
+      }
     },
     background: '#F1F2F6',
     borderColor: '#F1F2F6',
@@ -258,7 +329,7 @@ export const AnodeLightTheme = {
     disabledText: '#A9A9A9',
     securityBackground: '#2E4292'
   },
-  dimensions: AndroidTheme.dimensions
+  dimensions: AnodeTheme.dimensions
 }
 
 export const AnodeDarkTheme = {
@@ -273,7 +344,11 @@ export const AnodeDarkTheme = {
       dangerBackgroundColor: '#A50000',
       infoBackgroundContainer: '#121212',
       color: '#fff',
-      boxShadow: '2px 2px 10px #06151e, -2px -2px 10px #103347'
+      // boxShadow: '2px 2px 10px #06151e, -2px -2px 10px #103347'
+      shadowColor: '#06151e',
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3
     },
     screen: {
       backgroundColor: '#141528',
@@ -297,6 +372,9 @@ export const AnodeDarkTheme = {
     headerText: {
       color: '#8EBED6'
     },
+    headerBackButton: {
+      color: '#fff'
+    },
     inputs: {
       color: '#fff',
       borderColor: '#323A44',
@@ -310,10 +388,25 @@ export const AnodeDarkTheme = {
       borderLeftErrorColor: 'transparent',
       borderRightErrorColor: 'transparent',
       borderBottomErrorColor: '#A50000',
-      placeholderTextColor: '#A9A9A9',
+      placeholderTextColor: '#4BA7C4',
       helpTextColor: '#A9A9A9',
       errorTextColor: '#ED1111',
       labelColor: '#fff'
+    },
+    seedPhraseInput: {
+      color: '#FFFFFF'
+    },
+    checkbox: {
+      checked: {
+        checkColor: '#fff',
+        fillColor: '#4BA7C4',
+        lineColor: '#4BA7C4'
+      },
+      unchecked: {
+        checkColor: 'transparent',
+        fillColor: 'transparent',
+        lineColor: '#4BA7C4'
+      }
     },
     primaryButton: {
       backgroundColor: '#4BA7C4',
@@ -359,14 +452,23 @@ export const AnodeDarkTheme = {
     transactionListItem: {
       confirmedIconColor: '#37B761',
       unconfirmedIconColor: '#ED1111',
-      pendingIconColor:'#D9B455'
+      pendingIconColor: '#D9B455'
     },
     recoveryWord: {
       backgroundColor: '#192140',
       borderRadius: 8
     },
     smallButton: {
-      backgroundColor: '#192140',
+      backgroundColor: '#192140'
+    },
+    progressStepBar: {
+      path: {
+        color: '#fff'
+      },
+      step: {
+        activeBackgroundColor: '#fff',
+        inactiveBackgroundColor: '#202832'
+      }
     },
     background: '#141528',
     borderColor: '#141528',
@@ -374,5 +476,5 @@ export const AnodeDarkTheme = {
     disabledText: '#A9A9A9',
     securityBackground: '#141528'
   },
-  dimensions: AndroidTheme.dimensions
+  dimensions: AnodeTheme.dimensions
 }

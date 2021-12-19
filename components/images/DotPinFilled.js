@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Svg, { Path, Circle } from 'react-native-svg'
+import Svg, { Circle } from 'react-native-svg'
 
 function DotPinFilled (props) {
   const size = props.size || 21

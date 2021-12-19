@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useImperativeHandle, forwardRef } from 'react'
 import { Text, TextInput, View, StyleSheet } from 'react-native'
 import translate from '../../translations'
 import bip39words from '../../utils/bip39words'
@@ -6,13 +6,18 @@ import { useTheme } from '@react-navigation/native'
 
 const DEFAULT_MAX_WORDS = 15
 
-const RecoveryPhraseInput = (props) => {
+const SeedPhraseInput = (props, ref) => {
   const { colors, dimensions } = useTheme()
   const MAX_WORDS = props.maxWords || DEFAULT_MAX_WORDS
   const [text, setText] = useState('')
   const [isInvalid, setIsInvalid] = useState(false)
   // const [formattedText, setFormattedText] = useState('')
   const [wordCount, setWordCount] = useState(0)
+
+  useImperativeHandle(ref, () => ({
+    verify: () => verify()
+  }))
+
   const getNumWordsRemaining = (text) => {
     // FIXME: remove empty words that cause incorrect count.
     if (text === '') {
@@ -22,12 +27,16 @@ const RecoveryPhraseInput = (props) => {
     return MAX_WORDS - strippedText.trim(' ').split(' ').length
   }
 
+  const verify = () => {
+    return verifyWords(text.split(' '))
+  }
+
   const verifyWords = (words) => {
     let isValid = true
-    if (words.length > DEFAULT_MAX_WORDS) {
+    if (words.length > MAX_WORDS) {
       isValid = false
     } else {
-      for (let i = 0; i < (words.length - 1); i++) {
+      for (let i = 0; i < (words.length); i++) {
         const word = words[i]
         if (!bip39words.includes(word)) {
           isValid = false
@@ -38,6 +47,12 @@ const RecoveryPhraseInput = (props) => {
     setIsInvalid(!isValid)
     return isValid
   }
+
+  const onBlur = () => {
+    console.log('onBlur()')
+    setRecoveryText(text)
+  }
+
   const setRecoveryText = (text) => {
     const words = text.replace(/\s+/g, ' ').split(' ')
     const wordCount = MAX_WORDS - getNumWordsRemaining(text)
@@ -57,18 +72,19 @@ const RecoveryPhraseInput = (props) => {
       marginBottom: 20
     },
     textInput: {
-      letterSpacing: '1.2',
-      fontSize: 20,
+      // letterSpacing: 1.2,
+      fontSize: 16,
       height: 200,
-      marginBottom: 8,
-      lineHeight: 1.5,
+      marginBottom: dimensions.verticalSpacingBetweenItems,
+      // lineHeight: 1.5,
       backgroundColor: colors.inputs.backgroundColor,
-      color: colors.inputs.color,
-      paddingHorizontal: dimensions.button.paddingHorizontal,
-      paddingVertical: dimensions.button.paddingVertical,
-      borderRadius: 15,
+      color: colors.seedPhraseInput.color,
+      paddingHorizontal: dimensions.inputs.paddingHorizontal,
+      paddingVertical: dimensions.inputs.paddingVertical,
+      borderRadius: dimensions.seedPhraseInput.borderRadius,
       borderWidth: dimensions.inputs.borderWidth,
-      borderColor:colors.inputs.borderColor
+      // borderColor: colors.inputs.borderColor,
+      fontWeight: dimensions.seedPhraseInput.fontWeight
     },
     textInputRegular: {
       borderColor: colors.inputs.borderColor
@@ -78,12 +94,12 @@ const RecoveryPhraseInput = (props) => {
     },
     helpText: {
       color: colors.inputs.color,
-      alignItems: 'top',
+      alignItems: 'flex-start',
       flexWrap: 'wrap'
     },
     errorText: {
       color: colors.inputs.errorTextColor,
-      alignItems: 'top',
+      alignItems: 'flex-start',
       flexWrap: 'wrap'
     }
   })
@@ -105,25 +121,27 @@ const RecoveryPhraseInput = (props) => {
           props.wordCountChanged(numWords)
           props.onChangeText(resultingText)
         }}
+        onBlur={() => onBlur()}
+        onEndEditing={() => onBlur()}
         value={text}
         multiline
         autoCapitalize='none'
         clearButtonMode='while-editing'
+        spellCheck
+        placeholderTextColor={colors.inputs.placeholderTextColor}
       />
-      {!isInvalid &&
-        <Text
-          style={styles.helpText}
-        >
-          {translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: DEFAULT_MAX_WORDS - wordCount })}
-        </Text>}
-      {isInvalid &&
-        <Text
-          style={styles.errorText}
-        >
-          {translate('invalidRecoveryPhrase')}
-        </Text>}
+      {isInvalid
+        ? (
+          <Text style={styles.errorText}>
+            {translate('invalidRecoveryPhrase')}
+          </Text>)
+        : (
+          <Text style={styles.helpText}>
+            {translate('recoveryPhraseNumWordsRemaining', { numWordsRemaining: DEFAULT_MAX_WORDS - wordCount })}
+          </Text>
+        )}
     </View>
   )
 }
 
-export default RecoveryPhraseInput
+export default forwardRef(SeedPhraseInput)

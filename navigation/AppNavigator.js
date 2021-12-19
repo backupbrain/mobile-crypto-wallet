@@ -17,13 +17,13 @@ import translate from '../translations'
 
 import SecurityView from '../views/SecurityView'
 import FirstView from '../views/FirstView'
-import NewWalletView from '../views/createwallet/NewWalletView'
-import NewWalletIntroView from '../views/createwallet/NewWalletIntroView'
+import CreateSeedWordsView from '../views/createwallet/CreateSeedWordsView'
+import CreateNewWalletIntroView from '../views/createwallet/CreateNewWalletIntroView'
 import LoadExistingWalletIntroView from '../views/createwallet/LoadExistingWalletIntroView'
-import VerifyRecoveryPhraseView from '../views/createwallet/VerifyRecoveryPhraseView'
-import CreatePassphraseView from '../views/passphrase/CreatePassphraseView'
-import ChangePassphraseView from '../views/passphrase/ChangePassphraseView'
-import WalletCreatedView from '../views/createwallet/WalletCreatedView'
+import ConfirmSeedWordsView from '../views/createwallet/ConfirmSeedWordsView'
+import SecureYourWalletInfoView from '../views/createwallet/SecureYourWalletInfoView'
+import WalletSetupCompleteView from '../views/createwallet/WalletSetupCompleteView'
+import EnterSeedPhraseView from '../views/createwallet/EnterSeedPhraseView'
 import WalletHomeView from '../views/WalletHomeView'
 import AddressView from '../views/AddressView'
 import QrCodeScannerView from '../views/QrCodeScannerView'
@@ -34,17 +34,18 @@ import ContactBookView from '../views/contacts/ContactBookView'
 import EditContactView from '../views/contacts/EditContactView'
 import ChangePinView from '../views/pin/ChangePinView'
 import CreatePinView from '../views/pin/CreatePinView'
-import LogOutView from '../views/LogOutView'
 import PinLoginView from '../views/pin/PinLoginView'
+import LogOutView from '../views/LogOutView'
 import TransactionView from '../views/TransactionView'
 import PktManager from '../utils/PktManager'
 import PassphraseManager from '../utils/PassphraseManager'
 import PinManager from '../utils/PinManager'
 import { Text } from 'react-native'
-import WalletPassphraseView from '../views/createwallet/WalletPassphraseView'
+import EnterExistingWalletPasswordView from '../views/passphrase/EnterExistingWalletPasswordView'
+import CreatePassphraseView from '../views/passphrase/CreatePassphraseView'
+import ChangePassphraseView from '../views/passphrase/ChangePassphraseView'
 import { useDispatch } from 'react-redux'
 import { securityDisable, securityEnable } from '../store/SecurityAction'
-import NewWalletIntroView2 from '../views/createwallet/NewWalletIntroView2'
 import RequestView from '../views/RequestView'
 import TabNavigatorButtons from '../components/Tabs/TabNavigatorButtons'
 
@@ -136,83 +137,98 @@ const FirstViewSet = ({ navigation }) => {
         headerTitleAlign: 'center',
         header: (props) => <Header {...props} />,
       }}>
-
-      <Stack.Screen
-        name='FirstView'
-        options={{ title: translate('first') }}
-        component={FirstView}
-      />
-      <Stack.Screen
-        name='CreateNewWalletIntroView'
-        options={{
-          title: translate('newWalletIntro')
-        }}
-        component={NewWalletIntroView2}
-      />
-      <Stack.Screen
-        name='LoadExistingWalletIntroView'
-        options={{
-          title: translate('loadExistingWalletIntro'),
-          headerTitleContainerStyle: {
-            paddingVertical: dimensions.headers.vertical,
-            paddingHorizontal: dimensions.headers.horizontal
-          },
-          headerStyle: {
-            height: 'auto'
-          }
-        }}
-        component={LoadExistingWalletIntroView}
-      />
-      <Stack.Screen
-        name='CreateNewWalletView'
-        options={{
-          title: translate('createNewWallet')
-        }}
-        component={NewWalletView}
-      />
-      <Stack.Screen
-        name='VerifyRecoveryPhraseView'
-        options={{
-          title: translate('verifyRecoveryPhrase')
-        }}
-        component={VerifyRecoveryPhraseView}
-      />
-      <Stack.Screen
-        name='CreatePassphraseView'
-        options={{
-          title: translate('createPassphrase'),
-          progressShown: true,
-          progressActiveStep: 0,
-          progressSteps: 4
-        }}
-        component={CreatePassphraseView}
-        initialParams={{ firstScreen: true }}
-      />
-      <Stack.Screen
-        name='WalletPassphraseView'
-        options={{
-          title: translate('enterWalletPassphrase')
-        }}
-        component={WalletPassphraseView}
-      />
-      <Stack.Screen
-        name='WalletCreatedView'
-        options={{
-          title: translate('walletCreated')
-        }}
-        component={WalletCreatedView}
-      />
-      <Stack.Screen
-        name='CreatePinView'
-        options={{
-          title: translate('createPin'),
-          progressShown: true,
-          progressActiveStep: 1,
-          progressSteps: 4
-        }}
-        component={CreatePinView}
-        initialParams={{ firstScreen: true }}
-      />
+        <Stack.Screen
+          name='FirstView'
+          options={{ title: translate('pktWallet') }}
+          component={FirstView}
+        />
+        <Stack.Screen
+          name='CreatePassphraseView'
+          options={{
+            title: translate('createPassphrase'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 1
+          }}
+          component={CreatePassphraseView}
+          initialParams={{ firstScreen: true }}
+        />
+        <Stack.Screen
+          name='CreatePinView'
+          options={{
+            title: translate('createPin'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 2
+          }}
+          component={CreatePinView}
+          initialParams={{ firstScreen: true }}
+        />
+        <Stack.Screen
+          name='SecureYourWalletInfoView'
+          options={{ title: translate('newWalletIntro') }}
+          component={SecureYourWalletInfoView}
+        />
+        <Stack.Screen
+          name='CreateNewWalletIntroView'
+          options={{ title: translate('secureYourWallet') }}
+          component={CreateNewWalletIntroView}
+        />
+        <Stack.Screen
+          name='CreateSeedWordsView'
+          options={{
+            title: translate('secretSeedPhrase'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 3
+          }}
+          component={CreateSeedWordsView}
+        />
+        <Stack.Screen
+          name='ConfirmSeedWordsView'
+          options={{
+            title: translate('confirmSeedPhrase'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 4
+          }}
+          component={ConfirmSeedWordsView}
+        />
+        <Stack.Screen
+          name='WalletSetupCompleteView'
+          options={{
+            title: translate('walletCreated'),
+            backButtonEnabled: false
+          }}
+          component={WalletSetupCompleteView}
+        />
+        <Stack.Screen
+          name='LoadExistingWalletIntroView'
+          options={{
+            title: translate('loadExistingWalletIntro')
+          }}
+          component={LoadExistingWalletIntroView}
+        />
+        <Stack.Screen
+          name='EnterSeedPhraseView'
+          options={{
+            title: translate('enterSeedPhrase'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 1
+          }}
+          component={EnterSeedPhraseView}
+        />
+        <Stack.Screen
+          name='EnterExistingWalletPasswordView'
+          options={{
+            title: translate('enterWalletPassphrase'),
+            progressShown: true,
+            progressSteps: 4,
+            progressActiveStep: 2
+          }}
+          component={EnterExistingWalletPasswordView}
+        />
       <Stack.Screen
         name='PinLoginView'
         options={{ title: translate('pinLogin'), headerShown: false }}

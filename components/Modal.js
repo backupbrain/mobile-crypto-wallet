@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useState, useImperativeHandle, forwardRef, useCallback } from 'react'
-import { Animated, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Animated, View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import Close from './images/Close'
+import HeaderText from './text/HeaderText'
 import { useTheme } from '@react-navigation/native'
+import { BlurView } from '@react-native-community/blur'
 
 const useComponentSize = () => {
   const [size, setSize] = useState({ width: 0, height: 0 })
@@ -18,6 +20,10 @@ const Modal = (props, ref) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const [isVisible, setIsVisible] = useState(false)
   const [closeButtonDimensions, onCloseButtonLayout] = useComponentSize()
+  const [useNativeDriver] = useState(Platform.OS !== 'web')
+
+  const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
+
   useEffect(() => {
     if (props.open === true) {
       setIsVisible(true)
@@ -40,7 +46,8 @@ const Modal = (props, ref) => {
     // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 100
+      duration: 100,
+      useNativeDriver: useNativeDriver
     }).start()
   }
 
@@ -48,7 +55,8 @@ const Modal = (props, ref) => {
     // Will change fadeAnim value to 0 in 3 seconds
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 100
+      duration: 100,
+      useNativeDriver: useNativeDriver
     }).start(({ finished }) => {
       setIsVisible(false)
     })
@@ -56,7 +64,7 @@ const Modal = (props, ref) => {
 
   const styles = StyleSheet.create({
     container: {
-      zIndex: 1000,
+      // zIndex: 1000,
       flex: 1,
       position: 'absolute',
       top: 0,
@@ -65,8 +73,8 @@ const Modal = (props, ref) => {
       height: '100%'
     },
     background: {
-      backgroundColor: colors.modal.overlayBackgroundColor,
-      width: '100%',
+      // backgroundColor: colors.modal.overlayBackgroundColor,
+      // width: '100%',
       flex: 1,
       justifyContent: 'center',
       paddingVertical: 16,
@@ -79,12 +87,9 @@ const Modal = (props, ref) => {
     modalTitle: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-      paddingTop: dimensions.paddingVertical
+      alignItems: 'flex-start'
     },
     modalText: {
-      width: '100%',
       textAlign: dimensions.modal.titleTextAlign,
       marginLeft: closeButtonDimensions.width,
       marginRight: 0,
@@ -92,9 +97,18 @@ const Modal = (props, ref) => {
       fontWeight: dimensions.modal.titleFontWeight,
       fontSize: dimensions.modal.titleFontSize
     },
+    headerText: {
+      textAlign: dimensions.headers.textAlign,
+      marginBottom: dimensions.navHeader.paddingBottom,
+      paddingTop: dimensions.modal.headerPaddingTop,
+      flexGrow: 1
+    },
+    headerLeft: {
+      width: closeButtonDimensions.width
+    },
     closeButton: {
-      paddingHorizontal: dimensions.screen.paddingHorizontal,
-      paddingVertical: dimensions.screen.paddingVertical
+      paddingHorizontal: dimensions.inputs.paddingHorizontal,
+      paddingVertical: dimensions.inputs.paddingVertical
     },
     modalContainer: {
       paddingHorizontal: dimensions.screen.paddingHorizontal,
@@ -110,20 +124,21 @@ const Modal = (props, ref) => {
     <>
       {isVisible &&
         <View style={[styles.container, props.style]}>
-          <Animated.View style={[styles.background, props.backgroundStyle, { opacity: fadeAnim }]}>
+          <AnimatedBlurView blurAmount={10} style={[styles.background, props.backgroundStyle, { opacity: fadeAnim }]}>
             <Animated.View style={[styles.modal, props.modalStyle, { opacity: fadeAnim }]}>
               {
                 props.title &&
-                <View style={styles.modalTitle}>
-                  <Text style={styles.modalText}>{props.title}</Text>
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onLayout={onCloseButtonLayout}
-                    onPress={close}
-                  >
-                    <Close color={colors.text} size='16' />
-                  </TouchableOpacity>
-                </View>
+                  <View style={styles.modalTitle}>
+                    <View style={styles.headerLeft} />
+                    <HeaderText style={styles.headerText}>{props.title}</HeaderText>
+                    <TouchableOpacity
+                      style={styles.closeButton}
+                      onLayout={onCloseButtonLayout}
+                      onPress={close}
+                    >
+                      <Close color={colors.text} size='16' />
+                    </TouchableOpacity>
+                  </View>
               }
               <View style={styles.modalContainer}>
                 {
@@ -131,9 +146,8 @@ const Modal = (props, ref) => {
                 }
               </View>
             </Animated.View>
-          </Animated.View>
-        </View>
-      }
+          </AnimatedBlurView>
+        </View>}
     </>
   )
 }

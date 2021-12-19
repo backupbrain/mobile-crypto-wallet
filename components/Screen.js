@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { ScrollView, View, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import SecurityView from '../views/SecurityView'
@@ -25,7 +25,7 @@ const Screen = (props) => {
   })
 
   return (
-    <View style={styles.screen}>
+    <ScrollView contentContainerStyle={[styles.screen, props.style]}>
       {security
         ? (
           <View style={styles.security}>
@@ -37,7 +37,7 @@ const Screen = (props) => {
             {props.children}
           </>
         )}
-    </View>
+    </ScrollView>
   )
 }
 

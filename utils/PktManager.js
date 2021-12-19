@@ -3,13 +3,19 @@
 // import Bech32 from 'bech32'
 import AppConstants from '../utils/AppConstants'
 import bip39words from './bip39words'
+import { Platform } from 'react-native'
+import base64 from 'react-native-base64'
 // import fs from 'fs'
 
 export default class PktManager {
+
+  static get SEED_PHRASE_LENGTH () { return 15 }
+
   constructor () {
+    this.debug = (Platform.OS === 'web')
     // try to open '/assets/certs/tls.cert'
     // this.certData = fs.readFileSync('../assets/certs/tls.cert')
-    // console.log("certData:")
+    // console.log('certData:')
     // console.log(certData)
     this.myAddresses = []
     /*
@@ -67,37 +73,65 @@ export default class PktManager {
     this.addressLookup = {}
   }
 
-  async createWallet (passphrase) {
-    /*
-    return new Promise((resolve, reject) => {
-      const phrase = []
-      const totalBip39Words = bip39words.length
-      for (let i = 0; i < 15; i++) {
-        const randInt = Math.floor(Math.random() * totalBip39Words) + 1
-        const randWord = bip39words[randInt]
-        phrase.push(randWord)
-        bip39words.splice(randInt, 0)
-      }
-      resolve(phrase)
-    }, 10)
-    */
-    const seedResponse = await fetch(
-      'https://localhost:8080/v1/genseed'
-    )
-    const seedPhrase = await seedResponse.json()
-    var b64Passphrase = Buffer.from(passphrase, 'utf-8').toString('base64')
-    let data = {
-      "wallet_password": b64Passphrase,
-      "cipher_seed_mnemonic": seedPhrase
+  async genSeed (passphrase) {
+    console.log('PktManager.genSeed()')
+    if (this.debug) {
+      return new Promise((resolve, reject) => {
+        const phrase = []
+        const totalBip39Words = bip39words.length
+        for (let i = 0; i < 15; i++) {
+          const randInt = Math.floor(Math.random() * totalBip39Words) + 1
+          const randWord = bip39words[randInt]
+          phrase.push(randWord)
+          bip39words.splice(randInt, 0)
+        }
+        resolve(phrase)
+      }, 500)
+    } else {
+      const seedResponse = await fetch(
+        'http://localhost:8080/v1/genseed'
+      )
+      console.log(seedResponse)
+      const seedWords = await seedResponse.json()
+      console.log('seedWords:')
+      console.log(seedWords)
+      return seedWords.cipher_seed_mnemonic
     }
-    const initWalletResponse = await fetch(
-      'https://localhost:8080/v1/initwallet', {
+  }
+
+  async createWallet (passphrase, seedPhrase) {
+    console.log(`PktManager.createWallet("${passphrase}, []")`)
+    if (this.debug) {
+      return new Promise((resolve, reject) => {
+        resolve(true)
+      }, 500)
+    } else {
+      console.log('passphrase:')
+      console.log(passphrase)
+      console.log('seedPhrase:')
+      console.log(seedPhrase)
+      var b64Passphrase = base64.encode(passphrase)
+      const data = {
+        wallet_password: b64Passphrase,
+        cipher_seed_mnemonic: seedPhrase
+      }
+      console.log('http://localhost:8080/v1/initwallet')
+      console.log(data)
+      const initWalletResponse = await fetch(
+        'http://localhost:8080/v1/initwallet', {
           method: 'POST',
           body: JSON.stringify(data)
+        }
+      )
+      console.log(initWalletResponse)
+
+      if (initWalletResponse.status !== 200) {
+        console.error("Coludn't open wallet")
+        console.log(initWalletResponse)
+        throw new Error('Error initializing wallet')
       }
-    )
-    if (initWalletResponse.status != 200) {
-      throw new Error('Error initializing error')
+      const initWalletJson = await initWalletResponse.json()
+      console.log(initWalletJson)
     }
   }
 
@@ -108,18 +142,18 @@ export default class PktManager {
   }
 
   async unlockWallet (passphrase) {
-    var b64Passphrase = Buffer.from(passphrase, 'utf-8').toString('base64')
-    let data = {
-      "wallet_password": b64Passphrase
+    var b64Passphrase = base64.encode(passphrase)
+    const data = {
+      wallet_password: b64Passphrase
     }
     const response = await fetch(
       'https://localhost:8080/v1/unlockwallet', {
-          method: 'POST',
-          body: JSON.stringify(data)
+        method: 'POST',
+        body: JSON.stringify(data)
       }
     )
     if (response.code !== 200) {
-      throw new Error("Could not unlock wallet")
+      throw new Error('Could not unlock wallet')
     }
   }
 
@@ -163,8 +197,8 @@ export default class PktManager {
     }, 10)
     // return myAddresses
     */
-    let url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
-    let params = { showzerobalance: showZeroBalance }
+    const url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
+    const params = { showzerobalance: showZeroBalance }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     const response = await fetch(url)
     const balances = await response.json()
@@ -176,14 +210,14 @@ export default class PktManager {
     await this.getAddresses()
     return this.addressLookup[address]
     */
-    let url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
-    let params = { showzerobalance: showZeroBalance }
+    const url = new URL('https://localhost:8080/pkt/v1/getaddressbalances')
+    const params = { showzerobalance: true }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     const response = await fetch(url)
     const balances = await response.json()
     for (let i = 0; i < balances.length; i++) {
-      addressInfo = balances[i]
-      if (addressInfo.address == address) {
+      const addressInfo = balances[i]
+      if (addressInfo.address === address) {
         return addressInfo
       }
     }
@@ -231,7 +265,7 @@ export default class PktManager {
     )
     const balances = await response.json()
     // for now, return total_balance
-    // {"total_balance":"0","confirmed_balance":"0","unconfirmed_balance":"0"}
+    // {'total_balance':'0','confirmed_balance':'0','unconfirmed_balance':'0'}
     return balances.total_balance
   }
 
