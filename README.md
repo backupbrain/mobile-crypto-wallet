@@ -74,3 +74,13 @@ fatal error: memory reservation exceeds address space limit
 
 
 [No component found for view with name "RNSVGPath"](https://github.com/react-native-svg/react-native-svg/issues/470)
+
+[Cycle in dependencies between targets 'FBReactNativeSpec'](https://stackoverflow.com/questions/63381573/cycle-in-dependencies-between-targets-fbreactnativespec-and-yoga-building-c)
+
+[https://stackoverflow.com/questions/59573326/how-solve-undefined-symbols-for-architecture-armv7-in-react-native-ios](https://stackoverflow.com/questions/59573326/how-solve-undefined-symbols-for-architecture-armv7-in-react-native-ios)
+
+Can't compile because [Skipping code signing because the target does not have an Info.plist file](https://stackoverflow.com/questions/52332207/xcode-10-warning-skipping-code-signing-because-the-target-does-not-have-an-info)
+
+[App crash due to runtime.raise_trampoline](https://github.com/tripupapp/tripup-ios/issues/24)
+
+
